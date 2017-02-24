@@ -1,0 +1,13 @@
+ext {
+    baseGroup = 'net.meshkorea'
+    baseArtifact = rootProject.name
+    baseVersion = project.version
+
+    coreWebVersion = '0.0.1-SNAPSHOT'
+
+    springBootVersion = '1.5.1.RELEASE'
+    springfoxVersion = '2.6.1'
+    mysemaQuerydslVersion = '3.7.4'
+
+    repoPass = project.hasProperty('repoPass') ? project.getProperty('repoPass') : ''
+}

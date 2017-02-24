@@ -1,0 +1,74 @@
+apply from: rootProject.file('gradle/dependencies.gradle')
+apply from: rootProject.file('gradle/repositories.gradle')
+apply from: rootProject.file('gradle/profile.gradle')
+apply from: rootProject.file('gradle/plugins.gradle')
+apply from: rootProject.file('gradle/publish.gradle')
+
+buildscript { scriptHandler ->
+	apply from: rootProject.file('gradle/dependencies.gradle')
+	apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+	}
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+	main {
+		java {
+			srcDir "src/main/java"
+		}
+	}
+	generated {
+		java {
+			srcDir "src/main/java/generated"
+		}
+	}
+}
+
+idea {
+	module {
+		sourceDirs += file("src/main/java/generated")
+		testSourceDirs += file('src/test/generated')
+	}
+}
+
+jar {
+	baseName = "${baseArtifact}"
+	version = "${baseVersion}"
+}
+
+dependencies {
+	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
+
+	// Swagger
+	compile "io.springfox:springfox-swagger2:${springfoxVersion}"
+	compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
+
+	compile "com.mysema.querydsl:querydsl-jpa:${mysemaQuerydslVersion}"
+	compile "com.mysema.querydsl:querydsl-apt:${mysemaQuerydslVersion}:jpa"
+
+	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+
+	testCompile "org.springframework.boot:spring-boot-starter-test"
+	testCompile "org.springframework.security:spring-security-test"
+}
+
+compileJava {
+	options.compilerArgs << "-s"
+	options.compilerArgs << "src/main/java/generated"
+
+	doFirst {
+		file(new File(projectDir, "src/main/java/generated")).mkdirs()
+	}
+}
+
+clean.doLast {
+	file(new File(projectDir, "src/main/java/generated")).deleteDir()
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.3'
+}

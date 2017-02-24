@@ -1,0 +1,24 @@
+publishing {
+    repositories {
+        maven {
+            if (project.version.endsWith('-SNAPSHOT')) {
+                url "http://10.5.1.251:8081/repository/maven-snapshots"
+            } else {
+                url "http://10.5.1.251:8081/repository/maven-releases"
+            }
+            credentials {
+                username 'deploy'
+                password repoPass
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId baseGroup
+            artifactId baseArtifact
+            version baseVersion
+        }
+    }
+}

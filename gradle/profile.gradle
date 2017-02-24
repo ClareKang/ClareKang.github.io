@@ -1,0 +1,4 @@
+final String DEFAULT_PROFILE = 'dev'
+if (!project.hasProperty('profile') || !profile) {
+    ext.profile = DEFAULT_PROFILE
+}

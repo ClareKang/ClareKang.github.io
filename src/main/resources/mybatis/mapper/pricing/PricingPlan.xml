@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.meshkorea.mcp.api.repository.PricingPlanMapper">
+
+	<select id="getPricingPlan" parameterType="map" resultType="map">
+		SELECT
+			*
+		FROM
+			pricing_plan
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="getPricingPlanAndDeliveryClass" parameterType="map" resultType="map">
+		SELECT
+			p.id AS pricin_plan_id,
+			p.name AS pricing_plan_name,
+			p.management_fee_policy,
+			p.management_fee_ratio,
+			p.management_fee_amount,
+			p.management_fee_currency,
+			p.monitoring_fee_policy,
+			p.monitoring_fee_ratio,
+			p.monitoring_fee_amount,
+			p.monitoring_fee_currency,
+			p.agent_fee_policy,
+			p.agent_fee_ratio,
+			p.agent_fee_amount,
+			p.agent_fee_currency,
+			p.fee_decimal_scale,
+			p.fee_rounding_mode,
+			p.description AS pricing_plan_description,
+			d.id AS delivery_class_id,
+			d.classCode,
+			d.name AS delivery_class_name,
+			d.description delivery_class_description
+		FROM
+			pricing_plan p
+			INNER JOIN DeliveryClass d
+			ON p.delivery_class_id = d.id
+		<where>
+			<if test="id != null">
+				p.id = #{id}
+			</if>
+		</where>
+	</select>
+
+</mapper>
