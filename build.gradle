@@ -40,6 +40,14 @@ jar {
 	version = "${baseVersion}"
 }
 
+bootRun {
+	if (profile != null) {
+		args = ["--spring.profiles.active=" + profile]
+	}
+
+	addResources = true
+}
+
 dependencies {
 	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
@@ -58,7 +66,7 @@ dependencies {
 
 compileJava {
 	options.compilerArgs << "-s"
-	options.compilerArgs << "src/main/java/generated"
+	options.compilerArgs << "${projectDir}/src/main/java/generated"
 
 	doFirst {
 		file(new File(projectDir, "src/main/java/generated")).mkdirs()
