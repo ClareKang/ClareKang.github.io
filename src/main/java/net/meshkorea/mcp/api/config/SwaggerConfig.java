@@ -21,7 +21,7 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(new ApiInfoBuilder()
-						.title("Hidden Recommendation API")
+						.title("Mesh Control Platform API")
 						.version("1")
 						.build());
 	}
