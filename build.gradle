@@ -58,7 +58,7 @@ swagger {
 	additionalProperties = [
 			'groupId'           : 'com.vroong',
 			'artifactId'        : 'api-client',
-			'artifactVersion'   : '1.0.0',
+			'artifactVersion'   : vroongApiClientVersion,
 			'modelPackage'      : 'com.vroong.api.client.model',
 			'apiPackage'        : 'com.vroong.api.client.api',
 			'dateLibrary'       : 'java8'
@@ -67,6 +67,8 @@ swagger {
 
 dependencies {
 	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
+
+	compile "com.vroong:api-client:${vroongApiClientVersion}"
 
 	// Swagger
 	compile "io.springfox:springfox-swagger2:${springfoxVersion}"

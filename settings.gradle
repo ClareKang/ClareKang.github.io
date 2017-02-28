@@ -1,1 +1,3 @@
 rootProject.name = 'mesh-control-platform-api'
+
+include ":vroong-api-client"

@@ -10,5 +10,8 @@ ext {
     mysemaQuerydslVersion = '3.7.4'
     swaggerCodegenPluginVersion = '1.6.3'
 
+    vroongApiClientVersion = '1.0.0-SNAPSHOT'
+
     repoPass = project.hasProperty('repoPass') ? project.getProperty('repoPass') : ''
+    deployRepo = project.hasProperty('deployRepo') ? project.getProperty('deployRepo') : 'SNAPSHOT'
 }

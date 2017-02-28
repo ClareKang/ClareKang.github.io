@@ -1,9 +1,9 @@
 publishing {
     repositories {
         maven {
-            if (project.version.endsWith('-SNAPSHOT')) {
+            if ('SNAPSHOT'.equals(deployRepo)) {
                 url "http://10.5.1.251:8081/repository/maven-snapshots"
-            } else {
+            } else if ('RELAESES'.equals(deployRepo)) {
                 url "http://10.5.1.251:8081/repository/maven-releases"
             }
             credentials {
@@ -13,12 +13,26 @@ publishing {
         }
     }
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
+        api(MavenPublication) {
             groupId baseGroup
             artifactId baseArtifact
             version baseVersion
+
+            from components.java
         }
+        vroongClients(MavenPublication) {
+            groupId 'com.vroong'
+            artifactId 'api-client'
+            version vroongApiClientVersion
+
+            artifact vroongClientJar
+        }
+    }
+}
+
+task vroongClientJar(type: Jar) {
+    baseName "com.vroong"
+    from (file("${projectDir}/vroong-api-client/build/libs")) {
+        include '*.jar'
     }
 }
