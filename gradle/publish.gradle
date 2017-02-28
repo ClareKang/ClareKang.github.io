@@ -22,7 +22,7 @@ publishing {
         }
         vroongClients(MavenPublication) {
             groupId 'com.vroong'
-            artifactId 'api-client'
+            artifactId 'vroong-api-client'
             version vroongApiClientVersion
 
             artifact vroongClientJar
@@ -32,7 +32,7 @@ publishing {
 
 task vroongClientJar(type: Jar) {
     baseName "com.vroong"
-    from (file("${projectDir}/vroong-api-client/build/libs")) {
-        include '*.jar'
+    from (file("${projectDir}/vroong-api-client/build/classes/main")) {
+        include '**'
     }
 }
