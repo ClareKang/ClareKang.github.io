@@ -8,7 +8,6 @@ ext {
     springBootVersion = '1.5.1.RELEASE'
     springfoxVersion = '2.6.1'
     mysemaQuerydslVersion = '3.7.4'
-    swaggerCodegenPluginVersion = '1.6.3'
 
     vroongApiClientVersion = '1.0.0-SNAPSHOT'
 

@@ -9,7 +9,6 @@ buildscript { scriptHandler ->
 	apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-		classpath "gradle.plugin.org.detoeuf:swagger-codegen-plugin:${swaggerCodegenPluginVersion}"
 	}
 }
 
@@ -49,22 +48,6 @@ bootRun {
 	addResources = true
 }
 
-swagger {
-	inputSpec = 'https://demo.api-v2.vroong.com/v2/api-docs'
-
-	output = "${projectDir}/vroong-api-client"
-	language = 'java'
-
-	additionalProperties = [
-			'groupId'           : 'com.vroong',
-			'artifactId'        : 'vroong-api-client',
-			'artifactVersion'   : vroongApiClientVersion,
-			'modelPackage'      : 'com.vroong.api.client.model',
-			'apiPackage'        : 'com.vroong.api.client.api',
-			'dateLibrary'       : 'java8'
-	]
-}
-
 dependencies {
 	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
@@ -97,7 +80,6 @@ compileJava {
 
 clean.doLast {
 	file("${projectDir}/src/main/java/generated").deleteDir()
-	file("${projectDir}/vroong-api-client").deleteDir()
 }
 
 task wrapper(type: Wrapper) {

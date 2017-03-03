@@ -22,6 +22,8 @@ import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfigurati
 		CoreApplication.class,
 		CoreWebApplication.class,
 		McpApiApplication.class
+}, scanBasePackages = {
+		"com.vroong.lastmile.api"
 })
 public class McpApiApplication {
 

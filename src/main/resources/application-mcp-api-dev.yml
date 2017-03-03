@@ -1,0 +1,7 @@
+vroong:
+  lastmile:
+    api:
+      baseUrl: https://demo.api-v2.vroong.com
+      authUrl: /oauth/token
+      userId: mesh.platform
+      passwd: pA9GfROKVfRth39a

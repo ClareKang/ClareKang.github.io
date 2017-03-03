@@ -20,19 +20,5 @@ publishing {
 
             from components.java
         }
-        vroongClients(MavenPublication) {
-            groupId 'com.vroong'
-            artifactId 'vroong-api-client'
-            version vroongApiClientVersion
-
-            artifact vroongClientJar
-        }
-    }
-}
-
-task vroongClientJar(type: Jar) {
-    baseName "com.vroong"
-    from (file("${projectDir}/vroong-api-client/build/classes/main")) {
-        include '**'
     }
 }
