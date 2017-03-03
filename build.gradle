@@ -77,6 +77,9 @@ dependencies {
 	compile "com.mysema.querydsl:querydsl-jpa:${mysemaQuerydslVersion}"
 	compile "com.mysema.querydsl:querydsl-apt:${mysemaQuerydslVersion}:jpa"
 
+	compile("org.springframework.ldap:spring-ldap-core")
+	compile("org.springframework.security:spring-security-ldap")
+
 	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
 	testCompile "org.springframework.boot:spring-boot-starter-test"
