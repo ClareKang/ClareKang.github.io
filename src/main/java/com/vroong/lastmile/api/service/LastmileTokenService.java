@@ -1,7 +1,7 @@
 package com.vroong.lastmile.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vroong.api.client.ApiException;
+import com.vroong.lastmile.api.client.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

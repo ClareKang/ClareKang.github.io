@@ -1,10 +1,10 @@
 package net.meshkorea.mcp.api.service;
 
-import com.vroong.api.client.ApiException;
-import com.vroong.api.client.api.ManagerpartnercontrollerimplApi;
-import com.vroong.api.client.api.SystemstatuscontrollerApi;
-import com.vroong.api.client.model.ManagerGetBanksRes;
-import com.vroong.api.client.model.SystemStatusRes;
+import com.vroong.lastmile.api.client.ApiException;
+import com.vroong.lastmile.api.client.api.ManagerpartnercontrollerimplApi;
+import com.vroong.lastmile.api.client.api.SystemstatuscontrollerApi;
+import com.vroong.lastmile.api.client.model.ManagerGetBanksRes;
+import com.vroong.lastmile.api.client.model.SystemStatusRes;
 import com.vroong.lastmile.api.service.LastmileTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +28,9 @@ public class VroongClientTestService {
         return systemStatusRes.toString();
     }
 
-    public String getBanks() throws ApiException {
+    public ManagerGetBanksRes getBanks() throws ApiException {
         ManagerpartnercontrollerimplApi api = new ManagerpartnercontrollerimplApi();
         api.getApiClient().setBasePath(BASE_PATH);
-        ManagerGetBanksRes result = api.getBanksUsingGET(lastmileTokenService.getAuthorizationToken());
-        System.out.println(result.toString());
-        return result.toString();
+        return api.getBanksUsingGET(lastmileTokenService.getAuthorizationToken());
     }
 }

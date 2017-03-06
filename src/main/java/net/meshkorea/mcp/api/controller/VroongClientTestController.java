@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.controller;
 
-import com.vroong.api.client.ApiException;
+import com.vroong.lastmile.api.client.ApiException;
+import com.vroong.lastmile.api.client.model.ManagerGetBanksRes;
 import net.meshkorea.mcp.api.service.VroongClientTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class VroongClientTestController {
     }
 
     @RequestMapping(value = "/getBanks", method = RequestMethod.GET)
-    public String getBanks() throws ApiException {
+    public ManagerGetBanksRes getBanks() throws ApiException {
         return vroongClientTestService.getBanks();
     }
 }
