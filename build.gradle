@@ -49,7 +49,9 @@ bootRun {
 }
 
 dependencies {
-	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
+	compile ("net.meshkorea:platform-core-web:${coreWebVersion}"){
+		changing=true
+	}
 
 	compile "com.vroong:vroong-api-client:${vroongApiClientVersion}"
 

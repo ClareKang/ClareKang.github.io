@@ -18,7 +18,6 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("1");
         http
                 .authorizeRequests()
                 .anyRequest().fullyAuthenticated()
@@ -29,7 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("2");
         auth
                 .ldapAuthentication()
                 .userDnPatterns("uid={0},ou=people")
@@ -43,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DefaultSpringSecurityContextSource contextSource() {
-        System.out.println("3");
         return  new DefaultSpringSecurityContextSource(Arrays.asList("ldap://10.5.1.251:389/"), "dc=meshcorp,dc=com");
     }
 }

@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.config.data;
 
+import net.meshkorea.platform.core.web.config.data.AuthDbProperties;
 import net.meshkorea.platform.core.web.config.data.MasterDbProperties;
 import net.meshkorea.platform.core.web.config.data.PrimeDbProperties;
 import net.meshkorea.platform.core.web.config.data.VroongDbProperties;
@@ -27,10 +28,14 @@ public class DbPropertiesTest {
     @Autowired
     PrimeDbProperties primeDbProperties;
 
+    @Autowired
+    AuthDbProperties authDbProperties;
+
     @Test
     public void test() {
         assertEquals("com.mysql.jdbc.Driver", masterDbProperties.getDriverClassName());
         assertEquals("com.mysql.jdbc.Driver", vroongDbProperties.getDriverClassName());
         assertEquals("com.mysql.jdbc.Driver", primeDbProperties.getDriverClassName());
+        assertEquals("com.mysql.jdbc.Driver", authDbProperties.getDriverClassName());
     }
 }
