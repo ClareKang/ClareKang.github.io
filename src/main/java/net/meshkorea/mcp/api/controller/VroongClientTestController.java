@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by reverof on 2017. 2. 28..
@@ -23,7 +24,7 @@ public class VroongClientTestController {
     }
 
     @RequestMapping(value = "/getBanks", method = RequestMethod.GET)
-    public ManagerGetBanksRes getBanks() throws ApiException {
+    public @ResponseBody ManagerGetBanksRes getBanks() throws ApiException {
         return vroongClientTestService.getBanks();
     }
 }

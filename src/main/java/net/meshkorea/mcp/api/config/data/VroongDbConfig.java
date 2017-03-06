@@ -37,7 +37,6 @@ public class VroongDbConfig extends AbstractDbConfig {
 	public static final String DATA_SOURCE_NAME = "vroongDataSource";
 	public static final String ENTITY_MANAGER_FATORY_NAME = "vroongEntityManagerFactory";
 	public static final String SQL_SESSION_FACTORY_NAME = "vroongSessionFactory";
-	public static final String PACKAGES_TO_SCAN = "net.meshkorea.mcp.api";
 
 	@Autowired
 	private VroongDbProperties vroongDbProperties;

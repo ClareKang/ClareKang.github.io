@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
 
@@ -17,7 +18,8 @@ import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfigurati
 		MybatisAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class,
 		TransactionAutoConfiguration.class,
-		JtaAutoConfiguration.class
+		JtaAutoConfiguration.class,
+		SecurityAutoConfiguration.class
 }, scanBasePackageClasses = {
 		CoreApplication.class,
 		CoreWebApplication.class,

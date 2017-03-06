@@ -14,7 +14,7 @@ import java.util.Arrays;
  * Created by sungjae.hong on 2017. 2. 27..
  */
 
-@Configuration
+// @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
