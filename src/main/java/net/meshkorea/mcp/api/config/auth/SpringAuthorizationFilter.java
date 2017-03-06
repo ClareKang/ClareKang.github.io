@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.config.data;
+package net.meshkorea.mcp.api.config.auth;
 
 
 import org.springframework.security.core.Authentication;

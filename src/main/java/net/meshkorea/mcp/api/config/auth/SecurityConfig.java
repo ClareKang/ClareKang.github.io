@@ -1,15 +1,13 @@
-package net.meshkorea.mcp.api.config.data;
+package net.meshkorea.mcp.api.config.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.servlet.Filter;
 import java.util.Arrays;
 
 /**
