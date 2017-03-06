@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.meshkorea.mcp.api.repository.AuthMapper">
+
+	<select id="getAuthList" parameterType="java.lang.String" resultType="map">
+		SELECT
+			user_id,
+			ug.group_no,
+			v.view_name,
+			u.uri,
+			m.method_name,
+			m.method_type
+		FROM
+			user_group_relation ug,
+			group_view_relation gv,
+			view v,
+			uri u,
+			method m
+		WHERE
+		<where>
+			<if test="value != null">
+				user_id = #{value} and
+			</if>
+		</where>
+		ug.group_no = gv.group_no and gv.view_no = v.view_no and gv.uri_no = u.uri_no and gv.method_no = m.method_no
+	</select>
+</mapper>
