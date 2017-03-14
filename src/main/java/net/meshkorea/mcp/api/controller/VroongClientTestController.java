@@ -23,7 +23,7 @@ public class VroongClientTestController {
         return vroongClientTestService.getSystemStatus();
     }
 
-    @RequestMapping(value = "/getBanks", method = RequestMethod.GET)
+    @RequestMapping(value = "/testGetBanks", method = RequestMethod.GET)
     public @ResponseBody ManagerGetBanksRes getBanks() throws ApiException {
         return vroongClientTestService.getBanks();
     }
