@@ -1,8 +1,7 @@
 package net.meshkorea.mcp.api.controller;
 
-import com.vroong.lastmile.api.client.ApiException;
-import com.vroong.lastmile.api.client.model.ManagerGetBanksRes;
-import net.meshkorea.mcp.api.service.VroongClientTestService;
+import com.meshprime.api.client.model.BankList;
+import net.meshkorea.mcp.api.service.PrimeIntraClientTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by reverof on 2017. 2. 28..
  */
 @Controller
-@RequestMapping(value = "/vroong")
-public class VroongClientTestController {
+@RequestMapping(value = "/intra")
+public class PrimeIntraClientTestController {
 
     @Autowired
-    VroongClientTestService vroongClientTestService;
+    PrimeIntraClientTestService primeIntraClientTestService;
 
     @RequestMapping(value = "/getBanks", method = RequestMethod.GET)
-    public @ResponseBody ManagerGetBanksRes getBanks() throws ApiException {
-        return vroongClientTestService.getBanks();
+    public @ResponseBody BankList getBanks() throws Exception {
+        return primeIntraClientTestService.getBanks();
     }
 }

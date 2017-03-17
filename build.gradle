@@ -15,6 +15,11 @@ buildscript { scriptHandler ->
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+configurations.all {
+	resolutionStrategy.cacheDynamicVersionsFor 10, 'seconds' // 10초
+	resolutionStrategy.cacheChangingModulesFor 10, 'seconds' // 10초
+}
+
 sourceSets {
 	main {
 		java {
@@ -49,11 +54,11 @@ bootRun {
 }
 
 dependencies {
-	compile ("net.meshkorea:platform-core-web:${coreWebVersion}"){
-		changing=true
-	}
+	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
 	compile "com.vroong:vroong-api-client:${vroongApiClientVersion}"
+	compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
+	compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
 
 	// Swagger
 	compile "io.springfox:springfox-swagger2:${springfoxVersion}"
@@ -64,6 +69,8 @@ dependencies {
 
 	compile("org.springframework.ldap:spring-ldap-core")
 	compile("org.springframework.security:spring-security-ldap")
+
+	compile "com.auth0:java-jwt:${javaJwtVersion}"
 
 	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
