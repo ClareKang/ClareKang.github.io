@@ -4,4 +4,26 @@ vroong:
       baseUrl: https://demo.api-v2.vroong.com
       authUrl: /oauth/token
       userId: mesh.platform
-      passwd: pA9GfROKVfRth39a
+      password: pA9GfROKVfRth39a
+      request:
+        userAgent: MeshControlPlatformApi/java
+  admin:
+    api:
+      baseUrl: http://admin.vroong.com:5000
+      authUrl: /oauth/token
+      userId: mesh.platform
+      password: pA9GfROKVfRth39a
+      request:
+        userAgent: MeshControlPlatformApi/java
+
+prime:
+  intra:
+    api:
+      baseUrl: http://intra-api-dev.meshprime.com
+      userId: chaeeun.lee@meshkorea.net
+      password: platform1234!
+      request:
+        userAgent: MeshControlPlatformApi/java
+
+time:
+  zone: Asia/Seoul
