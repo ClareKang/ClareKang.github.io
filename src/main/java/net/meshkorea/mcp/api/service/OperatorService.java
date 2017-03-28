@@ -1,9 +1,9 @@
 package net.meshkorea.mcp.api.service;
 
+import com.vroong.lastmile.api.LastmileManagerPartnerApi;
 import com.vroong.lastmile.api.client.ApiException;
-import com.vroong.lastmile.api.client.api.ManagerpartnercontrollerimplApi;
 import com.vroong.lastmile.api.client.model.*;
-import com.vroong.lastmile.api.service.LastmileTokenService;
+import com.vroong.lastmile.service.auth.LastmileTokenService;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +16,18 @@ public class OperatorService {
     @Autowired
     LastmileTokenService lastmileTokenService;
 
-    private static String BASE_PATH = "https://demo.api-v2.vroong.com";
-    private ManagerpartnercontrollerimplApi api;
-
-    public OperatorService() {
-        this.api = new ManagerpartnercontrollerimplApi();
-        this.api.getApiClient().setBasePath(BASE_PATH);
-    }
+    @Autowired
+    LastmileManagerPartnerApi lastmileManagerPartnerApi;
 
     public ManagerFindOperatorsRes findOperators(ManagerFindOperatorsReq req) throws ApiException {
-        return this.api.findOperatorsUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.findOperatorsUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerGetOperatorDetailRes getOperatorDetail(ManagerGetOperatorDetailReq req) throws ApiException {
-        return this.api.getOperatorDetailUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.getOperatorDetailUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerUpdateOperatorRes updateOperator(ManagerUpdateOperatorReq req) throws ApiException {
-        return this.api.updateOperatorUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.updateOperatorUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 }

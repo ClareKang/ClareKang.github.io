@@ -1,9 +1,9 @@
 package net.meshkorea.mcp.api.service;
 
+import com.vroong.lastmile.api.LastmileManagerPartnerApi;
 import com.vroong.lastmile.api.client.ApiException;
-import com.vroong.lastmile.api.client.api.ManagerpartnercontrollerimplApi;
 import com.vroong.lastmile.api.client.model.*;
-import com.vroong.lastmile.api.service.LastmileTokenService;
+import com.vroong.lastmile.service.auth.LastmileTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,27 +16,22 @@ public class PartnerService {
     @Autowired
     LastmileTokenService lastmileTokenService;
 
-    private static String BASE_PATH = "https://demo.api-v2.vroong.com";
-    private ManagerpartnercontrollerimplApi api;
-
-    public PartnerService() {
-        this.api = new ManagerpartnercontrollerimplApi();
-        this.api.getApiClient().setBasePath(BASE_PATH);
-    }
+    @Autowired
+    LastmileManagerPartnerApi lastmileManagerPartnerApi;
 
     public ManagerFindPartnersRes findPartners(ManagerFindPartnersReq req) throws ApiException {
-        return this.api.findPartnersUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.findPartnersUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerGetPartnerDetailRes getPartnerDetail(ManagerGetPartnerDetailReq req) throws ApiException {
-        return this.api.getPartnerDetailUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.getPartnerDetailUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerUpdatePartnerRes updatepartner(ManagerUpdatePartnerReq req) throws ApiException {
-        return this.api.updatePartnerUsingPOST(lastmileTokenService.getAuthorizationToken(), req);
+        return lastmileManagerPartnerApi.updatePartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerListAllPartnersRes listAllPartners() throws ApiException {
-        return this.api.listAllPartnersUsingGET(lastmileTokenService.getAuthorizationToken());
+        return lastmileManagerPartnerApi.listAllPartnersUsingGET(lastmileTokenService.getAuthToken());
     }
 }
