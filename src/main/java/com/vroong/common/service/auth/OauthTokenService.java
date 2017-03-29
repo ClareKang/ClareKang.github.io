@@ -42,7 +42,6 @@ public abstract class OauthTokenService {
 	private HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.put("Authorization"	, Arrays.asList("Basic Y3VybDpwYXNzd29yZA=="));
-		headers.put("Content-Type"	, Arrays.asList("multipart/form-data"		));
 
 		return headers;
 	}
