@@ -30,6 +30,16 @@ public class PartnerController {
         return partnerService.getPartnerDetail(req);
     }
 
+    @RequestMapping(value = "/addPartner", method = RequestMethod.POST)
+    public ManagerAddPartnerRes addPartner(ManagerAddPartnerReq req) throws ApiException {
+        return partnerService.addPartner(req);
+    }
+
+    @RequestMapping(value = "/removePartner", method = RequestMethod.POST)
+    public ManagerRemovePartnerRes removePartner(ManagerRemovePartnerReq req) throws  ApiException {
+        return partnerService.removePartner(req);
+    }
+
     @RequestMapping(value = "/updatePartner", method = RequestMethod.POST)
     public @ResponseBody
     ManagerUpdatePartnerRes updatePartner(ManagerUpdatePartnerReq req) throws ApiException {

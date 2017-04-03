@@ -27,6 +27,14 @@ public class PartnerService {
         return lastmileManagerPartnerApi.getPartnerDetailUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
+    public ManagerAddPartnerRes addPartner(ManagerAddPartnerReq req) throws ApiException {
+        return lastmileManagerPartnerApi.addPartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerRemovePartnerRes removePartner(ManagerRemovePartnerReq req) throws  ApiException {
+        return lastmileManagerPartnerApi.removePartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
     public ManagerUpdatePartnerRes updatepartner(ManagerUpdatePartnerReq req) throws ApiException {
         return lastmileManagerPartnerApi.updatePartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
