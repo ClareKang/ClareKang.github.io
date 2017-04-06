@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.service;
+package net.meshkorea.mcp.api.service.business;
 
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;

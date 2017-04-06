@@ -1,7 +1,7 @@
 package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.model.*;
-import net.meshkorea.mcp.api.service.StoreService;
+import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

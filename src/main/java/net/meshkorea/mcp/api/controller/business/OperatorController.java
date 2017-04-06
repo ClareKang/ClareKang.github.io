@@ -2,7 +2,7 @@ package net.meshkorea.mcp.api.controller.business;
 
 import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
-import net.meshkorea.mcp.api.service.OperatorService;
+import net.meshkorea.mcp.api.service.business.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
