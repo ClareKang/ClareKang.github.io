@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.service;
+package net.meshkorea.mcp.api.service.business;
 
 import com.vroong.lastmile.api.LastmileManagerPartnerApi;
 import com.vroong.lastmile.api.client.ApiException;

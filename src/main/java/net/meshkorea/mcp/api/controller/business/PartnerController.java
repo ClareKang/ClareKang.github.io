@@ -2,7 +2,7 @@ package net.meshkorea.mcp.api.controller.business;
 
 import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
-import net.meshkorea.mcp.api.service.PartnerService;
+import net.meshkorea.mcp.api.service.business.PartnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,23 +31,26 @@ public class PartnerController {
     }
 
     @RequestMapping(value = "/addPartner", method = RequestMethod.POST)
-    public ManagerAddPartnerRes addPartner(ManagerAddPartnerReq req) throws ApiException {
+    public @ResponseBody
+    ManagerAddPartnerRes addPartner(ManagerAddPartnerReq req) throws ApiException {
         return partnerService.addPartner(req);
     }
 
     @RequestMapping(value = "/removePartner", method = RequestMethod.POST)
-    public ManagerRemovePartnerRes removePartner(ManagerRemovePartnerReq req) throws  ApiException {
+    public @ResponseBody
+    ManagerRemovePartnerRes removePartner(ManagerRemovePartnerReq req) throws  ApiException {
         return partnerService.removePartner(req);
     }
 
     @RequestMapping(value = "/updatePartner", method = RequestMethod.POST)
     public @ResponseBody
     ManagerUpdatePartnerRes updatePartner(ManagerUpdatePartnerReq req) throws ApiException {
-        return partnerService.updatepartner(req);
+        return partnerService.updatePartner(req);
     }
 
     @RequestMapping(value = "/listAllPartners", method = RequestMethod.GET)
-    public @ResponseBody ManagerListAllPartnersRes listAllPartners() throws ApiException {
+    @ResponseBody
+    private ManagerListAllPartnersRes listAllPartners() throws ApiException {
         return partnerService.listAllPartners();
     }
 }

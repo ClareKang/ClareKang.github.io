@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.service;
+package net.meshkorea.mcp.api.service.business;
 
 import com.vroong.lastmile.api.LastmileManagerPartnerApi;
 import com.vroong.lastmile.api.client.ApiException;
@@ -35,7 +35,7 @@ public class PartnerService {
         return lastmileManagerPartnerApi.removePartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
-    public ManagerUpdatePartnerRes updatepartner(ManagerUpdatePartnerReq req) throws ApiException {
+    public ManagerUpdatePartnerRes updatePartner(ManagerUpdatePartnerReq req) throws ApiException {
         return lastmileManagerPartnerApi.updatePartnerUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
