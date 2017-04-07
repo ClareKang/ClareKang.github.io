@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.controller;
+package net.meshkorea.mcp.api.controller.claim;
 
 import org.springframework.web.bind.annotation.RestController;
 

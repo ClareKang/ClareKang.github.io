@@ -18,13 +18,15 @@ public class ClaimHistory {
     @Column(name = "claim_history_no")
     private Long claimHistoryNo;
 
-    @Column(name = "claim_no")
-    private Long claimNo;
+    @ManyToOne
+    @JoinColumn(name = "claim_no")
+    private Claim claim;
 
     @Column(name = "creator")
     private String creator;
 
     @Column(name = "create_dt")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
     @Column(name = "json_string")

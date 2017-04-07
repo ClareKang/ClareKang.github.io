@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.service;
+package net.meshkorea.mcp.api.service.claim;
 
 import org.springframework.stereotype.Service;
 
