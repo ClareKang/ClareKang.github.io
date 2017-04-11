@@ -1,12 +1,12 @@
 package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.model.*;
+import io.swagger.annotations.ApiParam;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,17 +44,43 @@ public class StoreController {
 
     @RequestMapping(value = "/stores/business_clients/list", method = RequestMethod.GET)
     public @ResponseBody
-    List<BusinessClientShort> getBusinessClientList(GetBusinessClientListRequest req) throws Exception {
-        return storeService.getBusinessClientList(req);
-    }
-
-    @RequestMapping(value = "/deliveries/vroong_partners", method = RequestMethod.GET)
-    public @ResponseBody List<VroongPartner> getVroongPartners() throws Exception {
-        return storeService.getVroongPartners();
+    List<BusinessClientShort> getBusinessClientList(String clientType) throws Exception {
+        return storeService.getBusinessClientList(clientType);
     }
 
     @RequestMapping(value = "/stores/vroong_service_pricing_types", method = RequestMethod.GET)
     public @ResponseBody List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
         return storeService.listVroongServicePricingTypes();
     }
+
+    @RequestMapping(value = "/stores/sales_departments", method = RequestMethod.GET)
+    public @ResponseBody List<StoreSalesDepartment> getSalesDeparments() throws Exception {
+        return storeService.getSalesDepartments();
+    }
+
+    @RequestMapping(value = "/stores/individual", method = RequestMethod.POST)
+    public Store createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
+        return storeService.createIndividualStore(req);
+    }
+
+    @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
+    public @ResponseBody Store createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
+        return storeService.createFranchiseIndividualStore(req);
+    }
+
+    @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
+    public @ResponseBody Store createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
+        return storeService.createFranchiseCorporateStore(req);
+    }
+
+    @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
+    public @ResponseBody Boolean checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
+        return storeService.checkStoreUserExists(req);
+    }
+
+    @RequestMapping(value = "/businessClients/{id}/files", method = RequestMethod.POST)
+    public @ResponseBody BusinessClient updateBusinessClientFiles(@PathVariable Integer id, @RequestPart MultipartFile[] files) throws Exception {
+        return storeService.updateBusinessClientFiles(id, files);
+    }
+
 }
