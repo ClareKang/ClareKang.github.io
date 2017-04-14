@@ -60,6 +60,6 @@ public class Claim {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDt;
 
-    @OneToMany(mappedBy = "claim")
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.REMOVE)
     private List<ClaimHistory> claimHistories;
 }

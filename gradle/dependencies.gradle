@@ -8,6 +8,7 @@ ext {
     springBootVersion = '1.5.1.RELEASE'
     springfoxVersion = '2.6.1'
     mysemaQuerydslVersion = '3.7.4'
+    modelMapperVersion = '0.7.8'
     javaJwtVersion = '3.1.0'
 
     vroongApiClientVersion = '1.0.0-SNAPSHOT'
