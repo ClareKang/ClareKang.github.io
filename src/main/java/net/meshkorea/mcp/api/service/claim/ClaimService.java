@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.service.claim;
 
+import net.meshkorea.mcp.api.dto.claim.ClaimDto;
 import net.meshkorea.mcp.api.entity.claim.Claim;
 import net.meshkorea.mcp.api.repository.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class ClaimService {
     }
 
     @Transactional
-    public Claim getClaim(Long claimNo) {
-        return claimRepository.getOne(claimNo);
+    public ClaimDto getClaim(Long claimNo) {
+        return new ClaimDto().from(claimRepository.getOne(claimNo));
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.dto.claim;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.meshkorea.mcp.api.dto.ModelMapper;
 import net.meshkorea.mcp.api.entity.claim.ClaimHistory;
 
@@ -9,7 +10,8 @@ import java.util.Date;
 /**
  * Created by reverof on 2017. 4. 13..
  */
-@Data
+@Getter
+@Setter
 public class ClaimHistoryDto implements ModelMapper<ClaimHistoryDto, ClaimHistory> {
 
     private Long claimHistoryNo;
@@ -29,7 +31,7 @@ public class ClaimHistoryDto implements ModelMapper<ClaimHistoryDto, ClaimHistor
         }
 
         setClaimHistoryNo(claimHistory.getClaimHistoryNo());
-        if (getClaimDto() == null) {
+        if (getClaimDto() == null && claimHistory.getClaim() != null) {
             setClaimDto(new ClaimDto().from(claimHistory.getClaim()));
         }
         setCreator(claimHistory.getCreator());
@@ -41,13 +43,14 @@ public class ClaimHistoryDto implements ModelMapper<ClaimHistoryDto, ClaimHistor
 
     public ClaimHistory to(ClaimHistory claimHistory) {
 
+        // 파라미터로 전달된 객체 유효성 확인
         if (claimHistory == null) {
             claimHistory = new ClaimHistory();
         }
 
         claimHistory.setClaimHistoryNo(getClaimHistoryNo());
         if (claimHistory.getClaim() == null && getClaimDto() != null) {
-            claimHistory.setClaim(getClaimDto().to(claimHistory.getClaim()));
+            claimHistory.setClaim(getClaimDto().to(null));
         }
         claimHistory.setCreator(getCreator());
         claimHistory.setCreateDt(getCreateDt());

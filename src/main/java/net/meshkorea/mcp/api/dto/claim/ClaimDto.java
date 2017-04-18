@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.dto.claim;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.meshkorea.mcp.api.dto.ModelMapper;
 import net.meshkorea.mcp.api.entity.claim.Claim;
 import net.meshkorea.mcp.api.entity.claim.ClaimHistory;
@@ -12,7 +13,8 @@ import java.util.List;
 /**
  * Created by reverof on 2017. 4. 13..
  */
-@Data
+@Getter
+@Setter
 public class ClaimDto implements ModelMapper<ClaimDto, Claim> {
 
     private Long claimNo;
@@ -68,8 +70,7 @@ public class ClaimDto implements ModelMapper<ClaimDto, Claim> {
         }
 
         for (ClaimHistoryDto claimHistoryDto : getClaimHistoryDtos()) {
-            ClaimHistory claimHistory = new ClaimHistory();
-            claimHistories.add(claimHistoryDto.to(claimHistory));
+            claimHistories.add(claimHistoryDto.to(null));
         }
 
         return claimHistories;
@@ -96,6 +97,11 @@ public class ClaimDto implements ModelMapper<ClaimDto, Claim> {
     }
 
     public Claim to(Claim claim) {
+
+        if (claim == null) {
+            claim = new Claim();
+        }
+
         claim.setClaimNo(getClaimNo());
         claim.setStatusCode(getStatusCode());
         claim.setTypeCode(getTypeCode());
