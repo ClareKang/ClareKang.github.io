@@ -32,7 +32,7 @@ public class DbPropertiesTest {
     AuthDbProperties authDbProperties;
 
     @Test
-    public void test() {
+    public void 데이터베이스_프로퍼티_로딩() {
         assertEquals("com.mysql.jdbc.Driver", masterDbProperties.getDriverClassName());
         assertEquals("com.mysql.jdbc.Driver", vroongDbProperties.getDriverClassName());
         assertEquals("com.mysql.jdbc.Driver", primeDbProperties.getDriverClassName());
