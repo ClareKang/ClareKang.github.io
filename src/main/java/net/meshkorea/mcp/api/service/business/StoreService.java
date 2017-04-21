@@ -113,4 +113,12 @@ public class StoreService {
         return intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(), clientId,
             enterpriseRegistrationCopy, bankAccountCopy, ceoIdCardCopy);
     }
+
+    public Store getStore(String id) throws Exception {
+        return intraStoresApi.getStore(intraTokenService.getAuthToken(), id);
+    }
+
+    public Store updateStore(String id, Store store) throws Exception {
+        return intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store);
+    }
 }
