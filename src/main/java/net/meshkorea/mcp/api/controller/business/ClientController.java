@@ -3,6 +3,8 @@ package net.meshkorea.mcp.api.controller.business;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class ClientController {
 
     @Autowired
-    public ClientService clientService;
+    private ClientService clientService;
 
     @GetMapping
     public ListBusinessClientResponse listBusinessClients(String clientType,
@@ -72,4 +74,10 @@ public class ClientController {
     public ApiKey createApiKey(@PathVariable Integer clientId) throws Exception {
         return clientService.createApiKey(clientId);
     }
+
+    @GetMapping("/files/{source}/{fileName}")
+    public ResponseEntity<Resource> getFile(@PathVariable String source, @PathVariable String fileName) throws Exception {
+        return clientService.getFile(source, fileName);
+    }
+
 }
