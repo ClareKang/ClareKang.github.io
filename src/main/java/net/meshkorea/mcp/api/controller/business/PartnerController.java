@@ -5,6 +5,7 @@ import com.vroong.lastmile.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.PartnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,7 +33,7 @@ public class PartnerController {
 
     @RequestMapping(value = "/addPartner", method = RequestMethod.POST)
     public @ResponseBody
-    ManagerAddPartnerRes addPartner(ManagerAddPartnerReq req) throws ApiException {
+    ManagerAddPartnerRes addPartner(@RequestBody ManagerAddPartnerReq req) throws ApiException {
         return partnerService.addPartner(req);
     }
 
@@ -44,7 +45,7 @@ public class PartnerController {
 
     @RequestMapping(value = "/updatePartner", method = RequestMethod.POST)
     public @ResponseBody
-    ManagerUpdatePartnerRes updatePartner(ManagerUpdatePartnerReq req) throws ApiException {
+    ManagerUpdatePartnerRes updatePartner(@RequestBody ManagerUpdatePartnerReq req) throws ApiException {
         return partnerService.updatePartner(req);
     }
 
