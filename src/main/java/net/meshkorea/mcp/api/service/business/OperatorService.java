@@ -27,6 +27,14 @@ public class OperatorService {
         return lastmileManagerPartnerApi.getOperatorDetailUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
+    public ManagerAddOperatorRes addOperator(ManagerAddOperatorReq req) throws ApiException {
+        return lastmileManagerPartnerApi.addOperatorUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerRemoveOperatorRes removeOperator(ManagerRemoveOperatorReq req) throws ApiException {
+        return lastmileManagerPartnerApi.removeOperatorUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
     public ManagerUpdateOperatorRes updateOperator(ManagerUpdateOperatorReq req) throws ApiException {
         return lastmileManagerPartnerApi.updateOperatorUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
