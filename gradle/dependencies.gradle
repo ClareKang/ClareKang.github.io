@@ -5,7 +5,7 @@ ext {
 
     coreWebVersion = '0.0.1-SNAPSHOT'
 
-    springBootVersion = '1.5.1.RELEASE'
+    springBootVersion = '1.5.3.RELEASE'
     springfoxVersion = '2.6.1'
     mysemaQuerydslVersion = '3.7.4'
     javaJwtVersion = '3.1.0'

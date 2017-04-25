@@ -8,9 +8,7 @@ import com.meshprime.intra.api.IntraStoresApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -93,25 +91,6 @@ public class StoreService {
 
     public Boolean checkStoreUserExists(CheckStoreUsersRequest req) throws Exception {
         return intraStoresApi.checkStoreUserExists(intraTokenService.getAuthToken(), req);
-    }
-
-    public BusinessClient updateBusinessClientFiles(Integer clientId, MultipartFile[] files) throws Exception {
-
-        File enterpriseRegistrationCopy;
-        File bankAccountCopy;
-        File ceoIdCardCopy;
-
-        enterpriseRegistrationCopy = new File(files[0].getOriginalFilename());
-        files[0].transferTo(enterpriseRegistrationCopy);
-
-        bankAccountCopy = new File(files[1].getOriginalFilename());
-        files[1].transferTo(bankAccountCopy);
-
-        ceoIdCardCopy = new File(files[2].getOriginalFilename());
-        files[2].transferTo(ceoIdCardCopy);
-
-        return intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(), clientId,
-            enterpriseRegistrationCopy, bankAccountCopy, ceoIdCardCopy);
     }
 
     public Store getStore(String id) throws Exception {

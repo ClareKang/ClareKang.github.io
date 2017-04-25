@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -78,6 +79,11 @@ public class ClientController {
     @GetMapping("/files/{source}/{fileName}")
     public ResponseEntity<Resource> getFile(@PathVariable String source, @PathVariable String fileName) throws Exception {
         return clientService.getFile(source, fileName);
+    }
+
+    @PostMapping(value = "/{id}/files")
+    public @ResponseBody BusinessClient updateBusinessClientFiles(@PathVariable Integer id, @RequestPart MultipartFile[] files) throws Exception {
+        return clientService.updateBusinessClientFiles(id, files);
     }
 
 }
