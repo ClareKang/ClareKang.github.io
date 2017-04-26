@@ -29,10 +29,10 @@ import java.util.List;
 public class ClientService {
 
     @Autowired
-    IntraTokenService intraTokenService;
+    private IntraTokenService intraTokenService;
 
     @Autowired
-    IntraBusinessClientsApi intraBusinessClientsApi;
+    private IntraBusinessClientsApi intraBusinessClientsApi;
 
     @Autowired
     private StorageService storageService;
