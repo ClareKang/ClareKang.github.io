@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.service;
 
+import net.meshkorea.mcp.api.dto.claim.ClaimDto;
 import net.meshkorea.mcp.api.entity.claim.Claim;
 import net.meshkorea.mcp.api.service.claim.ClaimService;
 import org.junit.Test;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
@@ -39,16 +39,20 @@ public class ClaimServiceTest {
         claimService.addClaim(claim);
 
         // 조회
-        Claim claimResult = claimService.getClaim(claim.getClaimNo());
+        ClaimDto claimDto = claimService.getClaim(claim.getClaimNo());
 
         System.out.println(claim.hashCode());
-        System.out.println(claimResult.hashCode());
+        System.out.println(claimDto.hashCode());
 
-        assertEquals(STATUS_CODE, claimResult.getStatusCode());
-        assertEquals(claim.hashCode(), claimResult.hashCode());
+        assertEquals(STATUS_CODE, claimDto.getStatusCode());
 
         // 삭제
-        claimService.removeClaim(claim.getClaimNo());
+        claimService.removeClaim(claimDto.getClaimNo());
+    }
+
+    @Test
+    public void 클레임_수정_이력_등록_조회() {
+
     }
 
 }
