@@ -83,4 +83,13 @@ public class StoreController {
         return storeService.updateBusinessClientFiles(id, files);
     }
 
+    @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
+    public @ResponseBody Store getStore(@PathVariable Integer id) throws Exception {
+        return storeService.getStore(id.toString());
+    }
+
+    @RequestMapping(value = "/stores/{id}", method = RequestMethod.PUT)
+    public @ResponseBody Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
+        return storeService.updateStore(id.toString(), store);
+    }
 }

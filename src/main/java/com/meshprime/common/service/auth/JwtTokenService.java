@@ -2,10 +2,10 @@ package com.meshprime.common.service.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.api.AuthApi;
 import com.meshprime.api.client.model.AuthenticateRequest;
 import com.meshprime.api.client.model.AuthenticateResult;
-import com.vroong.lastmile.api.client.ApiException;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
