@@ -33,7 +33,19 @@ public class AgentController {
 
     @RequestMapping(value = "/updateAgent", method = RequestMethod.POST)
     public @ResponseBody
-    ManagerUpdateAgentRes updateAgent(ManagerUpdateAgentReq req) throws ApiException {
+    ManagerUpdateAgentRes updateAgent(@RequestBody ManagerUpdateAgentReq req) throws ApiException {
         return agentService.updateAgent(req);
+    }
+
+    @RequestMapping(value = "/addAgent", method = RequestMethod.POST)
+    public @ResponseBody
+    ManagerAddAgentRes addAgent(@RequestBody ManagerAddAgentReq req) throws ApiException {
+        return agentService.addAgent(req);
+    }
+
+    @RequestMapping(value = "/removeAgent", method = RequestMethod.POST)
+    public @ResponseBody
+    ManagerRemoveAgentRes removeAgent(ManagerRemoveAgentReq req) throws ApiException {
+        return agentService.removeAgent(req);
     }
 }
