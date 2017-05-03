@@ -5,6 +5,7 @@ import com.vroong.lastmile.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ public class AgentController {
 
     @RequestMapping(value = "/findAgents", method = RequestMethod.POST)
     public @ResponseBody
-    ManagerFindAgentsRes findAgent(ManagerFindAgentsReq req) throws ApiException {
+    ManagerFindAgentsRes findAgent(@RequestBody ManagerFindAgentsReq req) throws ApiException {
         return agentService.findAgent(req);
     }
 
@@ -32,7 +33,19 @@ public class AgentController {
 
     @RequestMapping(value = "/updateAgent", method = RequestMethod.POST)
     public @ResponseBody
-    ManagerUpdateAgentRes updateAgent(ManagerUpdateAgentReq req) throws ApiException {
+    ManagerUpdateAgentRes updateAgent(@RequestBody ManagerUpdateAgentReq req) throws ApiException {
         return agentService.updateAgent(req);
+    }
+
+    @RequestMapping(value = "/addAgent", method = RequestMethod.POST)
+    public @ResponseBody
+    ManagerAddAgentRes addAgent(@RequestBody ManagerAddAgentReq req) throws ApiException {
+        return agentService.addAgent(req);
+    }
+
+    @RequestMapping(value = "/removeAgent", method = RequestMethod.POST)
+    public @ResponseBody
+    ManagerRemoveAgentRes removeAgent(ManagerRemoveAgentReq req) throws ApiException {
+        return agentService.removeAgent(req);
     }
 }

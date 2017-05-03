@@ -4,6 +4,7 @@ import com.vroong.lastmile.api.LastmileManagerPartnerApi;
 import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +32,11 @@ public class AgentService {
         return lastmileManagerPartnerApi.updateAgentUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
+    public ManagerAddAgentRes addAgent(ManagerAddAgentReq req) throws ApiException {
+        return lastmileManagerPartnerApi.addAgentUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerRemoveAgentRes removeAgent(ManagerRemoveAgentReq req) throws ApiException {
+        return lastmileManagerPartnerApi.removeAgentUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
 }
