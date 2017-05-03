@@ -67,6 +67,8 @@ dependencies {
 	compile "com.mysema.querydsl:querydsl-jpa:${mysemaQuerydslVersion}"
 	compile "com.mysema.querydsl:querydsl-apt:${mysemaQuerydslVersion}:jpa"
 
+	compile "org.modelmapper:modelmapper:${modelMapperVersion}"
+
 	compile("org.springframework.ldap:spring-ldap-core")
 	compile("org.springframework.security:spring-security-ldap")
 
