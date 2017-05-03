@@ -1,19 +1,16 @@
 package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.model.*;
-import io.swagger.annotations.ApiParam;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 /**
  * Created by chaelee on 2017. 3. 10..
  */
-@Controller
+@RestController
 @RequestMapping(value = "/intra/v1")
 public class StoreController {
     @Autowired
@@ -78,11 +75,6 @@ public class StoreController {
         return storeService.checkStoreUserExists(req);
     }
 
-    @RequestMapping(value = "/businessClients/{id}/files", method = RequestMethod.POST)
-    public @ResponseBody BusinessClient updateBusinessClientFiles(@PathVariable Integer id, @RequestPart MultipartFile[] files) throws Exception {
-        return storeService.updateBusinessClientFiles(id, files);
-    }
-
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
     public @ResponseBody Store getStore(@PathVariable Integer id) throws Exception {
         return storeService.getStore(id.toString());
@@ -92,4 +84,5 @@ public class StoreController {
     public @ResponseBody Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
         return storeService.updateStore(id.toString(), store);
     }
+
 }
