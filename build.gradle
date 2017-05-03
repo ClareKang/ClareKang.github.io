@@ -15,11 +15,6 @@ buildscript { scriptHandler ->
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-configurations.all {
-	resolutionStrategy.cacheDynamicVersionsFor 10, 'seconds' // 10초
-	resolutionStrategy.cacheChangingModulesFor 10, 'seconds' // 10초
-}
-
 sourceSets {
 	main {
 		java {
@@ -94,5 +89,5 @@ clean.doLast {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '3.4.1'
+	gradleVersion = "${gradleWrapperVersion}"
 }
