@@ -3,7 +3,6 @@ package net.meshkorea.mcp.api.controller.business;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Created by chaelee on 2017. 3. 10..
  */
-@Controller
+@RestController
 @RequestMapping(value = "/intra/v1")
 public class StoreController {
     @Autowired
@@ -85,4 +84,5 @@ public class StoreController {
     public @ResponseBody Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
         return storeService.updateStore(id.toString(), store);
     }
+
 }
