@@ -55,6 +55,8 @@ dependencies {
 	compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
 	compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
 
+	compile "org.apache.httpcomponents:fluent-hc:${apacheHttpcomponentsVersion}"
+
 	// Swagger
 	compile "io.springfox:springfox-swagger2:${springfoxVersion}"
 	compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"

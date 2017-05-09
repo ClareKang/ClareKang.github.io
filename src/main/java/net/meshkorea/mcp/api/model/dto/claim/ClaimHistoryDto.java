@@ -1,9 +1,9 @@
-package net.meshkorea.mcp.api.dto.claim;
+package net.meshkorea.mcp.api.model.dto.claim;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.meshkorea.mcp.api.dto.ModelMapper;
-import net.meshkorea.mcp.api.entity.claim.ClaimHistory;
+import net.meshkorea.mcp.api.model.dto.ModelMapper;
+import net.meshkorea.mcp.api.model.entity.claim.ClaimHistory;
 
 import java.util.Date;
 

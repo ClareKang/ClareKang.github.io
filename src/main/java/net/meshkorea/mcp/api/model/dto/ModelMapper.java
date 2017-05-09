@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.dto;
+package net.meshkorea.mcp.api.model.dto;
 
 /**
  * Created by reverof on 2017. 4. 13..

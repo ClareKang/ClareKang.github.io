@@ -8,6 +8,7 @@ ext {
     gradleWrapperVersion = '3.5'
     springBootVersion = '1.5.3.RELEASE'
     springfoxVersion = '2.6.1'
+    apacheHttpcomponentsVersion = '4.5.3'
     mysemaQuerydslVersion = '3.7.4'
     modelMapperVersion = '0.7.8'
     javaJwtVersion = '3.1.0'

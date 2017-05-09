@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.entity.claim;
+package net.meshkorea.mcp.api.model.entity.claim;
 
 import lombok.Data;
 

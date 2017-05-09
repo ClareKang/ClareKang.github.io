@@ -1,7 +1,7 @@
 package net.meshkorea.mcp.api.service;
 
-import net.meshkorea.mcp.api.dto.claim.ClaimDto;
-import net.meshkorea.mcp.api.entity.claim.Claim;
+import net.meshkorea.mcp.api.model.dto.claim.ClaimDto;
+import net.meshkorea.mcp.api.model.entity.claim.Claim;
 import net.meshkorea.mcp.api.service.claim.ClaimService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

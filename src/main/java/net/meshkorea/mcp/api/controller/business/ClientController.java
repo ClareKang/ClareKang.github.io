@@ -41,12 +41,12 @@ public class ClientController {
         );
     }
 
-    @GetMapping(value = "/list")
+    @GetMapping("/list")
     public List<BusinessClientShort> getBusinessClientList(String clientType) throws Exception {
         return clientService.getBusinessClientList(clientType);
     }
 
-    @GetMapping(value = "/{clientId}")
+    @GetMapping("/{clientId}")
     public BusinessClient getBusinessClient(@PathVariable Integer clientId) throws Exception {
         return clientService.getBusinessClient(clientId);
     }
@@ -56,22 +56,22 @@ public class ClientController {
         return clientService.createBusinessClient(businessClient);
     }
 
-    @PutMapping(value = "/{clientId}")
+    @PutMapping("/{clientId}")
     public BusinessClient updateBusinessClient(@PathVariable Integer clientId, @RequestBody BusinessClientRequest businessClient) throws Exception {
         return clientService.updateBusinessClient(clientId, businessClient);
     }
 
-    @PostMapping(value = "/{clientId}/admin_memo")
+    @PostMapping("/{clientId}/admin_memo")
     public BusinessClient addAdminMemo(@PathVariable Integer clientId, AdminMemoRequest adminMemoRequest) throws Exception {
         return clientService.addAdminMemo(clientId, adminMemoRequest);
     }
 
-    @GetMapping(value = "/{clientId}/api_key")
+    @GetMapping("/{clientId}/api_key")
     public ApiKey getApiKey(@PathVariable Integer clientId) throws Exception {
         return clientService.getApiKey(clientId);
     }
 
-    @PostMapping(value = "/{clientId}/api_key")
+    @PostMapping("/{clientId}/api_key")
     public ApiKey createApiKey(@PathVariable Integer clientId) throws Exception {
         return clientService.createApiKey(clientId);
     }
@@ -81,7 +81,7 @@ public class ClientController {
         return clientService.getFile(source, fileName);
     }
 
-    @PostMapping(value = "/{id}/files")
+    @PostMapping("/{id}/files")
     public @ResponseBody BusinessClient updateBusinessClientFiles(@PathVariable Integer id, @RequestPart MultipartFile[] files) throws Exception {
         return clientService.updateBusinessClientFiles(id, files);
     }

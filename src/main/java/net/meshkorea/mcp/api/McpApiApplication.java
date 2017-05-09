@@ -26,7 +26,8 @@ import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfigurati
 		McpApiApplication.class
 }, scanBasePackages = {
 		"com.vroong",
-		"com.meshprime"
+		"com.meshprime",
+		"com.sk"
 })
 public class McpApiApplication {
 

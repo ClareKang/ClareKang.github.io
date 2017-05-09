@@ -1,10 +1,10 @@
 package net.meshkorea.mcp.api.service.claim;
 
-import net.meshkorea.mcp.api.dto.claim.ClaimDto;
-import net.meshkorea.mcp.api.entity.claim.Claim;
-import net.meshkorea.mcp.api.entity.claim.ClaimHistory;
-import net.meshkorea.mcp.api.repository.ClaimHistoryRepository;
-import net.meshkorea.mcp.api.repository.ClaimRepository;
+import net.meshkorea.mcp.api.model.dto.claim.ClaimDto;
+import net.meshkorea.mcp.api.model.entity.claim.Claim;
+import net.meshkorea.mcp.api.model.entity.claim.ClaimHistory;
+import net.meshkorea.mcp.api.model.repository.ClaimHistoryRepository;
+import net.meshkorea.mcp.api.model.repository.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
