@@ -32,4 +32,16 @@ public class RegionsService {
         return intraAddressesApi.listSiGunGu(intraTokenService.getAuthToken(), sido, sigungu);
     }
 
+    public ExtraFeeAddressList getLegalDongList(String sido, String sigungu, String keyword) throws ApiException {
+        return intraAddressesApi.listLegalDong(intraTokenService.getAuthToken(), sido, sigungu, keyword);
+    }
+
+    public ExtraFeeAddressList getAdminDongList(String sido, String sigungu, String keyword) throws ApiException {
+        return intraAddressesApi.listAdminDong(intraTokenService.getAuthToken(), sido, sigungu, keyword);
+    }
+
+    public ExtraFeeAddressList getAddressList(String sido, String sigungu, String keyword, String page, String size) throws ApiException {
+        return intraAddressesApi.listAddress(intraTokenService.getAuthToken(), sido, sigungu, keyword, page, size);
+    }
+
 }

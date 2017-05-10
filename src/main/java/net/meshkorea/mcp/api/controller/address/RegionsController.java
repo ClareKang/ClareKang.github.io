@@ -31,7 +31,6 @@ public class RegionsController {
     public ExtraFeeAddressList getSiGunGus(
                                             String si_do,
                                             String si_gun_gu) throws ApiException{
-        System.out.println(si_do);
         return regionsService.getSiGunGuList(si_do,  si_gun_gu);
     }
 
@@ -40,7 +39,7 @@ public class RegionsController {
                                              @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
                                              @RequestParam(value = "keyword", required = false) String keyword) throws ApiException{
         logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
-        return null;
+        return regionsService.getLegalDongList(si_do, si_gun_gu, keyword);
     }
 
     @RequestMapping(value = "/admin_dongs", method = RequestMethod.GET)
@@ -48,7 +47,7 @@ public class RegionsController {
                                              @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
                                              @RequestParam(value = "keyword", required = false) String keyword) throws ApiException{
         logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
-        return null;
+        return regionsService.getAdminDongList(si_do, si_gun_gu, keyword);
     }
 
     @RequestMapping(value = "/road_names", method = RequestMethod.GET)
@@ -63,10 +62,11 @@ public class RegionsController {
     public ExtraFeeAddressList getAddresses(@RequestParam(value = "si_do", required = false) String si_do,
                                             @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
                                             @RequestParam(value = "keyword", required = false) String keyword,
-                                            @RequestParam(value = "size", required = false) Integer size,
-                                            @RequestParam(value = "page", required = false) Integer page) throws ApiException{
-        logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
-        return null;
+                                            @RequestParam(value = "page", required = false) String page,
+                                            @RequestParam(value = "size", required = false) String size
+                                            ) throws ApiException{
+        logger.info("page : {}, size : {}",  page, size);
+        return regionsService.getAddressList(si_do, si_gun_gu, keyword, page, size);
     }
 
 }
