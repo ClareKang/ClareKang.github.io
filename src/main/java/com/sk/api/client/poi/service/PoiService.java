@@ -2,7 +2,10 @@ package com.sk.api.client.poi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.api.client.poi.model.dto.PoiResultDto;
+import com.sk.api.client.poi.model.dto.SearchPoiInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicHeader;
@@ -57,13 +60,38 @@ public class PoiService {
         return new BasicHeader("appKey", appKey);
     }
 
+    private PoiResultDto getErrorResult() {
+        SearchPoiInfo searchPoiInfo = new SearchPoiInfo();
+        searchPoiInfo.setTotalCount("0");
+        searchPoiInfo.setCount("0");
+        searchPoiInfo.setPage("1");
+
+        PoiResultDto poiResultDto = new PoiResultDto();
+        poiResultDto.setSearchPoiInfo(searchPoiInfo);
+
+        return poiResultDto;
+    }
+
     public PoiResultDto getAddress(String searchKeyword) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(Request.Get(makeUri(searchKeyword))
-                .setHeader(getHeader())
-                .execute()
-                .returnContent()
-                .asString(), PoiResultDto.class);
+        Content poiResult = Request.Get(makeUri(searchKeyword))
+            .setHeader(getHeader())
+            .execute()
+            .returnContent();
+
+        String poiJson = StringUtils.EMPTY;
+        if (poiResult == null) {
+            return getErrorResult();
+        }
+        else {
+            poiJson = poiResult.asString();
+
+            if (StringUtils.contains(poiJson, "error")) {
+                return getErrorResult();
+            }
+        }
+
+        return objectMapper.readValue(poiJson, PoiResultDto.class);
     }
 
 }
