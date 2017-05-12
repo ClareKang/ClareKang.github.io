@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.service.business;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
 import com.meshprime.intra.api.IntraDeliveriesApi;
@@ -99,5 +100,10 @@ public class StoreService {
 
     public Store updateStore(String id, Store store) throws Exception {
         return intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store);
+    }
+
+    public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
+                                          String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException{
+        return intraStoresApi.getStoreList(intraTokenService.getAuthToken(), storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 }

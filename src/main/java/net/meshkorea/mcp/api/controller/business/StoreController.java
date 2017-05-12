@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.business;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,14 @@ public class StoreController {
         return storeService.listStores(storeType, storeCertificationStatus,
             storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
             storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
+    }
+
+    @RequestMapping(value = "/stores/list", method = RequestMethod.GET)
+    public @ResponseBody List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
+                                           String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
+                                         ) throws ApiException{
+        System.out.println(storeType + ", " + storeName + ", " + clientName + ", " + storePhone + ", " + storeAddress + ", " + tag + ", " + storeManagementDepartmentId + ", " + vroongMonitoringPartnerId);
+        return storeService.getStoreList(storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 
     @RequestMapping(value = "/stores/monitoring_partners", method = RequestMethod.GET)
