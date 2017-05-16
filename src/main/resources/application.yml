@@ -5,7 +5,7 @@ spring:
 sk:
   openApi:
     poi:
-      appKey: a1a329d4-9f90-33c9-a257-6ba6487575b9
+      appKey: 10b3e011-6d49-3ea5-bab3-f5e264bd78fd
       url: https://apis.skplanetx.com/tmap/pois
       version: 1
       resCoordType: WGS84GEO
