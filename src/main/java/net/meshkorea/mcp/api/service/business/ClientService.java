@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by reverof on 2017. 4. 17..
@@ -102,28 +103,27 @@ public class ClientService {
                 .body(resource);
     }
 
-    public BusinessClient updateBusinessClientFiles(Integer clientId, MultipartFile[] files) throws Exception {
+    public BusinessClient updateBusinessClientFiles(Integer clientId,
+                                                    Optional<MultipartFile> enterpriseRegistrationCopy,
+                                                    Optional<MultipartFile> bankAccountCopy,
+                                                    Optional<MultipartFile> ceoIdCardCopy) throws Exception {
 
-        File enterpriseRegistrationCopy = null;
-        File bankAccountCopy = null;
-        File ceoIdCardCopy = null;
+        File enterpriseRegistrationCopyFile = null;
+        File bankAccountCopyFile = null;
+        File ceoIdCardCopyFile = null;
 
-        if (files.length > 0) {
-            for (MultipartFile file : files) {
-                if (BusinessClientUploadFileType.ENTERPRISE_REGISTRATION_COPY.isEquals(file.getName())) {
-                    enterpriseRegistrationCopy = storageService.multipartToFile(file);
-                }
-                if (BusinessClientUploadFileType.BANK_ACCOUNT_COPY.isEquals(file.getName())) {
-                    bankAccountCopy = storageService.multipartToFile(file);
-                }
-                if (BusinessClientUploadFileType.CEO_ID_CARD_COPY.isEquals(file.getName())) {
-                    ceoIdCardCopy = storageService.multipartToFile(file);
-                }
-            }
+        if (enterpriseRegistrationCopy.isPresent()) {
+            enterpriseRegistrationCopyFile = storageService.multipartToFile(enterpriseRegistrationCopy.get());
+        }
+        if (bankAccountCopy.isPresent()) {
+            bankAccountCopyFile = storageService.multipartToFile(bankAccountCopy.get());
+        }
+        if (ceoIdCardCopy.isPresent()) {
+            ceoIdCardCopyFile = storageService.multipartToFile(ceoIdCardCopy.get());
         }
 
-        return intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(), clientId,
-                enterpriseRegistrationCopy, bankAccountCopy, ceoIdCardCopy);
+        return intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
+            clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
     }
 
 }

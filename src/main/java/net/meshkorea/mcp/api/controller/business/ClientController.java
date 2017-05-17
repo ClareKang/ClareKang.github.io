@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by chaelee on 2017. 3. 10..
@@ -82,8 +83,14 @@ public class ClientController {
     }
 
     @PostMapping("/{id}/files")
-    public @ResponseBody BusinessClient updateBusinessClientFiles(@PathVariable Integer id, @RequestPart MultipartFile[] files) throws Exception {
-        return clientService.updateBusinessClientFiles(id, files);
+    public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
+                                                    @RequestPart("enterpriseRegistrationCopy") Optional<MultipartFile> enterpriseRegistrationCopy,
+                                                    @RequestPart("bankAccountCopy") Optional<MultipartFile> bankAccountCopy,
+                                                    @RequestPart("ceoIdCardCopy") Optional<MultipartFile> ceoIdCardCopy) throws Exception {
+        return clientService.updateBusinessClientFiles(id,
+            enterpriseRegistrationCopy,
+            bankAccountCopy,
+            ceoIdCardCopy);
     }
 
 }
