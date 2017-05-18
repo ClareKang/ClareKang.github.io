@@ -3,7 +3,6 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
-import net.meshkorea.mcp.api.codes.BusinessClientUploadFileType;
 import net.meshkorea.mcp.api.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -25,7 +24,7 @@ import java.util.Optional;
  */
 @Service
 @DependsOn({
-        "fileSystemStorageService"
+    "fileSystemStorageService"
 })
 public class ClientService {
 
@@ -47,15 +46,15 @@ public class ClientService {
                                                           Integer page,
                                                           Integer size) throws Exception {
         return intraBusinessClientsApi.listBusinessClients(
-                intraTokenService.getAuthToken(),
-                clientType,
-                clientName,
-                clientAddress,
-                enterpriseName,
-                enterpriseNumber,
-                enterprisePhone,
-                page,
-                size
+            intraTokenService.getAuthToken(),
+            clientType,
+            clientName,
+            clientAddress,
+            enterpriseName,
+            enterpriseNumber,
+            enterprisePhone,
+            page,
+            size
         );
     }
 
@@ -97,10 +96,10 @@ public class ClientService {
         httpHeaders.add("Content-Description", "attachment; filename=" + fileName);
 
         return ResponseEntity.ok()
-                .headers(httpHeaders)
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
+            .headers(httpHeaders)
+            .contentLength(file.length())
+            .contentType(MediaType.parseMediaType("application/octet-stream"))
+            .body(resource);
     }
 
     public BusinessClient updateBusinessClientFiles(Integer clientId,
@@ -113,17 +112,29 @@ public class ClientService {
         File ceoIdCardCopyFile = null;
 
         if (enterpriseRegistrationCopy.isPresent()) {
-            enterpriseRegistrationCopyFile = storageService.multipartToFile(enterpriseRegistrationCopy.get());
+            enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy.get()).toFile();
         }
         if (bankAccountCopy.isPresent()) {
-            bankAccountCopyFile = storageService.multipartToFile(bankAccountCopy.get());
+            bankAccountCopyFile = storageService.store(bankAccountCopy.get()).toFile();
         }
         if (ceoIdCardCopy.isPresent()) {
-            ceoIdCardCopyFile = storageService.multipartToFile(ceoIdCardCopy.get());
+            ceoIdCardCopyFile = storageService.store(ceoIdCardCopy.get()).toFile();
         }
 
-        return intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
+        BusinessClient result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
             clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
+
+        if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
+            enterpriseRegistrationCopyFile.delete();
+        }
+        if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
+            bankAccountCopyFile.delete();
+        }
+        if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
+            ceoIdCardCopyFile.delete();
+        }
+
+        return result;
     }
 
 }
