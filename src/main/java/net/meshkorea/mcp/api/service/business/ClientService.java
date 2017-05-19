@@ -140,39 +140,39 @@ public class ClientService {
     /**
      * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
      */
-//    public BusinessClient updateBusinessClientFiles(Integer clientId,
-//                                                    MultipartFile enterpriseRegistrationCopy,
-//                                                    MultipartFile bankAccountCopy,
-//                                                    MultipartFile ceoIdCardCopy) throws Exception {
-//
-//        File enterpriseRegistrationCopyFile = null;
-//        File bankAccountCopyFile = null;
-//        File ceoIdCardCopyFile = null;
-//
-//        if (enterpriseRegistrationCopy != null) {
-//            enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy).toFile();
-//        }
-//        if (bankAccountCopy != null) {
-//            bankAccountCopyFile = storageService.store(bankAccountCopy).toFile();
-//        }
-//        if (ceoIdCardCopy != null) {
-//            ceoIdCardCopyFile = storageService.store(ceoIdCardCopy).toFile();
-//        }
-//
-//        BusinessClient result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
-//            clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
-//
-//        if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
-//            enterpriseRegistrationCopyFile.delete();
-//        }
-//        if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
-//            bankAccountCopyFile.delete();
-//        }
-//        if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
-//            ceoIdCardCopyFile.delete();
-//        }
-//
-//        return result;
-//    }
+    public BusinessClient updateBusinessClientFiles(Integer clientId,
+                                                    MultipartFile enterpriseRegistrationCopy,
+                                                    MultipartFile bankAccountCopy,
+                                                    MultipartFile ceoIdCardCopy) throws Exception {
+
+        File enterpriseRegistrationCopyFile = null;
+        File bankAccountCopyFile = null;
+        File ceoIdCardCopyFile = null;
+
+        if (enterpriseRegistrationCopy != null) {
+            enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy).toFile();
+        }
+        if (bankAccountCopy != null) {
+            bankAccountCopyFile = storageService.store(bankAccountCopy).toFile();
+        }
+        if (ceoIdCardCopy != null) {
+            ceoIdCardCopyFile = storageService.store(ceoIdCardCopy).toFile();
+        }
+
+        BusinessClient result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
+            clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
+
+        if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
+            enterpriseRegistrationCopyFile.delete();
+        }
+        if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
+            bankAccountCopyFile.delete();
+        }
+        if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
+            ceoIdCardCopyFile.delete();
+        }
+
+        return result;
+    }
 
 }

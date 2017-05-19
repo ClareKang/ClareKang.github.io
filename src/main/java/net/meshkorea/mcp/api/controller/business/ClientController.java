@@ -15,12 +15,26 @@ import java.util.Optional;
  * Created by chaelee on 2017. 3. 10..
  */
 @RestController
-@RequestMapping(value = "/intra/v1/businessClients")
+@RequestMapping(value = "/v1/intra/businessClients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
+    /**
+     * 목록 (상세정보 포함)
+     *
+     * @param clientType
+     * @param clientName
+     * @param clientAddress
+     * @param enterpriseName
+     * @param enterpriseNumber
+     * @param enterprisePhone
+     * @param page
+     * @param size
+     * @return
+     * @throws Exception
+     */
     @GetMapping
     public ListBusinessClientResponse listBusinessClients(String clientType,
                                                           String clientName,
@@ -42,6 +56,13 @@ public class ClientController {
         );
     }
 
+    /**
+     * 목록 (simple)
+     *
+     * @param clientType
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/list")
     public List<BusinessClientShort> getBusinessClientList(String clientType) throws Exception {
         return clientService.getBusinessClientList(clientType);
@@ -96,15 +117,15 @@ public class ClientController {
     /**
      * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
      */
-//    @PostMapping("/{id}/files")
-//    public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
-//                                                    @RequestPart("enterpriseRegistrationCopy") MultipartFile enterpriseRegistrationCopy,
-//                                                    @RequestPart("bankAccountCopy") MultipartFile bankAccountCopy,
-//                                                    @RequestPart("ceoIdCardCopy") MultipartFile ceoIdCardCopy) throws Exception {
-//        return clientService.updateBusinessClientFiles(id,
-//            enterpriseRegistrationCopy,
-//            bankAccountCopy,
-//            ceoIdCardCopy);
-//    }
+    // @PostMapping("/{id}/files")
+    public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
+                                                    @RequestPart("enterpriseRegistrationCopy") MultipartFile enterpriseRegistrationCopy,
+                                                    @RequestPart("bankAccountCopy") MultipartFile bankAccountCopy,
+                                                    @RequestPart("ceoIdCardCopy") MultipartFile ceoIdCardCopy) throws Exception {
+        return clientService.updateBusinessClientFiles(id,
+            enterpriseRegistrationCopy,
+            bankAccountCopy,
+            ceoIdCardCopy);
+    }
 
 }

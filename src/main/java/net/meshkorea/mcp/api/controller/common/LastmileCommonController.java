@@ -1,33 +1,33 @@
 package net.meshkorea.mcp.api.controller.common;
 
 import com.vroong.lastmile.api.client.ApiException;
-import com.vroong.lastmile.api.client.model.*;
+import com.vroong.lastmile.api.client.model.ManagerCheckUsernameReq;
+import com.vroong.lastmile.api.client.model.ManagerCheckUsernameRes;
+import com.vroong.lastmile.api.client.model.ManagerGetBanksRes;
 import net.meshkorea.mcp.api.service.common.LastmileCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by chaelee on 2017. 3. 10..
  */
-@Controller
-@RequestMapping(value = "/lastmile")
+@RestController
+@RequestMapping(value = "/v1/lastmile")
 public class LastmileCommonController {
 
     @Autowired
     LastmileCommonService lastmileCommonService;
 
-    @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
-    public @ResponseBody
-    ManagerCheckUsernameRes checkUsername(ManagerCheckUsernameReq req) throws ApiException {
+    @PostMapping(value = "/checkUsername")
+    public ManagerCheckUsernameRes checkUsername(ManagerCheckUsernameReq req) throws ApiException {
         return lastmileCommonService.checkUsername(req);
     }
 
-    @RequestMapping(value = "/getBanks", method = RequestMethod.GET)
-    public @ResponseBody
-    ManagerGetBanksRes getBanks() throws ApiException {
+    @GetMapping(value = "/getBanks")
+    public ManagerGetBanksRes getBanks() throws ApiException {
         return lastmileCommonService.getBanks();
     }
 }

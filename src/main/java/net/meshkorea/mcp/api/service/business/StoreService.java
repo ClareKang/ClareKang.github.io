@@ -3,8 +3,6 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
-import com.meshprime.intra.api.IntraDeliveriesApi;
-import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +23,7 @@ public class StoreService {
     IntraStoresApi intraStoresApi;
 
     @Autowired
-    IntraDeliveriesApi intraDeliveriesApi;
-
-    @Autowired
     IntraBusinessClientsApi intraBusinessClientsApi;
-
-    @Autowired
-    IntraRegionsApi intraRegionsApi;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -62,22 +54,6 @@ public class StoreService {
         return intraStoresApi.salesDepartments(intraTokenService.getAuthToken());
     }
 
-    public List<Bank> getBanks() throws Exception {
-        return intraStoresApi.listBanks(intraTokenService.getAuthToken());
-    }
-
-    public List<Regions> listSiDo() throws Exception {
-        return intraRegionsApi.listRegionsSiDo(intraTokenService.getAuthToken());
-    }
-
-    public List<Regions> listSiGunGU(Integer parentCode, String siDo) throws Exception {
-        return intraRegionsApi.listSiGunGuByCode(intraTokenService.getAuthToken(), parentCode, siDo);
-    }
-
-    public List<Regions> listEupMyeonDongRi(Integer parentCode, String siDo, String siGunGu, Boolean onlyAdminDong, Boolean onlyLegalDong) throws Exception {
-        return intraRegionsApi.listEupMyeonDongByCode(intraTokenService.getAuthToken(), parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
-    }
-
     public Store createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
         return intraStoresApi.createIndividualStore(intraTokenService.getAuthToken(), req);
     }
@@ -103,7 +79,7 @@ public class StoreService {
     }
 
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
-                                          String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException{
+                                        String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException {
         return intraStoresApi.getStoreList(intraTokenService.getAuthToken(), storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by sungjae.hong on 2017. 5. 4..
  */
 @RestController
-@RequestMapping(value = "/regions")
+@RequestMapping(value = "/v1/intra/regions")
 public class RegionsController {
 
     @Autowired
@@ -29,15 +29,15 @@ public class RegionsController {
 
     @GetMapping("/si_gun_gus")
     public ExtraFeeAddressList getSiGunGus(
-                                            String si_do,
-                                            String si_gun_gu) throws ApiException{
-        return regionsService.getSiGunGuList(si_do,  si_gun_gu);
+        String si_do,
+        String si_gun_gu) throws ApiException {
+        return regionsService.getSiGunGuList(si_do, si_gun_gu);
     }
 
     @RequestMapping(value = "/legal_dongs", method = RequestMethod.GET)
     public ExtraFeeAddressList getLegalDongs(@RequestParam(value = "si_do", required = false) String si_do,
                                              @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
-                                             @RequestParam(value = "keyword", required = false) String keyword) throws ApiException{
+                                             @RequestParam(value = "keyword", required = false) String keyword) throws ApiException {
         logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
         return regionsService.getLegalDongList(si_do, si_gun_gu, keyword);
     }
@@ -45,7 +45,7 @@ public class RegionsController {
     @RequestMapping(value = "/admin_dongs", method = RequestMethod.GET)
     public ExtraFeeAddressList getAdminDongs(@RequestParam(value = "si_do", required = false) String si_do,
                                              @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
-                                             @RequestParam(value = "keyword", required = false) String keyword) throws ApiException{
+                                             @RequestParam(value = "keyword", required = false) String keyword) throws ApiException {
         logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
         return regionsService.getAdminDongList(si_do, si_gun_gu, keyword);
     }
@@ -53,7 +53,7 @@ public class RegionsController {
     @RequestMapping(value = "/road_names", method = RequestMethod.GET)
     public ExtraFeeAddressList getRoadNames(@RequestParam(value = "si_do", required = false) String si_do,
                                             @RequestParam(value = "si_gun_gu", required = false) String si_gun_gu,
-                                            @RequestParam(value = "keyword", required = false) String keyword) throws ApiException{
+                                            @RequestParam(value = "keyword", required = false) String keyword) throws ApiException {
         logger.info("si_do : {}, si_gun_gu : {}, keyword: {}", si_do, si_gun_gu, keyword);
         return null;
     }
@@ -64,8 +64,8 @@ public class RegionsController {
                                             @RequestParam(value = "keyword", required = false) String keyword,
                                             @RequestParam(value = "page", required = false) String page,
                                             @RequestParam(value = "size", required = false) String size
-                                            ) throws ApiException{
-        logger.info("page : {}, size : {}",  page, size);
+    ) throws ApiException {
+        logger.info("page : {}, size : {}", page, size);
         return regionsService.getAddressList(si_do, si_gun_gu, keyword, page, size);
     }
 

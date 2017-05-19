@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by sungjae.hong on 2017. 4. 24..
  */
 @RestController
-@RequestMapping(value = "/fee")
+@RequestMapping(value = "/v1/intra/fee")
 public class ExtraFeeController {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
@@ -22,13 +22,13 @@ public class ExtraFeeController {
     ExtraFeeService extraFeeService;
 
     @RequestMapping(value = "/extraFees", method = RequestMethod.GET)
-    public ExtraFeeResponse findExtraFees(@RequestParam(value = "keyword", required = false,  defaultValue = "") String keyword,
-                                          @RequestParam(value = "page", required = false,  defaultValue = "1") Integer page) throws ApiException{
+    public ExtraFeeResponse findExtraFees(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                          @RequestParam(value = "page", required = false, defaultValue = "1") Integer page) throws ApiException {
         return extraFeeService.findExtraFees(keyword, page);
     }
 
     @RequestMapping(value = "/extraFees/{id}", method = RequestMethod.GET)
-    public ExtraFee findExtraFeeById(@PathVariable int id) throws ApiException{
+    public ExtraFee findExtraFeeById(@PathVariable int id) throws ApiException {
         return extraFeeService.findExtraFeeById(id);
     }
 }

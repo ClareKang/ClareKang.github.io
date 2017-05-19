@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by reverof on 2017. 3. 24..
  */
 @RestController
-@RequestMapping(value = "/claim")
+@RequestMapping(value = "/v1/claim")
 public class ClaimController {
 
     @Autowired

@@ -12,20 +12,19 @@ import java.util.List;
  * Created by chaelee on 2017. 3. 10..
  */
 @RestController
-@RequestMapping(value = "/intra/v1")
+@RequestMapping(value = "/v1/intra")
 public class StoreController {
+
     @Autowired
     StoreService storeService;
 
     @RequestMapping(value = "/store_management_departments/list", method = RequestMethod.GET)
-    public @ResponseBody
-    List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
+    public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return storeService.getStoreManagementDepartmentList();
     }
 
     @RequestMapping(value = "/stores", method = RequestMethod.GET)
-    public @ResponseBody
-    StoresResult listStores(String storeType, String storeCertificationStatus, String storeOperatingStatus,
+    public StoresResult listStores(String storeType, String storeCertificationStatus, String storeOperatingStatus,
                             String storeName, String clientName, String storePhone, String storeAddress,
                             String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
                             Integer size, Integer page) throws Exception {
@@ -35,7 +34,7 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/list", method = RequestMethod.GET)
-    public @ResponseBody List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
+    public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
                                            String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
                                          ) throws ApiException{
         System.out.println(storeType + ", " + storeName + ", " + clientName + ", " + storePhone + ", " + storeAddress + ", " + tag + ", " + storeManagementDepartmentId + ", " + vroongMonitoringPartnerId);
@@ -43,24 +42,17 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/monitoring_partners", method = RequestMethod.GET)
-    public @ResponseBody
-    List<MonitoringPartner> listPartners() throws Exception {
+    public List<MonitoringPartner> listPartners() throws Exception {
         return storeService.listPartners();
     }
 
-    @RequestMapping(value = "/stores/business_clients/list", method = RequestMethod.GET)
-    public @ResponseBody
-    List<BusinessClientShort> getBusinessClientList(String clientType) throws Exception {
-        return storeService.getBusinessClientList(clientType);
-    }
-
     @RequestMapping(value = "/stores/vroong_service_pricing_types", method = RequestMethod.GET)
-    public @ResponseBody List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
+    public List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
         return storeService.listVroongServicePricingTypes();
     }
 
     @RequestMapping(value = "/stores/sales_departments", method = RequestMethod.GET)
-    public @ResponseBody List<StoreSalesDepartment> getSalesDeparments() throws Exception {
+    public List<StoreSalesDepartment> getSalesDeparments() throws Exception {
         return storeService.getSalesDepartments();
     }
 
@@ -70,27 +62,27 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
-    public @ResponseBody Store createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
+    public Store createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
         return storeService.createFranchiseIndividualStore(req);
     }
 
     @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
-    public @ResponseBody Store createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
+    public Store createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
         return storeService.createFranchiseCorporateStore(req);
     }
 
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
-    public @ResponseBody Boolean checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
+    public Boolean checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
         return storeService.checkStoreUserExists(req);
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
-    public @ResponseBody Store getStore(@PathVariable Integer id) throws Exception {
+    public Store getStore(@PathVariable Integer id) throws Exception {
         return storeService.getStore(id.toString());
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.PUT)
-    public @ResponseBody Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
+    public Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
         return storeService.updateStore(id.toString(), store);
     }
 

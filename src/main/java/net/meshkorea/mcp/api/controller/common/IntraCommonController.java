@@ -2,7 +2,7 @@ package net.meshkorea.mcp.api.controller.common;
 
 import com.meshprime.api.client.model.Bank;
 import com.meshprime.api.client.model.Regions;
-import net.meshkorea.mcp.api.service.business.StoreService;
+import net.meshkorea.mcp.api.service.common.IntraCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,29 +14,29 @@ import java.util.List;
  * Created by jypark on 2017. 4. 6..
  */
 @RestController
-@RequestMapping(value = "/intra/v1")
+@RequestMapping(value = "/v1/intra")
 public class IntraCommonController {
 
     @Autowired
-    StoreService storeService;
+    IntraCommonService intraCommonService;
 
-    @GetMapping(value = "/stores/banks")
+    @GetMapping("/banks")
     public List<Bank> getBanks() throws Exception {
-        return storeService.getBanks();
+        return intraCommonService.getBanks();
     }
 
-    @GetMapping(value = "/regions/si_do")
+    @GetMapping("/regions/si_do")
     public List<Regions> listSido() throws Exception {
-        return storeService.listSiDo();
+        return intraCommonService.listSiDo();
     }
 
-    @GetMapping(value = "/regions/si_gun_gu")
+    @GetMapping("/regions/si_gun_gu")
     public List<Regions> listSiGunGu(Integer parentCode, String siDo) throws Exception {
-        return storeService.listSiGunGU(parentCode, siDo);
+        return intraCommonService.listSiGunGU(parentCode, siDo);
     }
 
-    @GetMapping(value = "/regions/eup_myeon_dong_ri")
+    @GetMapping("/regions/eup_myeon_dong_ri")
     public List<Regions> listEupMyeonDong(Integer parentCode, String siDo, String siGunGu, Boolean onlyAdminDong, Boolean onlyLegalDong) throws Exception {
-        return storeService.listEupMyeonDongRi(parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
+        return intraCommonService.listEupMyeonDongRi(parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
     }
 }
