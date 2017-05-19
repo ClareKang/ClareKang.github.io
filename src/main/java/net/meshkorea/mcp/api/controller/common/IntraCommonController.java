@@ -25,4 +25,18 @@ public class IntraCommonController {
         return intraCommonService.getBanks();
     }
 
+    @GetMapping("/regions/si_do")
+    public List<Regions> listSido() throws Exception {
+        return intraCommonService.listSiDo();
+    }
+
+    @GetMapping("/regions/si_gun_gu")
+    public List<Regions> listSiGunGu(Integer parentCode, String siDo) throws Exception {
+        return intraCommonService.listSiGunGU(parentCode, siDo);
+    }
+
+    @GetMapping("/regions/eup_myeon_dong_ri")
+    public List<Regions> listEupMyeonDong(Integer parentCode, String siDo, String siGunGu, Boolean onlyAdminDong, Boolean onlyLegalDong) throws Exception {
+        return intraCommonService.listEupMyeonDongRi(parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
+    }
 }
