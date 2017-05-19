@@ -31,14 +31,14 @@ public class ClientController {
                                                           Integer page,
                                                           Integer size) throws Exception {
         return clientService.listBusinessClients(
-                clientType,
-                clientName,
-                clientAddress,
-                enterpriseName,
-                enterpriseNumber,
-                enterprisePhone,
-                page,
-                size
+            clientType,
+            clientName,
+            clientAddress,
+            enterpriseName,
+            enterpriseNumber,
+            enterprisePhone,
+            page,
+            size
         );
     }
 
@@ -92,5 +92,19 @@ public class ClientController {
             bankAccountCopy,
             ceoIdCardCopy);
     }
+
+    /**
+     * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
+     */
+//    @PostMapping("/{id}/files")
+//    public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
+//                                                    @RequestPart("enterpriseRegistrationCopy") MultipartFile enterpriseRegistrationCopy,
+//                                                    @RequestPart("bankAccountCopy") MultipartFile bankAccountCopy,
+//                                                    @RequestPart("ceoIdCardCopy") MultipartFile ceoIdCardCopy) throws Exception {
+//        return clientService.updateBusinessClientFiles(id,
+//            enterpriseRegistrationCopy,
+//            bankAccountCopy,
+//            ceoIdCardCopy);
+//    }
 
 }
