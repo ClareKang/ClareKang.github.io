@@ -29,6 +29,14 @@ public class ExtraFeeService {
     }
 
     public ExtraFee findExtraFeeById(int id) throws ApiException{
-        return intraExtraFeesApi.getExtraFee(intraTokenService.getAuthToken(), id);
+        ExtraFee extraFee = new ExtraFee();
+        extraFee = intraExtraFeesApi.getExtraFee(intraTokenService.getAuthToken(), id);
+        logger.info(extraFee.toString());
+        return extraFee;
+    }
+
+    public void clearTargetStore(int id) throws ApiException{
+        System.out.println("id :" + id);
+        intraExtraFeesApi.clearTargetStores(intraTokenService.getAuthToken(), id);
     }
 }

@@ -31,4 +31,11 @@ public class ExtraFeeController {
     public ExtraFee findExtraFeeById(@PathVariable int id) throws ApiException {
         return extraFeeService.findExtraFeeById(id);
     }
+
+    @PutMapping(value = "/{id}/clear_target")
+    public void clearTargetStore(@PathVariable int id) throws ApiException{
+        extraFeeService.clearTargetStore(id);
+    }
+
+
 }
