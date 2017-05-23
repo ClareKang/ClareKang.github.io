@@ -1,9 +1,11 @@
 package net.meshkorea.mcp.api.service.business;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import net.meshkorea.mcp.api.storage.StorageService;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.InputStreamResource;
@@ -79,7 +81,16 @@ public class ClientService {
     }
 
     public ApiKey getApiKey(Integer clientId) throws Exception {
-        return intraBusinessClientsApi.getBusinessClientApiKey(intraTokenService.getAuthToken(), clientId);
+        try {
+            return intraBusinessClientsApi.getBusinessClientApiKey(intraTokenService.getAuthToken(), clientId);
+        } catch (ApiException e) {
+            if (e.getCode() == HttpStatus.SC_NOT_FOUND) {
+                return new ApiKey();
+            }
+            else {
+                throw e;
+            }
+        }
     }
 
     public ApiKey createApiKey(Integer clientId) throws Exception {
