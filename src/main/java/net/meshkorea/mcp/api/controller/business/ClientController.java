@@ -79,7 +79,7 @@ public class ClientController {
     }
 
     @PutMapping("/{clientId}")
-    public BusinessClient updateBusinessClient(@PathVariable Integer clientId, @RequestBody BusinessClientRequest businessClient) throws Exception {
+    public BusinessClient updateBusinessClient(@PathVariable Integer clientId, @RequestBody BusinessClient businessClient) throws Exception {
         return clientService.updateBusinessClient(clientId, businessClient);
     }
 

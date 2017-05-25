@@ -72,7 +72,7 @@ public class ClientService {
         return intraBusinessClientsApi.createBusinessClient(intraTokenService.getAuthToken(), businessClient);
     }
 
-    public BusinessClient updateBusinessClient(Integer clientId, BusinessClientRequest businessClientRequest) throws Exception {
+    public BusinessClient updateBusinessClient(Integer clientId, BusinessClient businessClientRequest) throws Exception {
         return intraBusinessClientsApi.updateBusinessClient(intraTokenService.getAuthToken(), clientId, businessClientRequest);
     }
 
@@ -86,8 +86,7 @@ public class ClientService {
         } catch (ApiException e) {
             if (e.getCode() == HttpStatus.SC_NOT_FOUND) {
                 return new ApiKey();
-            }
-            else {
+            } else {
                 throw e;
             }
         }
