@@ -4,7 +4,6 @@ import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.ExtraFee;
 import com.meshprime.api.client.model.ExtraFeeRequest;
 import com.meshprime.api.client.model.ExtraFeeResponse;
-import net.meshkorea.mcp.api.model.dto.claim.TestDto;
 import net.meshkorea.mcp.api.service.fee.ExtraFeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +34,12 @@ public class ExtraFeeController {
     }
 
     @PutMapping(value = "/{id}/clear_target")
-    public ExtraFee clearTargetStore(@PathVariable int id) throws ApiException{
+    public ExtraFee clearTargetStore(@PathVariable int id) throws ApiException {
         return extraFeeService.clearTargetStore(id);
     }
 
     @PostMapping(value = "/extraFees")
-    public ExtraFee createExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest) throws ApiException{
+    public ExtraFee createExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest) throws ApiException {
         System.out.println(extraFeeRequest);
         //return new ExtraFee();
         return extraFeeService.createExtraFee(extraFeeRequest);
@@ -52,8 +51,6 @@ public class ExtraFeeController {
         //return new ExtraFee();
         return extraFeeService.updateExtraFee(extraFeeRequest, id);
     }
-
-
 
 
 }
