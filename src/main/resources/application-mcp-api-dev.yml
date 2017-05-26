@@ -3,6 +3,10 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  security:
+    ldap:
+      baseUrl: ldap://10.5.1.251:389/
+      baseDn: dc=meshcorp,dc=com
 
 vroong:
   lastmile:
@@ -17,8 +21,8 @@ vroong:
     api:
       baseUrl: http://admin.vroong.com:5000
       authUrl: /oauth/token
-      userId: mesh.platform
-      password: pA9GfROKVfRth39a
+      userId: kjlee
+      password: ehfsk3YIJs553QZm
       request:
         userAgent: MeshControlPlatformApi/java
 

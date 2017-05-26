@@ -53,12 +53,5 @@ public class ExtraFeeController {
         return extraFeeService.updateExtraFee(extraFeeRequest, id);
     }
 
-    @PostMapping(value = "/test")
-    public TestDto testDto(@RequestBody TestDto testDto){
-        TestDto testDto1 = new TestDto();
-        testDto1 = testDto;
-        return testDto1;
-    }
-
 
 }
