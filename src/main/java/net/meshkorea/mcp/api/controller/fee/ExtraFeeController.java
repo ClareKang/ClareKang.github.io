@@ -2,7 +2,9 @@ package net.meshkorea.mcp.api.controller.fee;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.ExtraFee;
+import com.meshprime.api.client.model.ExtraFeeRequest;
 import com.meshprime.api.client.model.ExtraFeeResponse;
+import net.meshkorea.mcp.api.model.dto.claim.TestDto;
 import net.meshkorea.mcp.api.service.fee.ExtraFeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +35,29 @@ public class ExtraFeeController {
     }
 
     @PutMapping(value = "/{id}/clear_target")
-    public void clearTargetStore(@PathVariable int id) throws ApiException{
-        extraFeeService.clearTargetStore(id);
+    public ExtraFee clearTargetStore(@PathVariable int id) throws ApiException{
+        return extraFeeService.clearTargetStore(id);
+    }
+
+    @PostMapping(value = "/extraFees")
+    public ExtraFee createExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest) throws ApiException{
+        System.out.println(extraFeeRequest);
+        //return new ExtraFee();
+        return extraFeeService.createExtraFee(extraFeeRequest);
+    }
+
+    @PutMapping(value = "/extraFees/{id}")
+    public ExtraFee updateExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest, @PathVariable int id) throws ApiException {
+        System.out.println(extraFeeRequest);
+        //return new ExtraFee();
+        return extraFeeService.updateExtraFee(extraFeeRequest, id);
+    }
+
+    @PostMapping(value = "/test")
+    public TestDto testDto(@RequestBody TestDto testDto){
+        TestDto testDto1 = new TestDto();
+        testDto1 = testDto;
+        return testDto1;
     }
 
 

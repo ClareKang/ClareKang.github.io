@@ -2,6 +2,7 @@ package net.meshkorea.mcp.api.service.fee;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.ExtraFee;
+import com.meshprime.api.client.model.ExtraFeeRequest;
 import com.meshprime.api.client.model.ExtraFeeResponse;
 import com.meshprime.intra.api.IntraExtraFeesApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
@@ -35,8 +36,16 @@ public class ExtraFeeService {
         return extraFee;
     }
 
-    public void clearTargetStore(int id) throws ApiException{
+    public ExtraFee clearTargetStore(int id) throws ApiException{
         System.out.println("id :" + id);
-        intraExtraFeesApi.clearTargetStores(intraTokenService.getAuthToken(), id);
+        return intraExtraFeesApi.clearTargetStores(intraTokenService.getAuthToken(), id);
+    }
+
+    public ExtraFee createExtraFee(ExtraFeeRequest extraFeeRequest) throws ApiException{
+        return intraExtraFeesApi.createExtraFee(intraTokenService.getAuthToken(), extraFeeRequest);
+    }
+
+    public ExtraFee updateExtraFee(ExtraFeeRequest extraFeeRequest, int id) throws ApiException {
+        return intraExtraFeesApi.updateExtraFee(intraTokenService.getAuthToken(), id, extraFeeRequest);
     }
 }
