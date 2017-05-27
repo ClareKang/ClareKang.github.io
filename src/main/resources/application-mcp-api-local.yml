@@ -1,0 +1,42 @@
+spring:
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  security:
+    ldap:
+      baseUrl: ldap://10.5.1.251:389/
+      baseDn: dc=meshcorp,dc=com
+
+vroong:
+  lastmile:
+    api:
+      baseUrl: https://demo.api-v2.vroong.com
+      authUrl: /oauth/token
+      userId: mesh.platform
+      password: pA9GfROKVfRth39a
+      request:
+        userAgent: MeshControlPlatformApi/java
+  admin:
+    api:
+      baseUrl: http://admin.vroong.com:5000
+      authUrl: /oauth/token
+      userId: kjlee
+      password: ehfsk3YIJs553QZm
+      request:
+        userAgent: MeshControlPlatformApi/java
+
+prime:
+  intra:
+    api:
+      baseUrl: http://intra-api-dev.meshprime.com
+      userId: chaeeun.lee@meshkorea.net
+      password: platform1234!
+      request:
+        userAgent: MeshControlPlatformApi/java
+
+time:
+  zone: Asia/Seoul
+
+storage:
+  location: /tmp
