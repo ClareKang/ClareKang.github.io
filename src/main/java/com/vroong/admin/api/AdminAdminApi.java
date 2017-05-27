@@ -1,7 +1,7 @@
 package com.vroong.admin.api;
 
 import com.vroong.admin.api.client.ApiClient;
-import com.vroong.admin.api.client.api.AdminscontrollerApi;
+import com.vroong.admin.api.client.api.AdminsControllerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @DependsOn({
-        "adminApiClient"
+    "adminApiClient"
 })
-public class AdminAdminApi extends AdminscontrollerApi {
+public class AdminAdminApi extends AdminsControllerApi {
     @Autowired
     public void setAdminApiClient(ApiClient adminApiClient) {
         setApiClient(adminApiClient);

@@ -1,7 +1,7 @@
 package com.vroong.lastmile.api;
 
 import com.vroong.lastmile.api.client.ApiClient;
-import com.vroong.lastmile.api.client.api.CommongcmcontrollerimplApi;
+import com.vroong.lastmile.api.client.api.CommonGcmControllerImplApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @DependsOn({
-        "lastmileApiClient"
+    "lastmileApiClient"
 })
-public class LastmileCommonGcmApi extends CommongcmcontrollerimplApi {
+public class LastmileCommonGcmApi extends CommonGcmControllerImplApi {
     @Autowired
     public void setLastmileApiClient(ApiClient lastmileApiClient) {
         setApiClient(lastmileApiClient);

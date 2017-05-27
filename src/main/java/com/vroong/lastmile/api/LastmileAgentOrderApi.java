@@ -1,7 +1,7 @@
 package com.vroong.lastmile.api;
 
 import com.vroong.lastmile.api.client.ApiClient;
-import com.vroong.lastmile.api.client.api.AgentordercontrollerimplApi;
+import com.vroong.lastmile.api.client.api.AgentOrderControllerImplApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @DependsOn({
-        "lastmileApiClient"
+    "lastmileApiClient"
 })
-public class LastmileAgentOrderApi extends AgentordercontrollerimplApi {
+public class LastmileAgentOrderApi extends AgentOrderControllerImplApi {
     @Autowired
     public void setLastmileApiClient(ApiClient lastmileApiClient) {
         setApiClient(lastmileApiClient);
