@@ -70,7 +70,7 @@ public class LiveService {
     }
 
     public ManagerGetOrderHistoryRes getOrderHistory(ManagerGetOrderHistoryReq req) throws ApiException {
-        return lastmileManagerOrderApi.getOrderDetailUsingPOST1(lastmileTokenService.getAuthToken(), req);
+        return lastmileManagerOrderApi.getOrderHistoryUsingPOST1(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerGetOrderPayHistoryRes getOrderPayHistoryAppendResult(ManagerGetOrderPayHistoryReq req) throws ApiException {
