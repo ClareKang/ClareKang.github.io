@@ -86,4 +86,25 @@ public class StoreController {
         return storeService.updateStore(id.toString(), store);
     }
 
+    @PutMapping(value = "/stores/{id}/pricingPolicy")
+    public UpdatePricingPolicyResponse updateStorePricingPolicy(@PathVariable Integer id,
+                                             @RequestBody PricingPolicy pricingPolicy) throws ApiException {
+        return storeService.updateStorePricingPolicy(id, pricingPolicy);
+    }
+
+    @GetMapping(value = "/stores/regions")
+    public List<Regions> getDetailRegions(String detail) throws ApiException {
+        return storeService.getDetailRegions(detail);
+    }
+
+    @PutMapping(value = "/stores/{id}/regions")
+    public List<Regions> updateStoreRegions(@PathVariable Integer id, @RequestBody UpdateStoreRegionsRequest req) throws ApiException {
+        return storeService.updateStoreRegions(id, req);
+    }
+
+    @PutMapping(value = "/stores/{id}/subscription/plan")
+    public SubscriptionPlan updateSubscriptionPlan(@PathVariable Integer id, @RequestBody SubscriptionPlan req) throws ApiException {
+        return storeService.updateSubscriptionPlan(id, req);
+    }
+
 }
