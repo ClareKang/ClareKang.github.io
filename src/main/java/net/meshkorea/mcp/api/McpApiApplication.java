@@ -22,9 +22,9 @@ import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfigurati
 		SecurityAutoConfiguration.class
 }, scanBasePackageClasses = {
 		CoreApplication.class,
-		CoreWebApplication.class,
-		McpApiApplication.class
+		CoreWebApplication.class
 }, scanBasePackages = {
+		"net.meshkorea.mcp",
 		"com.vroong",
 		"com.meshprime",
 		"com.sk"
