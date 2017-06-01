@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
+import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class StoreService {
 
     @Autowired
     IntraBusinessClientsApi intraBusinessClientsApi;
+
+    @Autowired
+    IntraRegionsApi intraRegionsApi;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -82,4 +86,23 @@ public class StoreService {
                                         String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException {
         return intraStoresApi.getStoreList(intraTokenService.getAuthToken(), storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
+
+    public UpdatePricingPolicyResponse updateStorePricingPolicy(Integer id, PricingPolicy pricingPolicy) throws ApiException {
+        return intraStoresApi.updateStorePricingPolicy(intraTokenService.getAuthToken(), id.toString(), pricingPolicy);
+        // return new PricingPolicy();
+    }
+
+    public List<Regions> getDetailRegions(String detail) throws ApiException {
+        return intraRegionsApi.listRegions(intraTokenService.getAuthToken(),"","", detail, 0, "0");
+    }
+
+    public List<Regions> updateStoreRegions(Integer id, UpdateStoreRegionsRequest req) throws ApiException {
+        return intraStoresApi.updateStoreRegions(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public SubscriptionPlan updateSubscriptionPlan(Integer id, SubscriptionPlan req) throws ApiException {
+        return intraStoresApi.updateSubscriptionsPlan(intraTokenService.getAuthToken(), id.toString(), req);
+    }
+
+
 }
