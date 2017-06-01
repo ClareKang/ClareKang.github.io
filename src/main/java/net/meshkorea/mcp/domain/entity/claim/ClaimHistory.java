@@ -1,9 +1,9 @@
-package net.meshkorea.mcp.api.model.entity.claim;
+package net.meshkorea.mcp.domain.entity.claim;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by reverof on 2017. 3. 17..
@@ -27,7 +27,7 @@ public class ClaimHistory {
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createDt;
+    private LocalDateTime createDt;
 
     @Column(name = "json_string")
     private String jsonString;
