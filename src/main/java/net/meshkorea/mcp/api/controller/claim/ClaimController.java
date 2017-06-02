@@ -1,6 +1,6 @@
 package net.meshkorea.mcp.api.controller.claim;
 
-import net.meshkorea.mcp.domain.model.claim.ClaimDto;
+import net.meshkorea.mcp.api.domain.model.claim.ClaimDto;
 import net.meshkorea.mcp.api.service.claim.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

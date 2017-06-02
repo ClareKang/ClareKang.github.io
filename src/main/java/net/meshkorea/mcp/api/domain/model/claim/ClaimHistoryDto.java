@@ -1,9 +1,8 @@
-package net.meshkorea.mcp.domain.model.claim;
+package net.meshkorea.mcp.api.domain.model.claim;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.meshkorea.mcp.domain.model.common.ModelMapper;
-import net.meshkorea.mcp.domain.entity.claim.ClaimHistory;
+import net.meshkorea.mcp.api.domain.entity.claim.ClaimHistory;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class ClaimHistoryDto implements ModelMapper<ClaimHistoryDto, ClaimHistory> {
+public class ClaimHistoryDto {
 
     private Long claimHistoryNo;
 

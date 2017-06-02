@@ -2,7 +2,6 @@ package net.meshkorea.mcp.api.config.data;
 
 import net.meshkorea.mcp.api.McpApiApplication;
 import net.meshkorea.platform.core.web.config.data.AbstractDbConfig;
-
 import net.meshkorea.platform.core.web.config.data.AuthDbProperties;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -16,7 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
-
 import javax.sql.DataSource;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,13 +27,13 @@ import java.util.Properties;
  */
 @Configuration
 @EnableJpaRepositories(
-        basePackageClasses = {McpApiApplication.class},
-        includeFilters = @ComponentScan.Filter(AuthDbConfig.AuthData.class),
-        entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FATORY_NAME)
+    basePackageClasses = {McpApiApplication.class},
+    includeFilters = @ComponentScan.Filter(AuthDbConfig.AuthData.class),
+    entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FATORY_NAME)
 @MapperScan(
-        basePackageClasses = {McpApiApplication.class},
-        annotationClass = AuthDbConfig.AuthData.class,
-        sqlSessionFactoryRef = AuthDbConfig.SQL_SESSION_FACTORY_NAME)
+    basePackageClasses = {McpApiApplication.class},
+    annotationClass = AuthDbConfig.AuthData.class,
+    sqlSessionFactoryRef = AuthDbConfig.SQL_SESSION_FACTORY_NAME)
 @EnableConfigurationProperties(AuthDbProperties.class)
 public class AuthDbConfig extends AbstractDbConfig {
 

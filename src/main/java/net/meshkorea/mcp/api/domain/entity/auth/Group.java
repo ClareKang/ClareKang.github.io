@@ -1,10 +1,9 @@
-package net.meshkorea.mcp.domain.entity.auth;
+package net.meshkorea.mcp.api.domain.entity.auth;
 
 import lombok.Data;
-import net.meshkorea.mcp.domain.entity.claim.Claim;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by reverof on 2017-06-02.
@@ -29,20 +28,20 @@ public class Group {
     private String hasPrivacy;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creator")
     private User creator;
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createDt;
+    private Date createDt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "updater")
     private User updater;
 
     @Column(name = "update_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private String updateDt;
+    private Date updateDt;
 
     @Column(name = "description")
     private String description;

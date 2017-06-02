@@ -1,9 +1,9 @@
-package net.meshkorea.mcp.domain.entity.claim;
+package net.meshkorea.mcp.api.domain.entity.claim;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,14 +51,14 @@ public class Claim {
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createDt;
+    private Date createDt;
 
     @Column(name = "updater")
     private String updater;
 
     @Column(name = "update_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updateDt;
+    private Date updateDt;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.REMOVE)
     private List<ClaimHistory> claimHistories;

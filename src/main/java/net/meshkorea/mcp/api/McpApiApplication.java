@@ -11,27 +11,38 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
+import org.springframework.context.ApplicationContext;
+
+import java.util.Arrays;
 
 @SpringBootApplication(exclude = {
-		DataSourceAutoConfiguration.class,
-		HibernateJpaAutoConfiguration.class,
-		MybatisAutoConfiguration.class,
-		DataSourceTransactionManagerAutoConfiguration.class,
-		TransactionAutoConfiguration.class,
-		JtaAutoConfiguration.class,
-		SecurityAutoConfiguration.class
+    DataSourceAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class,
+    MybatisAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class,
+    TransactionAutoConfiguration.class,
+    JtaAutoConfiguration.class,
+    SecurityAutoConfiguration.class
 }, scanBasePackageClasses = {
-		CoreApplication.class,
-		CoreWebApplication.class
+    CoreApplication.class,
+    CoreWebApplication.class,
+    McpApiApplication.class
 }, scanBasePackages = {
-		"net.meshkorea.mcp",
-		"com.vroong",
-		"com.meshprime",
-		"com.sk"
+    "com.vroong",
+    "com.meshprime",
+    "com.sk"
 })
 public class McpApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(McpApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        ApplicationContext ctx = SpringApplication.run(McpApiApplication.class, args);
+
+        System.out.println("Let's inspect the beans provided by Spring Boot:");
+
+        String[] beanNames = ctx.getBeanDefinitionNames();
+        Arrays.sort(beanNames);
+        for (String beanName : beanNames) {
+            System.out.println(beanName);
+        }
+    }
 }

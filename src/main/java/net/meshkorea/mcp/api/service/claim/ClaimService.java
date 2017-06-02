@@ -1,8 +1,8 @@
 package net.meshkorea.mcp.api.service.claim;
 
-import net.meshkorea.mcp.domain.model.claim.ClaimDto;
-import net.meshkorea.mcp.domain.entity.claim.Claim;
-import net.meshkorea.mcp.domain.repository.ClaimRepository;
+import net.meshkorea.mcp.api.domain.entity.claim.Claim;
+import net.meshkorea.mcp.api.domain.model.claim.ClaimDto;
+import net.meshkorea.mcp.api.domain.repository.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

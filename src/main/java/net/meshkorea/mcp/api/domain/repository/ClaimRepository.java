@@ -1,7 +1,7 @@
-package net.meshkorea.mcp.domain.repository;
+package net.meshkorea.mcp.api.domain.repository;
 
 import net.meshkorea.mcp.api.config.data.MasterDbConfig;
-import net.meshkorea.mcp.domain.entity.claim.Claim;
+import net.meshkorea.mcp.api.domain.entity.claim.Claim;
 import net.meshkorea.platform.core.web.repository.JpaSpecificationRepository;
 
 /**

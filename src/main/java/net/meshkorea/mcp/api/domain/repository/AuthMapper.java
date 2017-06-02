@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.domain.repository;
+package net.meshkorea.mcp.api.domain.repository;
 
 import net.meshkorea.mcp.api.config.data.AuthDbConfig;
 

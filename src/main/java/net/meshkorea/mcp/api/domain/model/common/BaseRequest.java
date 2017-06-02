@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.domain.model.common;
+package net.meshkorea.mcp.api.domain.model.common;
 
 /**
  * Created by reverof on 2017. 6. 1..

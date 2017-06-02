@@ -1,9 +1,9 @@
-package net.meshkorea.mcp.domain.entity.auth;
+package net.meshkorea.mcp.api.domain.entity.auth;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by reverof on 2017. 6. 1..
@@ -39,14 +39,14 @@ public class User {
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createDt;
+    private Date createDt;
 
     @Column(name = "updater")
     private String updater;
 
     @Column(name = "update_dt")
     @Temporal(TemporalType.TIMESTAMP)
-    private String updateDt;
+    private Date updateDt;
 
     @Column(name = "description")
     private String description;

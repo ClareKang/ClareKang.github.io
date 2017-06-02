@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.domain.model.common;
+package net.meshkorea.mcp.api.domain.model.common;
 
 import org.springframework.http.HttpStatus;
 

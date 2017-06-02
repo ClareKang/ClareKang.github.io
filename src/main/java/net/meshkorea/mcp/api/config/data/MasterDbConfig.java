@@ -25,44 +25,44 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(
-		basePackageClasses = { McpApiApplication.class },
-		includeFilters = @ComponentScan.Filter(MasterDbConfig.MasterData.class),
-		entityManagerFactoryRef = MasterDbConfig.ENTITY_MANAGER_FATORY_NAME)
+    basePackageClasses = {McpApiApplication.class},
+    includeFilters = @ComponentScan.Filter(MasterDbConfig.MasterData.class),
+    entityManagerFactoryRef = MasterDbConfig.ENTITY_MANAGER_FATORY_NAME)
 @MapperScan(
-		basePackageClasses = { McpApiApplication.class },
-		annotationClass = MasterDbConfig.MasterData.class,
-		sqlSessionFactoryRef = MasterDbConfig.SQL_SESSION_FACTORY_NAME)
+    basePackageClasses = {McpApiApplication.class},
+    annotationClass = MasterDbConfig.MasterData.class,
+    sqlSessionFactoryRef = MasterDbConfig.SQL_SESSION_FACTORY_NAME)
 @EnableConfigurationProperties(MasterDbProperties.class)
 public class MasterDbConfig extends AbstractDbConfig {
 
-	public static final String DATA_SOURCE_NAME = "masterDataSource";
-	public static final String ENTITY_MANAGER_FATORY_NAME = "masterEntityManagerFactory";
-	public static final String SQL_SESSION_FACTORY_NAME = "masterSessionFactory";
+    public static final String DATA_SOURCE_NAME = "masterDataSource";
+    public static final String ENTITY_MANAGER_FATORY_NAME = "masterEntityManagerFactory";
+    public static final String SQL_SESSION_FACTORY_NAME = "masterSessionFactory";
 
-	@Autowired
-	private MasterDbProperties masterDbProperties;
+    @Autowired
+    private MasterDbProperties masterDbProperties;
 
-	@Override
-	@Primary
-	@Bean(DATA_SOURCE_NAME)
-	public DataSource getDataSource() {
-		return masterDbProperties.toAtomikosNonXADataSourceBean();
-	}
+    @Override
+    @Primary
+    @Bean(DATA_SOURCE_NAME)
+    public DataSource getDataSource() {
+        return masterDbProperties.toAtomikosNonXADataSourceBean();
+    }
 
-	@Bean(ENTITY_MANAGER_FATORY_NAME)
-	@Primary
-	public LocalContainerEntityManagerFactoryBean getEntityManagerFactory(JpaVendorAdapter jpaVendorAdapter, Properties jpaProperties) {
-		return super.getEntityManagerFactory(jpaVendorAdapter, jpaProperties, McpApiApplication.class.getPackage().getName());
-	}
+    @Bean(ENTITY_MANAGER_FATORY_NAME)
+    @Primary
+    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory(JpaVendorAdapter jpaVendorAdapter, Properties jpaProperties) {
+        return super.getEntityManagerFactory(jpaVendorAdapter, jpaProperties, McpApiApplication.class.getPackage().getName());
+    }
 
-	@Bean(SQL_SESSION_FACTORY_NAME)
-	@Primary
-	public SqlSessionFactoryBean getSqlSessionFactoryBean(ApplicationContext applicationContext) throws Exception {
-		return super.getSqlSessionFactoryBean(applicationContext);
-	}
+    @Bean(SQL_SESSION_FACTORY_NAME)
+    @Primary
+    public SqlSessionFactoryBean getSqlSessionFactoryBean(ApplicationContext applicationContext) throws Exception {
+        return super.getSqlSessionFactoryBean(applicationContext);
+    }
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.TYPE)
-	public static @interface MasterData {
-	}
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public static @interface MasterData {
+    }
 }
