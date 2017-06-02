@@ -2,35 +2,35 @@ package net.meshkorea.mcp.api.controller.monitoring;
 
 import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.Api;
+import net.meshkorea.mcp.api.service.monitoring.LiveService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by chaelee on 2017. 3. 10..
  */
 @RestController
-@RequestMapping("/v1/lastmile")
+@RequestMapping("/v1/lastmile/live")
 public class LiveController {
 
-    @RequestMapping(value = "/assignAgent", method = RequestMethod.POST)
-    public @ResponseBody
-    ManagerAssignAgentRes assignAgent(ManagerAssignAgentReq req) throws ApiException {
-        return new ManagerAssignAgentRes();
+    @Autowired
+    LiveService liveService;
+
+    @RequestMapping(value= "/assignAgent", method = RequestMethod.POST)
+    public ManagerAssignAgentRes assignAgent(@RequestBody ManagerAssignAgentReq req) throws ApiException {
+        return liveService.assignAgent(req);
     }
 
-    @RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
-    public @ResponseBody
-    ManagerCancelOrderRes cancelOrder(ManagerCancelOrderReq req) throws ApiException {
-        return new ManagerCancelOrderRes();
+    @RequestMapping(value= "/findOrders", method = RequestMethod.POST)
+    public ManagerFindOrdersRes findOrders(@RequestBody ManagerFindOrdersReq req) throws ApiException {
+        System.out.println(req);
+        return liveService.findOrders(req);
     }
 
-    @RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
-    public @ResponseBody
-    ManagerChangeStatusRes changeStatus(ManagerChangeStatusReq req) throws ApiException {
-        return new ManagerChangeStatusRes();
+    @RequestMapping(value= "/getOrderDetail", method = RequestMethod.POST)
+    public ManagerGetOrderDetailRes getOrderDetail(ManagerGetOrderDetailReq req) throws ApiException {
+        return liveService.getOrderDetail(req);
     }
-
 
 }
