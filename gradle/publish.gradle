@@ -2,9 +2,9 @@ publishing {
     repositories {
         maven {
             if ('SNAPSHOT'.equals(deployRepo)) {
-                url "http://10.5.1.251:8081/repository/maven-snapshots"
+                url "http://10.5.5.30:8081/repository/maven-snapshots"
             } else if ('RELAESES'.equals(deployRepo)) {
-                url "http://10.5.1.251:8081/repository/maven-releases"
+                url "http://10.5.5.30:8081/repository/maven-releases"
             }
             credentials {
                 username 'deploy'

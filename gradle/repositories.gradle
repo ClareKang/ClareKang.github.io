@@ -3,5 +3,5 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "https://plugins.gradle.org/m2/" }
-    maven { url "http://10.5.1.251:8081/repository/maven-public/" }
+    maven { url "http://10.5.5.30:8081/repository/maven-public/" }
 }
