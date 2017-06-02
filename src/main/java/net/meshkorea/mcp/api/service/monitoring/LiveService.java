@@ -58,7 +58,7 @@ public class LiveService {
     }
 
     public ManagerFindOrdersRes findOrders(ManagerFindOrdersReq req) throws ApiException {
-        return lastmileManagerOrderApi.findOrdersU singPOST(lastmileTokenService.getAuthToken(), req);
+        return lastmileManagerOrderApi.findOrdersUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
     public ManagerGetBaseChargeRes getBaseChargeUsing(ManagerGetBaseChargeReq req) throws ApiException {
