@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by reverof on 2017-06-02.
@@ -45,4 +46,10 @@ public class Group {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_group_relation",
+        joinColumns = @JoinColumn(name = "group_no"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 }

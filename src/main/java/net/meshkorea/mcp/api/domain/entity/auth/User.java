@@ -56,6 +56,9 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_group_relation",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "group_no"))
     private List<Group> groups;
 }
