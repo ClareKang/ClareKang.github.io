@@ -23,11 +23,7 @@ public class OffsetDateTimeSerializer extends JsonSerializer<OffsetDateTime> {
         try {
             result = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(value);
         } catch (DateTimeException e) {
-            try {
-                result = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(value);
-            } catch (DateTimeException ee) {
-                result = DateTimeFormatter.ISO_INSTANT.format(value);
-            }
+            result = DateTimeFormatter.ISO_INSTANT.format(value);
         }
         gen.writeString(result);
     }

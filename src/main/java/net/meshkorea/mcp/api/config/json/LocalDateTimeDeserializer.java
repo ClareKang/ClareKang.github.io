@@ -19,13 +19,9 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
     @Override
     public LocalDateTime deserialize(JsonParser jsonparser, DeserializationContext context) throws IOException, NullPointerException, DateTimeParseException {
         try {
-            return LocalDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_INSTANT);
+            return LocalDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         } catch (DateTimeParseException e) {
-            try {
-                return LocalDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            } catch (DateTimeParseException ee) {
-                return LocalDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            }
+            return LocalDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_INSTANT);
         }
     }
 }

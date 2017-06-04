@@ -21,13 +21,9 @@ public class OffsetDateTimeDeserializer extends JsonDeserializer<OffsetDateTime>
     @Override
     public OffsetDateTime deserialize(JsonParser jsonparser, DeserializationContext context) throws IOException, NullPointerException, DateTimeParseException {
         try {
-            return OffsetDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_INSTANT);
+            return OffsetDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         } catch (DateTimeParseException e) {
-            try {
-                return OffsetDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            } catch (DateTimeParseException ee) {
-                return OffsetDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            }
+            return OffsetDateTime.parse(jsonparser.getText(), DateTimeFormatter.ISO_INSTANT);
         }
     }
 }
