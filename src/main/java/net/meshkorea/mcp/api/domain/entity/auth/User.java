@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by reverof on 2017. 6. 1..
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 public class User {
+
     @Id
     @Column(name = "user_id")
     private String userId;
@@ -53,4 +55,7 @@ public class User {
 
     @Column(name = "memo")
     private String memo;
+
+    @ManyToMany
+    private List<Group> groups;
 }
