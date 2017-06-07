@@ -58,15 +58,15 @@ public class StoreService {
         return intraStoresApi.salesDepartments(intraTokenService.getAuthToken());
     }
 
-    public CreateIndividualStoreRequest createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
+    public StoreResponse createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
         return intraStoresApi.createIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
-    public CreateFranchiseIndividualStoreRequest createFranchiseIndividualStore(CreateFranchiseIndividualStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseIndividualStore(CreateFranchiseIndividualStoreRequest req) throws Exception {
         return intraStoresApi.createFranchiseIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
-    public CreateFranchiseCorporateStoreRequest createFranchiseCorporateStore(CreateFranchiseCorporateStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseCorporateStore(CreateFranchiseCorporateStoreRequest req) throws Exception {
         return intraStoresApi.createFranchiseCorporateStore(intraTokenService.getAuthToken(), req);
     }
 

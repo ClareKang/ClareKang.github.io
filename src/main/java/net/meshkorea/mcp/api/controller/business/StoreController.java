@@ -58,23 +58,23 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/individual", method = RequestMethod.POST)
-    public CreateIndividualStoreRequest createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
+    public StoreResponse createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
         System.out.println(req);
         return storeService.createIndividualStore(req);
     }
 
     @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
-    public CreateFranchiseIndividualStoreRequest createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
         System.out.println(req);
-        //return storeService.createFranchiseIndividualStore(req);
-        return new CreateFranchiseIndividualStoreRequest();
+        return storeService.createFranchiseIndividualStore(req);
+        //return new CreateFranchiseIndividualStoreRequest();
     }
 
     @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
-    public CreateFranchiseCorporateStoreRequest createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
         System.out.println(req);
-        //return storeService.createFranchiseCorporateStore(req);
-        return new CreateFranchiseCorporateStoreRequest();
+        return storeService.createFranchiseCorporateStore(req);
+        //return new CreateFranchiseCorporateStoreRequest();
     }
 
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
