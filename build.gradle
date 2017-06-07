@@ -8,12 +8,16 @@ buildscript { scriptHandler ->
 	apply from: rootProject.file('gradle/dependencies.gradle')
 	apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
 	dependencies {
+		classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
 	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
+
+def queryDslOutput = file("${projectDir}/src/main/generated")
+def queryDslTestOutput = file("${projectDir}/src/test/generated")
 
 sourceSets {
 	main {
@@ -23,16 +27,13 @@ sourceSets {
 	}
 	generated {
 		java {
-			srcDir file("${projectDir}/src/main/java/generated")
+			srcDir queryDslOutput
 		}
 	}
 }
 
-idea {
-	module {
-		sourceDirs += file("${projectDir}/src/main/java/generated")
-		testSourceDirs += file("${projectDir}/src/test/generated")
-	}
+querydsl {
+	querydslSourcesDir = queryDslOutput
 }
 
 jar {
@@ -48,6 +49,10 @@ bootRun {
 	addResources = true
 }
 
+springBoot {
+	mainClass = "net.meshkorea.mcp.api.McpApiApplication"
+}
+
 dependencies {
 	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
@@ -61,8 +66,10 @@ dependencies {
 	compile "io.springfox:springfox-swagger2:${springfoxVersion}"
 	compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
 
-	compile "com.mysema.querydsl:querydsl-jpa:${mysemaQuerydslVersion}"
-	compile "com.mysema.querydsl:querydsl-apt:${mysemaQuerydslVersion}:jpa"
+	// querydsl
+	compile "com.querydsl:querydsl-core:${querydslVersion}"
+	compile "com.querydsl:querydsl-apt:${querydslVersion}"
+	compile "com.querydsl:querydsl-jpa:${querydslVersion}"
 
 	compile "org.modelmapper:modelmapper:${modelMapperVersion}"
 
@@ -77,17 +84,33 @@ dependencies {
 	testCompile "org.springframework.security:spring-security-test"
 }
 
-compileJava {
-	options.compilerArgs << "-s"
-	options.compilerArgs << "${projectDir}/src/main/java/generated"
-
+task generateQueryDSL(type: JavaCompile, group: 'build') {
 	doFirst {
-		file("${projectDir}/src/main/java/generated").mkdirs()
+		if (!queryDslOutput.exists()) {
+			logger.info("Creating `$queryDslOutput` directory")
+
+			if (!queryDslOutput.mkdirs()) {
+				throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+			}
+		}
 	}
+
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	options.compilerArgs = [
+		"-proc:only",
+		"-processor",
+		"com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = queryDslOutput
 }
 
+compileJava.dependsOn(generateQueryDSL)
+compileTestJava.dependsOn(generateQueryDSL)
+
 clean.doLast {
-	file("${projectDir}/src/main/java/generated").deleteDir()
+	queryDslOutput.deleteDir()
+	queryDslTestOutput.deleteDir()
 }
 
 task wrapper(type: Wrapper) {
