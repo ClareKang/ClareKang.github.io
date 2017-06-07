@@ -1,6 +1,8 @@
 package net.meshkorea.mcp.api.service.common;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.Bank;
+import com.meshprime.api.client.model.Latlng;
 import com.meshprime.api.client.model.Regions;
 import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApi;
@@ -39,6 +41,10 @@ public class IntraCommonService {
 
     public List<Regions> listEupMyeonDongRi(Integer parentCode, String siDo, String siGunGu, Boolean onlyAdminDong, Boolean onlyLegalDong) throws Exception {
         return intraRegionsApi.listEupMyeonDongByCode(intraTokenService.getAuthToken(), parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
+    }
+
+    public Latlng getGeocode(String address) throws ApiException {
+        return intraRegionsApi.getGeocode(intraTokenService.getAuthToken(), address);
     }
 
 }

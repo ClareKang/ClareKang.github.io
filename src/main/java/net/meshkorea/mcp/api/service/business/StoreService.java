@@ -58,15 +58,15 @@ public class StoreService {
         return intraStoresApi.salesDepartments(intraTokenService.getAuthToken());
     }
 
-    public Store createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
+    public CreateIndividualStoreRequest createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
         return intraStoresApi.createIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
-    public Store createFranchiseIndividualStore(CreateFranchiseIndividualStoreRequest req) throws Exception {
+    public CreateFranchiseIndividualStoreRequest createFranchiseIndividualStore(CreateFranchiseIndividualStoreRequest req) throws Exception {
         return intraStoresApi.createFranchiseIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
-    public Store createFranchiseCorporateStore(CreateFranchiseCorporateStoreRequest req) throws Exception {
+    public CreateFranchiseCorporateStoreRequest createFranchiseCorporateStore(CreateFranchiseCorporateStoreRequest req) throws Exception {
         return intraStoresApi.createFranchiseCorporateStore(intraTokenService.getAuthToken(), req);
     }
 
@@ -78,7 +78,7 @@ public class StoreService {
         return intraStoresApi.getStore(intraTokenService.getAuthToken(), id);
     }
 
-    public Store updateStore(String id, Store store) throws Exception {
+    public StoreRequest updateStore(String id, StoreRequest store) throws Exception {
         return intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store);
     }
 
@@ -100,8 +100,33 @@ public class StoreService {
         return intraStoresApi.updateStoreRegions(intraTokenService.getAuthToken(), id, req);
     }
 
-    public SubscriptionPlan updateSubscriptionPlan(Integer id, SubscriptionPlan req) throws ApiException {
-        return intraStoresApi.updateSubscriptionsPlan(intraTokenService.getAuthToken(), id.toString(), req);
+    public SubscriptionPlan updateSubscriptionPlan(String id, SubscriptionPlan req) throws ApiException {
+        return intraStoresApi.updateSubscriptionsPlan(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public Store updateAdminMemo(String id, AdminMemoRequest req) throws ApiException {
+        return intraStoresApi.addStoreAdminMemo(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public BranchCodesResponse createBranchCode(String id, CreateApiBranchCodeRequest req) throws ApiException {
+        return intraStoresApi.createStoreBranchCode(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public BranchCodesResponse getBranchCode(String id) throws ApiException {
+        return intraStoresApi.getStoreBranchCode(intraTokenService.getAuthToken(), id);
+    }
+
+    public Store updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {
+        return intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public Store updateStoreOperatingStatus(String id, ChangeStoreOperatingStatusRequest req) throws ApiException {
+        return intraStoresApi.changeStoreOperatingStatus(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public Store addSubscriptionAdminMemo(String id, SubscriptionAdminMemo req) throws ApiException {
+        System.out.println(id + ", "  + req.toString());
+        return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 
 
