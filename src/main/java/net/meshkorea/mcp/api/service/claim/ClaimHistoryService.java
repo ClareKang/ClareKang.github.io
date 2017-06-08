@@ -1,8 +1,8 @@
 package net.meshkorea.mcp.api.service.claim;
 
-import net.meshkorea.mcp.api.domain.model.claim.ClaimDto;
 import net.meshkorea.mcp.api.domain.entity.claim.Claim;
 import net.meshkorea.mcp.api.domain.entity.claim.ClaimHistory;
+import net.meshkorea.mcp.api.domain.model.claim.ClaimDto;
 import net.meshkorea.mcp.api.domain.repository.ClaimHistoryRepository;
 import net.meshkorea.mcp.api.domain.repository.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class ClaimHistoryService {
 
     @Autowired
-    private ClaimRepository claimHistory;
+    private ClaimRepository claimRepository;
 
     @Autowired
     private ClaimHistoryRepository claimHistoryRepository;

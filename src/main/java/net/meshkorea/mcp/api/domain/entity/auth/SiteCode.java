@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.entity.auth;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,5 @@ public class SiteCode {
     private String siteName;
 
     @OneToMany(mappedBy = "siteCode")
-    private List<Authority> authorities;
-
+    private List<Authority> authorities = new ArrayList<>();
 }

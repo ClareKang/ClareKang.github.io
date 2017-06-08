@@ -1,19 +1,37 @@
 package net.meshkorea.mcp.api.controller.auth;
 
-import org.springframework.web.bind.annotation.RestController;
+import net.meshkorea.mcp.api.domain.model.auth.SearchUserDto;
+import net.meshkorea.mcp.api.service.auth.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by reverof on 2017. 5. 31..
  */
 @RestController
+@RequestMapping(value = "/v1/auth")
 public class AuthController {
 
-    public void getUserList() {
+    @Autowired
+    AuthService authService;
 
+    @GetMapping("/users")
+    public ResponseEntity<?> getUsers(@RequestParam(required = false) SearchUserDto searchUserDto,
+                                      @PageableDefault(sort = {"createDt"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(
+            authService.getUsers(searchUserDto, pageable)
+        );
     }
 
-    public void getUser(String id) {
-
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<?> getUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(
+            authService.getUser(userId)
+        );
     }
 
     public void getAuthorities(String token) {

@@ -1,7 +1,7 @@
 package net.meshkorea.mcp.api.config.data;
 
 import net.meshkorea.mcp.api.McpApiApplication;
-import net.meshkorea.platform.core.web.config.data.AbstractDbConfig;
+import net.meshkorea.platform.core.web.config.data.AuthDbConfig;
 import net.meshkorea.platform.core.web.config.data.AuthDbProperties;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -16,10 +16,6 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import javax.sql.DataSource;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.Properties;
 
 /**
@@ -29,17 +25,15 @@ import java.util.Properties;
 @EnableJpaRepositories(
     basePackageClasses = {McpApiApplication.class},
     includeFilters = @ComponentScan.Filter(AuthDbConfig.AuthData.class),
-    entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FATORY_NAME)
+    entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME)
 @MapperScan(
     basePackageClasses = {McpApiApplication.class},
     annotationClass = AuthDbConfig.AuthData.class,
     sqlSessionFactoryRef = AuthDbConfig.SQL_SESSION_FACTORY_NAME)
 @EnableConfigurationProperties(AuthDbProperties.class)
-public class AuthDbConfig extends AbstractDbConfig {
+public class AuthDb implements AuthDbConfig {
 
-    public static final String DATA_SOURCE_NAME = "meshAuthDatasource";
-    public static final String ENTITY_MANAGER_FATORY_NAME = "meshAuthEntityManagerFactory";
-    public static final String SQL_SESSION_FACTORY_NAME = "meshAuthSessionFactory";
+    private static final String LOCATION_PATTERN = "classpath*:mybatis/mapper/**/*.xml";
 
     @Autowired
     private AuthDbProperties authDbProperties;
@@ -50,18 +44,28 @@ public class AuthDbConfig extends AbstractDbConfig {
         return authDbProperties.toAtomikosNonXADataSourceBean();
     }
 
-    @Bean(ENTITY_MANAGER_FATORY_NAME)
+    @Override
+    @Bean(ENTITY_MANAGER_FACTORY_NAME)
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory(JpaVendorAdapter jpaVendorAdapter, Properties jpaProperties) {
-        return super.getEntityManagerFactory(jpaVendorAdapter, jpaProperties, McpApiApplication.class.getPackage().getName());
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+
+        factoryBean.setDataSource(getDataSource());
+        factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+        factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName());
+        factoryBean.setJpaProperties(jpaProperties);
+
+        return factoryBean;
     }
 
+    @Override
     @Bean(SQL_SESSION_FACTORY_NAME)
     public SqlSessionFactoryBean getSqlSessionFactoryBean(ApplicationContext applicationContext) throws Exception {
-        return super.getSqlSessionFactoryBean(applicationContext);
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(getDataSource());
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources(LOCATION_PATTERN));
+        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+
+        return sqlSessionFactoryBean;
     }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public static @interface AuthData {
-    }
 }

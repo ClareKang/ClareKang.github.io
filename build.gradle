@@ -5,114 +5,75 @@ apply from: rootProject.file('gradle/plugins.gradle')
 apply from: rootProject.file('gradle/publish.gradle')
 
 buildscript { scriptHandler ->
-	apply from: rootProject.file('gradle/dependencies.gradle')
-	apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
-	dependencies {
-		classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-	}
+    apply from: rootProject.file('gradle/dependencies.gradle')
+    apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
+    dependencies {
+        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 def queryDslOutput = file("${projectDir}/src/main/generated")
-def queryDslTestOutput = file("${projectDir}/src/test/generated")
 
-sourceSets {
-	main {
-		java {
-			srcDir file("${projectDir}/src/main/java")
-		}
-	}
-	generated {
-		java {
-			srcDir queryDslOutput
-		}
-	}
+idea {
+    module {
+        sourceDirs += queryDslOutput
+        generatedSourceDirs += queryDslOutput
+    }
 }
 
 querydsl {
-	querydslSourcesDir = queryDslOutput
+    querydslSourcesDir = queryDslOutput
+    jpa = true
 }
 
 jar {
-	baseName = "${baseArtifact}"
-	version = "${baseVersion}"
+    baseName = "${baseArtifact}"
+    version = "${baseVersion}"
 }
 
 bootRun {
-	if (profile != null) {
-		args = ["--spring.profiles.active=" + profile]
-	}
+    if (profile != null) {
+        args = ["--spring.profiles.active=" + profile]
+    }
 
-	addResources = true
-}
-
-springBoot {
-	mainClass = "net.meshkorea.mcp.api.McpApiApplication"
+    addResources = true
 }
 
 dependencies {
-	compile "net.meshkorea:platform-core-web:${coreWebVersion}"
+    compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
-	compile "com.vroong:vroong-api-client:${vroongApiClientVersion}"
-	compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
-	compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
+    compile "com.vroong:vroong-api-client:${vroongApiClientVersion}"
+    compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
+    compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
 
-	compile "org.apache.httpcomponents:fluent-hc:${apacheHttpcomponentsVersion}"
+    compile "org.apache.httpcomponents:fluent-hc:${apacheHttpcomponentsVersion}"
 
-	// Swagger
-	compile "io.springfox:springfox-swagger2:${springfoxVersion}"
-	compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
+    // Swagger
+    compile "io.springfox:springfox-swagger2:${springfoxVersion}"
+    compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
 
-	// querydsl
-	compile "com.querydsl:querydsl-core:${querydslVersion}"
-	compile "com.querydsl:querydsl-apt:${querydslVersion}"
-	compile "com.querydsl:querydsl-jpa:${querydslVersion}"
+    // querydsl
+    compile "com.querydsl:querydsl-core:${querydslVersion}"
+    compile "com.querydsl:querydsl-apt:${querydslVersion}"
+    compile "com.querydsl:querydsl-jpa:${querydslVersion}"
 
-	compile "org.modelmapper:modelmapper:${modelMapperVersion}"
+    compile "org.modelmapper:modelmapper:${modelMapperVersion}"
 
-	compile("org.springframework.ldap:spring-ldap-core")
-	compile("org.springframework.security:spring-security-ldap")
+    compile("org.springframework.ldap:spring-ldap-core")
+    compile("org.springframework.security:spring-security-ldap")
 
-	compile "com.auth0:java-jwt:${javaJwtVersion}"
+    compile "com.auth0:java-jwt:${javaJwtVersion}"
 
-	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
-	testCompile "org.springframework.boot:spring-boot-starter-test"
-	testCompile "org.springframework.security:spring-security-test"
-}
-
-task generateQueryDSL(type: JavaCompile, group: 'build') {
-	doFirst {
-		if (!queryDslOutput.exists()) {
-			logger.info("Creating `$queryDslOutput` directory")
-
-			if (!queryDslOutput.mkdirs()) {
-				throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
-			}
-		}
-	}
-
-	source = sourceSets.main.java
-	classpath = configurations.compile
-	options.compilerArgs = [
-		"-proc:only",
-		"-processor",
-		"com.querydsl.apt.jpa.JPAAnnotationProcessor"
-	]
-	destinationDir = queryDslOutput
-}
-
-compileJava.dependsOn(generateQueryDSL)
-compileTestJava.dependsOn(generateQueryDSL)
-
-clean.doLast {
-	queryDslOutput.deleteDir()
-	queryDslTestOutput.deleteDir()
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.springframework.security:spring-security-test"
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = "${gradleWrapperVersion}"
+    gradleVersion = "${gradleWrapperVersion}"
 }

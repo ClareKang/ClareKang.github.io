@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api;
 
+import net.meshkorea.mcp.api.domain.repository.UserRepositoryImpl;
 import net.meshkorea.platform.core.CoreApplication;
 import net.meshkorea.platform.core.web.CoreWebApplication;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
@@ -39,10 +40,6 @@ public class McpApiApplication {
 
         System.out.println("Let's inspect the beans provided by Spring Boot:");
 
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }
+        UserRepositoryImpl userRepository = ctx.getBean("userRepositoryImpl", UserRepositoryImpl.class);
     }
 }

@@ -41,4 +41,12 @@ public class Authority {
 
     @Column(name = "resource_uri")
     private String resourceUri;
+
+    // 양방향 연관관계 에서 무한루프 방지
+    public void setSiteCode(SiteCode siteCode) {
+        this.siteCode = siteCode;
+        if (!this.siteCode.getAuthorities().contains(this)) {
+            this.siteCode.getAuthorities().add(this);
+        }
+    }
 }
