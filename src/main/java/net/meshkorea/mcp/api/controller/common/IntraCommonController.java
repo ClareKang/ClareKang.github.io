@@ -1,6 +1,8 @@
 package net.meshkorea.mcp.api.controller.common;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.Bank;
+import com.meshprime.api.client.model.Latlng;
 import com.meshprime.api.client.model.Regions;
 import net.meshkorea.mcp.api.service.common.IntraCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +40,10 @@ public class IntraCommonController {
     @GetMapping("/regions/eup_myeon_dong_ri")
     public List<Regions> listEupMyeonDong(Integer parentCode, String siDo, String siGunGu, Boolean onlyAdminDong, Boolean onlyLegalDong) throws Exception {
         return intraCommonService.listEupMyeonDongRi(parentCode, siDo, siGunGu, onlyAdminDong, onlyLegalDong);
+    }
+
+    @GetMapping("/regions/geocode")
+    public Latlng getGeocode(String address) throws ApiException {
+        return intraCommonService.getGeocode(address);
     }
 }

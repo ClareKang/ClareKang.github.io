@@ -4,6 +4,7 @@ import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,18 +58,23 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/individual", method = RequestMethod.POST)
-    public Store createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
+    public StoreResponse createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
+        System.out.println(req);
         return storeService.createIndividualStore(req);
     }
 
     @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
-    public Store createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
+        System.out.println(req);
         return storeService.createFranchiseIndividualStore(req);
+        //return new CreateFranchiseIndividualStoreRequest();
     }
 
     @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
-    public Store createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
+    public StoreResponse createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
+        System.out.println(req);
         return storeService.createFranchiseCorporateStore(req);
+        //return new CreateFranchiseCorporateStoreRequest();
     }
 
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
@@ -82,7 +88,8 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.PUT)
-    public Store updateStore(@PathVariable Integer id, @RequestBody Store store) throws Exception {
+    public StoreRequest updateStore(@PathVariable Integer id, @RequestBody StoreRequest store) throws Exception {
+        System.out.println(store.toString());
         return storeService.updateStore(id.toString(), store);
     }
 
@@ -103,8 +110,39 @@ public class StoreController {
     }
 
     @PutMapping(value = "/stores/{id}/subscription/plan")
-    public SubscriptionPlan updateSubscriptionPlan(@PathVariable Integer id, @RequestBody SubscriptionPlan req) throws ApiException {
+    public SubscriptionPlan updateSubscriptionPlan(@PathVariable String id, @RequestBody SubscriptionPlan req) throws ApiException {
         return storeService.updateSubscriptionPlan(id, req);
+    }
+
+    @PostMapping(value = "/stores/{id}/admin_memo")
+    public Store updateAdminMemo(@PathVariable String id, AdminMemoRequest req) throws ApiException {
+        return storeService.updateAdminMemo(id, req);
+    }
+
+    @PostMapping(value = "/stores/{id}/branch_code")
+    public BranchCodesResponse createBranchCode(@PathVariable String id, CreateApiBranchCodeRequest req) throws ApiException {
+        return storeService.createBranchCode(id, req);
+    }
+
+    @GetMapping(value = "/stores/{id}/branch_code")
+    public BranchCodesResponse getBranchCode(@PathVariable String id) throws ApiException {
+        return storeService.getBranchCode(id);
+    }
+
+    @PutMapping(value = "/stores/{id}/certification_status")
+    public Store updateStoreCertificationStatus(@PathVariable String id, ChangeStoreCertificationStatusRequest req) throws  ApiException {
+        return storeService.updateStoreCertificationStatus(id, req);
+    }
+
+    @PutMapping(value = "/stores/{id}/operating_status")
+    public Store updateStoreOperatingStatus(@PathVariable String id, ChangeStoreOperatingStatusRequest req) throws  ApiException {
+        return storeService.updateStoreOperatingStatus(id, req);
+    }
+
+    @PostMapping(value = "/stores/{id}/subscription/admin_memo")
+    public Store addSubscriptionAdminMemo(@PathVariable String id, @RequestBody SubscriptionAdminMemo req) throws ApiException {
+        System.out.println(req.toString());
+        return storeService.addSubscriptionAdminMemo(id, req);
     }
 
 }

@@ -103,7 +103,7 @@ public class ClientController {
         return clientService.getFile(source, fileName);
     }
 
-    @PostMapping("/{id}/files")
+    // @PostMapping("/{id}/files")
     public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
                                                     @RequestPart("enterpriseRegistrationCopy") Optional<MultipartFile> enterpriseRegistrationCopy,
                                                     @RequestPart("bankAccountCopy") Optional<MultipartFile> bankAccountCopy,
@@ -117,7 +117,7 @@ public class ClientController {
     /**
      * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
      */
-    // @PostMapping("/{id}/files")
+    @PostMapping("/{id}/files")
     public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
                                                     @RequestPart("enterpriseRegistrationCopy") MultipartFile enterpriseRegistrationCopy,
                                                     @RequestPart("bankAccountCopy") MultipartFile bankAccountCopy,
