@@ -7,6 +7,7 @@ import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class StoreService {
                                    String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
                                    Integer size, Integer page) throws Exception {
         return intraStoresApi.listStores(intraTokenService.getAuthToken(), storeType, storeCertificationStatus,
-            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
-            vroongMonitoringPartnerId, size, page);
+                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
+                vroongMonitoringPartnerId, size, page);
     }
 
     public List<MonitoringPartner> listPartners() throws Exception {
@@ -93,7 +94,7 @@ public class StoreService {
     }
 
     public List<Regions> getDetailRegions(String detail) throws ApiException {
-        return intraRegionsApi.listRegions(intraTokenService.getAuthToken(),"","", detail, 0, "0");
+        return intraRegionsApi.listRegions(intraTokenService.getAuthToken(), "", "", detail, 0, "0");
     }
 
     public List<Regions> updateStoreRegions(Integer id, UpdateStoreRegionsRequest req) throws ApiException {
@@ -116,16 +117,27 @@ public class StoreService {
         return intraStoresApi.getStoreBranchCode(intraTokenService.getAuthToken(), id);
     }
 
-    public Store updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {
-        return intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req);
+    public ResponseEntity updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {
+        try {
+            return ResponseEntity.ok(intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req));
+            // return intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req);
+        } catch (ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
+
     }
 
-    public Store updateStoreOperatingStatus(String id, ChangeStoreOperatingStatusRequest req) throws ApiException {
-        return intraStoresApi.changeStoreOperatingStatus(intraTokenService.getAuthToken(), id, req);
+    public ResponseEntity updateStoreOperatingStatus(String id, ChangeStoreOperatingStatusRequest req) throws ApiException {
+        try {
+            return ResponseEntity.ok(intraStoresApi.changeStoreOperatingStatus(intraTokenService.getAuthToken(), id, req));
+        } catch (ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
+
     }
 
     public Store addSubscriptionAdminMemo(String id, SubscriptionAdminMemo req) throws ApiException {
-        System.out.println(id + ", "  + req.toString());
+        System.out.println(id + ", " + req.toString());
         return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 

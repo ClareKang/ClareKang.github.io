@@ -4,7 +4,7 @@ import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -130,12 +130,12 @@ public class StoreController {
     }
 
     @PutMapping(value = "/stores/{id}/certification_status")
-    public Store updateStoreCertificationStatus(@PathVariable String id, ChangeStoreCertificationStatusRequest req) throws  ApiException {
+    public ResponseEntity updateStoreCertificationStatus(@PathVariable String id, @RequestBody ChangeStoreCertificationStatusRequest req) throws ApiException {
         return storeService.updateStoreCertificationStatus(id, req);
     }
 
     @PutMapping(value = "/stores/{id}/operating_status")
-    public Store updateStoreOperatingStatus(@PathVariable String id, ChangeStoreOperatingStatusRequest req) throws  ApiException {
+    public ResponseEntity updateStoreOperatingStatus(@PathVariable String id, @RequestBody ChangeStoreOperatingStatusRequest req) throws  ApiException {
         return storeService.updateStoreOperatingStatus(id, req);
     }
 
