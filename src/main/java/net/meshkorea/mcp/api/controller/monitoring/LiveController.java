@@ -32,15 +32,21 @@ public class LiveController {
         return liveService.getOrderDetail(req);
     }
 
+    @PostMapping("/updateOrder")
+    public ManagerUpdateOrderRes updateOrder(@RequestBody ManagerUpdateOrderReq req) throws ApiException {
+        return liveService.updateOrder(req);
+    }
+
     @PostMapping("/pricingPlan")
     public ManagerPricingPlanRes pricingPlan() throws ApiException {
         return liveService.pricingPlan();
     }
 
     @PostMapping("/getBaseCharge")
-    public ManagerGetBaseChargeRes getBaseCharge(ManagerGetBaseChargeReq req) throws ApiException {
+    public ManagerGetBaseChargeRes getBaseCharge(@RequestBody ManagerGetBaseChargeReq req) throws ApiException {
         return liveService.getBaseCharge(req);
     }
+
 }
 
 
