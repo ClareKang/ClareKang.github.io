@@ -15,6 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 /**
+ * Muti datasource 환경에서 {@link org.springframework.data.jpa.repository.support.QueryDslRepositorySupport} 클래스를 사용할 경우
+ * @Primary EntityManager 가 injection 되는 문제가 있어 코드를 그대로 복사해서 이름만 바꾼 클래스
  * 상속하고 반드시 {@link EntityManager} injector 를 구현해야 된다
  * ex) @PersistenceContext(unitName = ENTITY_MANAGER_UNIT_NAME)
  *
