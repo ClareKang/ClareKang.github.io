@@ -13,6 +13,9 @@ ext {
     querydslGradlePluginVersion = '1.0.9'
     modelMapperVersion = '0.7.8'
     javaJwtVersion = '3.1.0'
+    springSecurityVersion = '4.2.3.RELEASE'
+    springSecurityOauth2Version = '2.1.1.RELEASE'
+    springSecurityJwtVersion = '1.0.8.RELEASE'
 
     vroongApiClientVersion = '1.0.0-SNAPSHOT'
     vroongAdminApiClientVersion = '1.0.0-SNAPSHOT'

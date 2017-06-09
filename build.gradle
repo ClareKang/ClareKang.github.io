@@ -75,8 +75,9 @@ dependencies {
 
     compile "org.modelmapper:modelmapper:${modelMapperVersion}"
 
-    compile("org.springframework.ldap:spring-ldap-core")
-    compile("org.springframework.security:spring-security-ldap")
+    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
+    compile "org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}"
 
     compile "com.auth0:java-jwt:${javaJwtVersion}"
 
