@@ -4,7 +4,7 @@ import com.querydsl.jpa.JPQLQuery;
 import net.meshkorea.mcp.api.domain.entity.auth.QGroup;
 import net.meshkorea.mcp.api.domain.entity.auth.QUser;
 import net.meshkorea.mcp.api.domain.entity.auth.User;
-import net.meshkorea.mcp.api.domain.model.auth.SearchUserDto;
+import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
 import net.meshkorea.platform.core.web.config.data.AuthDbConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,29 +23,29 @@ public class UserRepositoryImpl extends AuthRepositoryQueryDslSupport implements
     }
 
     @Override
-    public Page<User> search(SearchUserDto searchUserDto, Pageable pageable) {
+    public Page<User> search(UserListRequest userListRequest, Pageable pageable) {
         QUser user = QUser.user;
         QGroup group = QGroup.group;
 
         JPQLQuery<User> query = from(user);
 
-        if (searchUserDto != null) {
-            if (searchUserDto.getUserId() != null) {
-                query.where(user.userId.eq(searchUserDto.getUserId()));
+        if (userListRequest != null) {
+            if (userListRequest.getUserId() != null) {
+                query.where(user.userId.eq(userListRequest.getUserId()));
             }
-            if (searchUserDto.getUserName() != null) {
-                query.where(user.userName.eq(searchUserDto.getUserName()));
+            if (userListRequest.getUserName() != null) {
+                query.where(user.userName.eq(userListRequest.getUserName()));
             }
-            if (searchUserDto.getUserType() != null) {
-                query.where(user.userType.eq(searchUserDto.getUserType()));
+            if (userListRequest.getUserType() != null) {
+                query.where(user.userType.eq(userListRequest.getUserType()));
             }
-            if (searchUserDto.getGroupId() != null || searchUserDto.getGroupName() != null) {
+            if (userListRequest.getGroupId() != null || userListRequest.getGroupName() != null) {
                 query.leftJoin(user.groups, group);
-                if (searchUserDto.getGroupId() != null) {
-                    query.where(group.groupNo.eq(searchUserDto.getGroupId()));
+                if (userListRequest.getGroupId() != null) {
+                    query.where(group.groupNo.eq(userListRequest.getGroupId()));
                 }
-                if (searchUserDto.getGroupName() != null) {
-                    query.where(group.groupName.eq(searchUserDto.getGroupName()));
+                if (userListRequest.getGroupName() != null) {
+                    query.where(group.groupName.eq(userListRequest.getGroupName()));
                 }
             }
         }

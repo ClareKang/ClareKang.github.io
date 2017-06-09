@@ -1,6 +1,6 @@
 package net.meshkorea.mcp.api.controller.auth;
 
-import net.meshkorea.mcp.api.domain.model.auth.SearchUserDto;
+import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
 import net.meshkorea.mcp.api.service.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +20,10 @@ public class AuthController {
     AuthService authService;
 
     @GetMapping("/users")
-    public ResponseEntity<?> getUsers(@RequestParam(required = false) SearchUserDto searchUserDto,
+    public ResponseEntity<?> getUsers(@RequestParam(required = false) UserListRequest userListRequest,
                                       @PageableDefault(sort = {"createDt"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(
-            authService.getUsers(searchUserDto, pageable)
+            authService.getUsers(userListRequest, pageable)
         );
     }
 

@@ -1,7 +1,7 @@
 package net.meshkorea.mcp.api.service.auth;
 
 import net.meshkorea.mcp.api.domain.entity.auth.User;
-import net.meshkorea.mcp.api.domain.model.auth.SearchUserDto;
+import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
 import net.meshkorea.mcp.api.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +17,8 @@ public class AuthService {
     @Autowired
     UserRepository userRepository;
 
-    public Page<User> getUsers(SearchUserDto searchUserDto, Pageable pageable) {
-        return userRepository.search(searchUserDto, pageable);
+    public Page<User> getUsers(UserListRequest userListRequest, Pageable pageable) {
+        return userRepository.search(userListRequest, pageable);
     }
 
     public User getUser(Long userId) {
