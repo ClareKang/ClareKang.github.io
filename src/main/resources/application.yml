@@ -12,3 +12,9 @@ sk:
       searchType: all
       searchtypCd: A
       count: 99
+
+azureAd:
+  clientId: f2966b28-5d87-41f5-90d4-3fe9bab0fa8b
+  clientSecret: zfZspRF5mLS8tjrllxFD7Mzmz54ODMxhsT3+A2jHqOE=
+  accessTokenUri: https://login.microsoftonline.com/e8157cf4-811d-4a75-95f9-4c051e944030/oauth2/token
+  userAuthorizationUri: https://login.microsoftonline.com/e8157cf4-811d-4a75-95f9-4c051e944030/oauth2/authorize

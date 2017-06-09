@@ -30,6 +30,9 @@ prime:
       request:
         userAgent: MeshControlPlatformApi/java
 
+azureAd:
+  redirectUri: http://localhost:8080/
+
 time:
   zone: Asia/Seoul
 
