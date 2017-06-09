@@ -53,6 +53,7 @@ public class AuthDb implements AuthDbConfig {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName());
         factoryBean.setJpaProperties(jpaProperties);
+        factoryBean.setPersistenceUnitName(AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME);
 
         return factoryBean;
     }

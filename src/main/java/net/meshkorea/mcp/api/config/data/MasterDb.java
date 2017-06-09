@@ -53,6 +53,7 @@ public class MasterDb implements MasterDbConfig {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName());
         factoryBean.setJpaProperties(jpaProperties);
+        factoryBean.setPersistenceUnitName(MasterDbConfig.ENTITY_MANAGER_FACTORY_NAME);
 
         return factoryBean;
     }

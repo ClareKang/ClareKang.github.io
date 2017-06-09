@@ -9,7 +9,6 @@ import net.meshkorea.platform.core.web.config.data.AuthDbConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by reverof on 2017-06-07.
  */
 @AuthDbConfig.AuthData
-public class UserRepositoryImpl extends QueryDslRepositorySupport implements UserRepositoryCustom {
+public class UserRepositoryImpl extends AuthRepositoryQueryDslSupport implements UserRepositoryCustom {
 
     public UserRepositoryImpl() {
         super(User.class);

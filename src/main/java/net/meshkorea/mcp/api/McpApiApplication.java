@@ -1,6 +1,5 @@
 package net.meshkorea.mcp.api;
 
-import net.meshkorea.mcp.api.domain.repository.UserRepositoryImpl;
 import net.meshkorea.platform.core.CoreApplication;
 import net.meshkorea.platform.core.web.CoreWebApplication;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
@@ -12,9 +11,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-
-import java.util.Arrays;
 
 @SpringBootApplication(exclude = {
     DataSourceAutoConfiguration.class,
@@ -36,10 +32,6 @@ import java.util.Arrays;
 public class McpApiApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(McpApiApplication.class, args);
-
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-        UserRepositoryImpl userRepository = ctx.getBean("userRepositoryImpl", UserRepositoryImpl.class);
+        SpringApplication.run(McpApiApplication.class, args);
     }
 }

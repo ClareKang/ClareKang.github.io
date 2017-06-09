@@ -18,10 +18,22 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 def queryDslOutput = file("${projectDir}/src/main/generated")
 
-idea {
-    module {
-        sourceDirs += queryDslOutput
-        generatedSourceDirs += queryDslOutput
+sourceSets {
+    generated
+    main {
+        java {
+            srcDirs += queryDslOutput
+        }
+    }
+    generated {
+        java {
+            srcDirs += queryDslOutput
+        }
+    }
+    test {
+        java {
+            srcDirs += queryDslOutput
+        }
     }
 }
 
