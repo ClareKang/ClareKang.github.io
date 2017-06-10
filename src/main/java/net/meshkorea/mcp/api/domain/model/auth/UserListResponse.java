@@ -8,5 +8,5 @@ import org.springframework.data.domain.Page;
  * Created by reverof on 2017. 6. 9..
  */
 public class UserListResponse extends BaseResponse {
-    Page<User> data;
+    Page<User> users;
 }

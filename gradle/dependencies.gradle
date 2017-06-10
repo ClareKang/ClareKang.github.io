@@ -11,7 +11,7 @@ ext {
     apacheHttpcomponentsVersion = '4.5.3'
     querydslVersion = '4.1.4'
     querydslGradlePluginVersion = '1.0.9'
-    modelMapperVersion = '0.7.8'
+    modelMapperVersion = '1.0.0'
     javaJwtVersion = '3.1.0'
     springSecurityVersion = '4.2.3.RELEASE'
     springSecurityOauth2Version = '2.1.1.RELEASE'

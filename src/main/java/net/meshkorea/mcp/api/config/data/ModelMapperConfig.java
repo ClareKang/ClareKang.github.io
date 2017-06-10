@@ -1,6 +1,9 @@
 package net.meshkorea.mcp.api.config.data;
 
+import net.meshkorea.mcp.api.domain.model.auth.GroupToGroupDtoConverter;
+import net.meshkorea.mcp.api.domain.model.auth.UserToUserDtoConverter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +14,10 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        modelMapper.addConverter(new UserToUserDtoConverter());
+        modelMapper.addConverter(new GroupToGroupDtoConverter());
+        return modelMapper;
     }
 }
