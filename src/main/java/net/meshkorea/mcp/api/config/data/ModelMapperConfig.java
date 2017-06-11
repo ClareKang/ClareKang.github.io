@@ -15,7 +15,10 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        modelMapper.getConfiguration()
+            .setFieldMatchingEnabled(true)
+            .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+            .setMatchingStrategy(MatchingStrategies.LOOSE);
         modelMapper.addConverter(new UserToUserDtoConverter());
         modelMapper.addConverter(new GroupToGroupDtoConverter());
         return modelMapper;

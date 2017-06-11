@@ -7,7 +7,6 @@ import org.modelmapper.TypeToken;
 import org.modelmapper.spi.MappingContext;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

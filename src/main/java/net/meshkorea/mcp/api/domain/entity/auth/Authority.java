@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.entity.auth;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by reverof on 2017. 6. 2..
@@ -42,7 +43,12 @@ public class Authority {
     @Column(name = "resource_uri")
     private String resourceUri;
 
-    // 양방향 연관관계 에서 무한루프 방지
+    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
+    private List<UserAuthority> userAuthorities;
+
+    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
+    private List<GroupAuthority> groupAuthorities;
+
     public void setSiteCode(SiteCode siteCode) {
         this.siteCode = siteCode;
         if (!this.siteCode.getAuthorities().contains(this)) {

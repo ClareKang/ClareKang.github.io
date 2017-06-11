@@ -47,9 +47,9 @@ public class Group {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_group_relation",
-        joinColumns = @JoinColumn(name = "group_no"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
+    private List<UserGroup> userGroups;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
+    private List<GroupAuthority> groupAuthorities;
 }

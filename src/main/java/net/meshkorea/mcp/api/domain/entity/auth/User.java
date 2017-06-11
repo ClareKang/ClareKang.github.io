@@ -60,9 +60,9 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_group_relation",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "group_no"))
-    private List<Group> groups;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserGroup> userGroups;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserAuthority> userAuthorities;
 }

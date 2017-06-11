@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by reverof on 2017. 6. 10..
@@ -40,7 +39,5 @@ public class UserDto {
     private String description;
 
     private String memo;
-
-    private List<GroupDto> groups;
 
 }

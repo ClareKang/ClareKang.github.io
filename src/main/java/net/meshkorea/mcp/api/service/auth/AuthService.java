@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 /**
  * Created by reverof on 2017-06-08.
  */
@@ -32,6 +30,11 @@ public class AuthService {
 
     public User getUser(Long userId) {
         return userRepository.findOne(userId);
+    }
+
+    public UserDto addUser(UserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
 }

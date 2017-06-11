@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.auth;
 
+import net.meshkorea.mcp.api.domain.model.auth.UserDto;
 import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
 import net.meshkorea.mcp.api.service.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ public class AuthController {
         return ResponseEntity.ok(
             authService.getUser(userId)
         );
+    }
+
+    @PostMapping("/users")
+    public UserDto addUser(@RequestBody UserDto user) {
+        return authService.addUser(user);
     }
 
     public void getAuthorities(String token) {
