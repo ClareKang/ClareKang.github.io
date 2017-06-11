@@ -43,11 +43,17 @@ public class Authority {
     @Column(name = "resource_uri")
     private String resourceUri;
 
-    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
-    private List<UserAuthority> userAuthorities;
+//    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
+//    private List<UserAuthority> userAuthorities;
 
-    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
-    private List<GroupAuthority> groupAuthorities;
+    @ManyToMany(mappedBy = "authorities")
+    private List<User> users;
+
+//    @OneToMany(mappedBy = "authority", cascade = CascadeType.REMOVE)
+//    private List<GroupAuthority> groupAuthorities;
+
+    @ManyToMany(mappedBy = "authorities")
+    private List<Group> groups;
 
     public void setSiteCode(SiteCode siteCode) {
         this.siteCode = siteCode;
