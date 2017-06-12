@@ -47,16 +47,10 @@ public class Group {
     @Column(name = "description")
     private String description;
 
-//    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
-//    private List<UserGroup> userGroups;
-
-    @ManyToMany(mappedBy = "groups")
+    @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<User> users;
 
-//    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
-//    private List<GroupAuthority> groupAuthorities;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "group_authority_relation",
         joinColumns = @JoinColumn(name = "group_no"),
         inverseJoinColumns = @JoinColumn(name = "authority_no"))

@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.entity.claim;
 
 import lombok.Data;
+import net.meshkorea.mcp.api.domain.entity.auth.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -46,15 +47,17 @@ public class Claim {
     @Column(name = "none_blame")
     private Float noneBlame;
 
-    @Column(name = "creator")
-    private String creator;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "creator", referencedColumnName = "user_id")
+    private User creator;
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @Column(name = "updater")
-    private String updater;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "updater", referencedColumnName = "user_id")
+    private User updater;
 
     @Column(name = "update_dt")
     @Temporal(TemporalType.TIMESTAMP)

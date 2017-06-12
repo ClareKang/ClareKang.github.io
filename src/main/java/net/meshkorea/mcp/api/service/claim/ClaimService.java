@@ -29,7 +29,7 @@ public class ClaimService {
 
     @Transactional
     public ClaimDto getClaim(Long claimNo) {
-        return new ClaimDto().from(claimRepository.getOne(claimNo));
+        return ClaimDto.toClaimDto(claimRepository.getOne(claimNo));
     }
 
     @Transactional

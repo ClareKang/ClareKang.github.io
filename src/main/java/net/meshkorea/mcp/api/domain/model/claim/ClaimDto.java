@@ -3,7 +3,7 @@ package net.meshkorea.mcp.api.domain.model.claim;
 import lombok.Getter;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.entity.claim.Claim;
-import net.meshkorea.mcp.api.domain.entity.claim.ClaimHistory;
+import net.meshkorea.mcp.api.domain.model.auth.UserDto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,88 +36,86 @@ public class ClaimDto {
 
     private Float noneBlame;
 
-    private String creator;
+    private UserDto creator;
 
     private Date createDt;
 
-    private String updater;
+    private UserDto updater;
 
     private Date updateDt;
 
     private List<ClaimHistoryDto> claimHistoryDtos;
 
-    private List<ClaimHistoryDto> from(List<ClaimHistory> claimHistories) {
+    public static ClaimDto toClaimDto(Claim claim) {
+        if (claim == null)
+            return null;
 
-        List<ClaimHistoryDto> result = new ArrayList<>();
-        if (claimHistories == null || claimHistories.size() == 0) {
-            return result;
-        }
+        ClaimDto claimDto = new ClaimDto();
+        claimDto.setClaimNo(claim.getClaimNo());
+        claimDto.setStatusCode(claim.getStatusCode());
+        claimDto.setTypeCode(claim.getTypeCode());
+        claimDto.setRequestCode(claim.getRequestCode());
+        claimDto.setCauseCode(claim.getCauseCode());
+        claimDto.setCustomerBlame(claim.getCustomerBlame());
+        claimDto.setStoreBlame(claim.getStoreBlame());
+        claimDto.setPartnerBlame(claim.getPartnerBlame());
+        claimDto.setMeshBlame(claim.getMeshBlame());
+        claimDto.setNoneBlame(claim.getNoneBlame());
+        claimDto.setCreator(UserDto.toUserDto(claim.getCreator()));
+        claimDto.setCreateDt(claim.getCreateDt());
+        claimDto.setUpdater(UserDto.toUserDto(claim.getUpdater()));
+        claimDto.setUpdateDt(claim.getUpdateDt());
+        claimDto.setClaimHistoryDtos(ClaimHistoryDto.toClaimHistoryDtos(claim.getClaimHistories()));
 
-        for (ClaimHistory claimHistory : claimHistories) {
-            ClaimHistoryDto claimHistoryDto = new ClaimHistoryDto();
-            claimHistoryDto.from(claimHistory);
-            result.add(claimHistoryDto);
-        }
-
-        return result;
+        return claimDto;
     }
 
-    private List<ClaimHistory> to(List<ClaimHistory> claimHistories) {
+    public static List<ClaimDto> toClaimDtos(List<Claim> claims) {
+        if (claims == null)
+            return null;
 
-        if (claimHistories == null) {
-            claimHistories = new ArrayList<>();
-        }
+        List<ClaimDto> claimDtos = new ArrayList<>();
+        claims.forEach(claim -> {
+            claimDtos.add(ClaimDto.toClaimDto(claim));
+        });
 
-        for (ClaimHistoryDto claimHistoryDto : getClaimHistoryDtos()) {
-            claimHistories.add(claimHistoryDto.to(null));
-        }
-
-        return claimHistories;
+        return claimDtos;
     }
 
-    public ClaimDto from(Claim claim) {
-        setClaimNo(claim.getClaimNo());
-        setStatusCode(claim.getStatusCode());
-        setTypeCode(claim.getTypeCode());
-        setRequestCode(claim.getRequestCode());
-        setCauseCode(claim.getCauseCode());
-        setCustomerBlame(claim.getCustomerBlame());
-        setStoreBlame(claim.getStoreBlame());
-        setPartnerBlame(claim.getPartnerBlame());
-        setMeshBlame(claim.getMeshBlame());
-        setNoneBlame(claim.getNoneBlame());
-        setCreator(claim.getCreator());
-        setCreateDt(claim.getCreateDt());
-        setUpdater(claim.getUpdater());
-        setUpdateDt(claim.getUpdateDt());
-        setClaimHistoryDtos(from(claim.getClaimHistories()));
+    public static Claim toClaim(ClaimDto claimDto) {
+        if (claimDto == null)
+            return null;
 
-        return this;
-    }
-
-    public Claim to(Claim claim) {
-
-        if (claim == null) {
-            claim = new Claim();
-        }
-
-        claim.setClaimNo(getClaimNo());
-        claim.setStatusCode(getStatusCode());
-        claim.setTypeCode(getTypeCode());
-        claim.setRequestCode(getRequestCode());
-        claim.setCauseCode(getCauseCode());
-        claim.setCustomerBlame(getCustomerBlame());
-        claim.setStoreBlame(getStoreBlame());
-        claim.setPartnerBlame(getPartnerBlame());
-        claim.setMeshBlame(getMeshBlame());
-        claim.setNoneBlame(getNoneBlame());
-        claim.setCreator(getCreator());
-        claim.setCreateDt(getCreateDt());
-        claim.setUpdater(getUpdater());
-        claim.setUpdateDt(getUpdateDt());
-        claim.setClaimHistories(to(claim.getClaimHistories()));
+        Claim claim = new Claim();
+        claim.setClaimNo(claimDto.getClaimNo());
+        claim.setStatusCode(claimDto.getStatusCode());
+        claim.setTypeCode(claimDto.getTypeCode());
+        claim.setRequestCode(claimDto.getRequestCode());
+        claim.setCauseCode(claimDto.getCauseCode());
+        claim.setCustomerBlame(claimDto.getCustomerBlame());
+        claim.setStoreBlame(claimDto.getStoreBlame());
+        claim.setPartnerBlame(claimDto.getPartnerBlame());
+        claim.setMeshBlame(claimDto.getMeshBlame());
+        claim.setNoneBlame(claimDto.getNoneBlame());
+        claim.setCreator(UserDto.toUser(claimDto.getCreator()));
+        claim.setCreateDt(claimDto.getCreateDt());
+        claim.setUpdater(UserDto.toUser(claimDto.getUpdater()));
+        claim.setUpdateDt(claimDto.getUpdateDt());
+        claim.setClaimHistories(ClaimHistoryDto.toClaimHistories(claimDto.getClaimHistoryDtos()));
 
         return claim;
+    }
+
+    public static List<Claim> toClaims(List<ClaimDto> claimDtos) {
+        if (claimDtos == null)
+            return null;
+
+        List<Claim> claims = new ArrayList<>();
+        claimDtos.forEach(claimDto -> {
+            claims.add(ClaimDto.toClaim(claimDto));
+        });
+
+        return claims;
     }
 
 }

@@ -40,15 +40,17 @@ public class User {
     @Column(name = "has_privacy")
     private String hasPrivacy;
 
-    @Column(name = "creator")
-    private String creator;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "creator", referencedColumnName = "user_id")
+    private User creator;
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @Column(name = "updater")
-    private String updater;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "updater", referencedColumnName = "user_id")
+    private User updater;
 
     @Column(name = "update_dt")
     @Temporal(TemporalType.TIMESTAMP)
@@ -60,19 +62,13 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<UserGroup> userGroups;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_group_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "group_no"))
     private List<Group> groups;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<UserAuthority> userAuthorities;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_authority_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "authority_no"))

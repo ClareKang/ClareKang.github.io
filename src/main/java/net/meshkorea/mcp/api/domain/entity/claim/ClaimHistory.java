@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.entity.claim;
 
 import lombok.Data;
+import net.meshkorea.mcp.api.domain.entity.auth.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,8 +23,9 @@ public class ClaimHistory {
     @JoinColumn(name = "claim_no")
     private Claim claim;
 
-    @Column(name = "creator")
-    private String creator;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "creator", referencedColumnName = "user_id")
+    private User creator;
 
     @Column(name = "create_dt")
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,4 +33,11 @@ public class ClaimHistory {
 
     @Column(name = "json_string")
     private String jsonString;
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+        if (this.claim.getClaimHistories() != null && !this.claim.getClaimHistories().contains(this)) {
+            this.claim.getClaimHistories().add(this);
+        }
+    }
 }

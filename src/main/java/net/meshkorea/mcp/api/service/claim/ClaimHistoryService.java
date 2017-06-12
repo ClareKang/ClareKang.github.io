@@ -27,7 +27,7 @@ public class ClaimHistoryService {
     }
 
     public void addClaimHistoryFromClaim(Claim prevClaimInfo) {
-        ClaimDto claimDto = new ClaimDto().from(prevClaimInfo);
+        ClaimDto claimDto = ClaimDto.toClaimDto(prevClaimInfo);
     }
 
     private void convertToJsonString(ClaimDto claimDto) {
