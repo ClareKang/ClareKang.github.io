@@ -9,18 +9,10 @@ public class ErrorDto {
 
     private final HttpStatus code;
     private final String message;
-    private final String displayMessage;
 
     public ErrorDto(HttpStatus code, String message) {
         this.code = code;
         this.message = message;
-        this.displayMessage = null;
-    }
-
-    public ErrorDto(HttpStatus code, String message, String displayMessage) {
-        this.code = code;
-        this.message = message;
-        this.displayMessage = displayMessage;
     }
 
     public HttpStatus getErrorCode() {
@@ -29,10 +21,6 @@ public class ErrorDto {
 
     public String getMessage() {
         return message;
-    }
-
-    public String getDisplayMessage() {
-        return displayMessage;
     }
 
 }

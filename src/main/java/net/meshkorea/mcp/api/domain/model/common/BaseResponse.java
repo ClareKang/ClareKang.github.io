@@ -5,27 +5,21 @@ package net.meshkorea.mcp.api.domain.model.common;
  */
 public abstract class BaseResponse {
 
-    private final boolean success;
-    private final ErrorDto error;
+    private ResponseStatus status;
+    private ErrorDto error;
 
-    /**
-     * For Success Response with no return data
-     */
     protected BaseResponse() {
-        this.success = true;
+        this.status = ResponseStatus.SUCCESS;
         this.error = null;
     }
 
-    /**
-     * For Failure Response
-     */
     public BaseResponse(ErrorDto error) {
-        this.success = false;
+        this.status = ResponseStatus.ERROR;
         this.error = error;
     }
 
     public boolean isSuccess() {
-        return success;
+        return ResponseStatus.SUCCESS == this.status;
     }
 
     public ErrorDto getError() {
