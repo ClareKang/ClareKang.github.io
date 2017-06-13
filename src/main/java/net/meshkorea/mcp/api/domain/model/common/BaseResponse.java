@@ -13,7 +13,7 @@ public abstract class BaseResponse {
         this.error = null;
     }
 
-    public BaseResponse(ErrorDto error) {
+    protected BaseResponse(ErrorDto error) {
         this.status = ResponseStatus.ERROR;
         this.error = error;
     }
@@ -22,8 +22,12 @@ public abstract class BaseResponse {
         return ResponseStatus.SUCCESS == this.status;
     }
 
+    public ResponseStatus getStatus() {
+        return this.status;
+    }
+
     public ErrorDto getError() {
-        return error;
+        return this.error;
     }
 
 }

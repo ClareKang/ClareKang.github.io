@@ -119,9 +119,9 @@ public class ClientController {
      */
     @PostMapping("/{id}/files")
     public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
-                                                    @RequestPart("enterpriseRegistrationCopy") MultipartFile enterpriseRegistrationCopy,
-                                                    @RequestPart("bankAccountCopy") MultipartFile bankAccountCopy,
-                                                    @RequestPart("ceoIdCardCopy") MultipartFile ceoIdCardCopy) throws Exception {
+                                                    @RequestParam(required = false) MultipartFile enterpriseRegistrationCopy,
+                                                    @RequestParam(required = false) MultipartFile bankAccountCopy,
+                                                    @RequestParam(required = false) MultipartFile ceoIdCardCopy) throws Exception {
         return clientService.updateBusinessClientFiles(id,
             enterpriseRegistrationCopy,
             bankAccountCopy,

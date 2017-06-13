@@ -6,7 +6,6 @@ package net.meshkorea.mcp.api.domain.model.common;
 public enum ResponseStatus {
 
     SUCCESS("success"),
-    FAIL("fail"),
     ERROR("error");
 
     private String value;

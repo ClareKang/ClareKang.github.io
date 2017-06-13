@@ -15,8 +15,8 @@ public class ErrorDto {
         this.message = message;
     }
 
-    public HttpStatus getErrorCode() {
-        return code;
+    public Integer getErrorCode() {
+        return code.value();
     }
 
     public String getMessage() {

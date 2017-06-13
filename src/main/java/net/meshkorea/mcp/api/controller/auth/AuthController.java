@@ -28,7 +28,7 @@ public class AuthController {
                                       @PageableDefault(sort = {"createDt"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(
             // authService.getUsers(userListRequest, pageable)
-            new UserListResponse(new ErrorDto(HttpStatus.BAD_REQUEST, ""))
+            new UserListResponse(new ErrorDto(HttpStatus.BAD_REQUEST, "잘못된 요청 입니다."))
         );
     }
 
