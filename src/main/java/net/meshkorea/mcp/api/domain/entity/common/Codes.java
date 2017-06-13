@@ -18,6 +18,6 @@ public class Codes {
     private Long codeNo;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn()
+    @JoinColumn(name = "parent_code_no")
     private Codes parentCode;
 }
