@@ -40,7 +40,7 @@ public class User {
     @Column(name = "has_privacy")
     private String hasPrivacy;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
@@ -48,7 +48,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "updater", referencedColumnName = "user_id")
     private User updater;
 
@@ -62,13 +62,13 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_group_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "group_no"))
     private List<Group> groups;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_authority_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "authority_no"))

@@ -18,7 +18,7 @@ public class Authority {
     @Column(name = "authority_no")
     private Long authorityNo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "site_code_no")
     private SiteCode siteCode;
 
@@ -43,10 +43,10 @@ public class Authority {
     @Column(name = "resource_uri")
     private String resourceUri;
 
-    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.REMOVE)
     private List<User> users;
 
-    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.REMOVE)
     private List<Group> groups;
 
     public void setSiteCode(SiteCode siteCode) {

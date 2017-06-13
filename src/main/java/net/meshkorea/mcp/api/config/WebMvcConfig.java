@@ -22,18 +22,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
             .maxAge(3600);
     }
 
-//    @Override
-//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-//        PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver = new PageableHandlerMethodArgumentResolver();
-//        pageableHandlerMethodArgumentResolver.setOneIndexedParameters(true);
-//        argumentResolvers.add(pageableHandlerMethodArgumentResolver);
-//    }
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
-        resolver.setOneIndexedParameters(true);
-        argumentResolvers.add(resolver);
-        super.addArgumentResolvers(argumentResolvers);
+        PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver = new PageableHandlerMethodArgumentResolver();
+        pageableHandlerMethodArgumentResolver.setOneIndexedParameters(true);
+        argumentResolvers.add(pageableHandlerMethodArgumentResolver);
     }
+
 }
