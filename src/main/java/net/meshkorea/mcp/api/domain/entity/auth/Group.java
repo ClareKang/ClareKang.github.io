@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.entity.auth;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,11 +49,11 @@ public class Group {
     private String description;
 
     @ManyToMany(mappedBy = "groups")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "group_authority_relation",
         joinColumns = @JoinColumn(name = "group_no"),
         inverseJoinColumns = @JoinColumn(name = "authority_no"))
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
 }

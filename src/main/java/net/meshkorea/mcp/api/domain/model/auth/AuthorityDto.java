@@ -38,7 +38,7 @@ public class AuthorityDto {
 
     public void setSiteCodeDto(SiteCodeDto siteCodeDto) {
         this.siteCodeDto = siteCodeDto;
-        if (this.siteCodeDto.getAuthorityDtos() != null && !this.siteCodeDto.getAuthorityDtos().contains(this)) {
+        if (this.siteCodeDto != null && this.siteCodeDto.getAuthorityDtos() != null && !this.siteCodeDto.getAuthorityDtos().contains(this)) {
             this.siteCodeDto.getAuthorityDtos().add(this);
         }
     }

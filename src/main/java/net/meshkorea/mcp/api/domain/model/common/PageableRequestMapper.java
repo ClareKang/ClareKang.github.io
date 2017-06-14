@@ -25,4 +25,11 @@ public class PageableRequestMapper {
         }
         return new PageRequest(0, DEFAULT_SIZE, sort);
     }
+
+    public static PageRequest getPageRequest(Integer page, Integer size, Sort sort) {
+        if (page > -1 && size > 0) {
+            return new PageRequest(page, size, sort);
+        }
+        return new PageRequest(0, DEFAULT_SIZE, sort);
+    }
 }

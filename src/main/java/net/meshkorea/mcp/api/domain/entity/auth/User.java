@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.entity.auth;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class User {
     @Column(name = "has_privacy")
     private String hasPrivacy;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
@@ -48,7 +49,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "updater", referencedColumnName = "user_id")
     private User updater;
 
@@ -62,15 +63,15 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JoinTable(name = "user_group_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "group_no"))
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JoinTable(name = "user_authority_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "authority_no"))
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
 }

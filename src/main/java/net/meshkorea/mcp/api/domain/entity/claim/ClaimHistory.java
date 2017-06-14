@@ -23,7 +23,7 @@ public class ClaimHistory {
     @JoinColumn(name = "claim_no")
     private Claim claim;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
@@ -35,9 +35,10 @@ public class ClaimHistory {
     private String jsonString;
 
     public void setClaim(Claim claim) {
+        if (this.claim != null)
+            this.claim.getClaimHistories().remove(this);
+
         this.claim = claim;
-        if (this.claim.getClaimHistories() != null && !this.claim.getClaimHistories().contains(this)) {
-            this.claim.getClaimHistories().add(this);
-        }
+        this.claim.getClaimHistories().add(this);
     }
 }

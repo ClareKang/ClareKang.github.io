@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.entity.auth;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Authority {
     @Column(name = "authority_no")
     private Long authorityNo;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "site_code_no")
     private SiteCode siteCode;
 
@@ -43,16 +44,17 @@ public class Authority {
     @Column(name = "resource_uri")
     private String resourceUri;
 
-    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.REMOVE)
-    private List<User> users;
+    @ManyToMany(mappedBy = "authorities")
+    private List<User> users = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.REMOVE)
-    private List<Group> groups;
+    @ManyToMany(mappedBy = "authorities")
+    private List<Group> groups = new ArrayList<>();
 
     public void setSiteCode(SiteCode siteCode) {
+        if (this.siteCode != null)
+            this.siteCode.getAuthorities().remove(this);
+
         this.siteCode = siteCode;
-        if (this.siteCode.getAuthorities() != null && !this.siteCode.getAuthorities().contains(this)) {
-            this.siteCode.getAuthorities().add(this);
-        }
+        this.siteCode.getAuthorities().add(this);
     }
 }

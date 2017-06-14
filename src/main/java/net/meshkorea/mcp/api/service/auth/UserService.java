@@ -1,11 +1,12 @@
 package net.meshkorea.mcp.api.service.auth;
 
 import net.meshkorea.mcp.api.domain.entity.auth.User;
-import net.meshkorea.mcp.api.domain.model.auth.UserDto;
-import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
-import net.meshkorea.mcp.api.domain.model.auth.UserListResponse;
-import net.meshkorea.mcp.api.domain.model.auth.UserResponse;
+import net.meshkorea.mcp.api.domain.entity.common.Codes;
+import net.meshkorea.mcp.api.domain.model.auth.*;
+import net.meshkorea.mcp.api.domain.model.common.CodesDto;
+import net.meshkorea.mcp.api.domain.model.common.CodesEnum;
 import net.meshkorea.mcp.api.domain.model.common.PageableRequestMapper;
+import net.meshkorea.mcp.api.domain.repository.AuthCodesRepository;
 import net.meshkorea.mcp.api.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +25,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AuthCodesRepository authCodesRepository;
 
     public UserListResponse getUsers(UserListRequest userListRequest) {
         Pageable pageable = PageableRequestMapper.getPageRequest(

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by chaelee on 2017. 3. 10..
@@ -103,20 +102,6 @@ public class ClientController {
         return clientService.getFile(source, fileName);
     }
 
-    // @PostMapping("/{id}/files")
-    public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
-                                                    @RequestPart("enterpriseRegistrationCopy") Optional<MultipartFile> enterpriseRegistrationCopy,
-                                                    @RequestPart("bankAccountCopy") Optional<MultipartFile> bankAccountCopy,
-                                                    @RequestPart("ceoIdCardCopy") Optional<MultipartFile> ceoIdCardCopy) throws Exception {
-        return clientService.updateBusinessClientFiles(id,
-            enterpriseRegistrationCopy,
-            bankAccountCopy,
-            ceoIdCardCopy);
-    }
-
-    /**
-     * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
-     */
     @PostMapping("/{id}/files")
     public BusinessClient updateBusinessClientFiles(@PathVariable Integer id,
                                                     @RequestParam(required = false) MultipartFile enterpriseRegistrationCopy,

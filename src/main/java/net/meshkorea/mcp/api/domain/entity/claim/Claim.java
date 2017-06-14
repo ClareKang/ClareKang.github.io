@@ -4,6 +4,7 @@ import lombok.Data;
 import net.meshkorea.mcp.api.domain.entity.auth.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class Claim {
     @Column(name = "none_blame")
     private Float noneBlame;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
@@ -55,7 +56,7 @@ public class Claim {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "updater", referencedColumnName = "user_id")
     private User updater;
 
@@ -63,8 +64,6 @@ public class Claim {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDt;
 
-    @OneToMany(mappedBy = "claim",
-        fetch = FetchType.EAGER,
-        cascade = CascadeType.REMOVE)
-    private List<ClaimHistory> claimHistories;
+    @OneToMany(mappedBy = "claim", fetch = FetchType.EAGER)
+    private List<ClaimHistory> claimHistories = new ArrayList<>();
 }

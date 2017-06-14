@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.entity.auth.SiteCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

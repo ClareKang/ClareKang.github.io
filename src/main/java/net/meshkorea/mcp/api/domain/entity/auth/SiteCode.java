@@ -26,5 +26,5 @@ public class SiteCode {
     private String siteName;
 
     @OneToMany(mappedBy = "siteCode")
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
 }

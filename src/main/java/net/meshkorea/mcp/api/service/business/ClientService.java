@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by reverof on 2017. 4. 17..
@@ -112,44 +111,6 @@ public class ClientService {
             .body(resource);
     }
 
-    public BusinessClient updateBusinessClientFiles(Integer clientId,
-                                                    Optional<MultipartFile> enterpriseRegistrationCopy,
-                                                    Optional<MultipartFile> bankAccountCopy,
-                                                    Optional<MultipartFile> ceoIdCardCopy) throws Exception {
-
-        File enterpriseRegistrationCopyFile = null;
-        File bankAccountCopyFile = null;
-        File ceoIdCardCopyFile = null;
-
-        if (enterpriseRegistrationCopy.isPresent()) {
-            enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy.get()).toFile();
-        }
-        if (bankAccountCopy.isPresent()) {
-            bankAccountCopyFile = storageService.store(bankAccountCopy.get()).toFile();
-        }
-        if (ceoIdCardCopy.isPresent()) {
-            ceoIdCardCopyFile = storageService.store(ceoIdCardCopy.get()).toFile();
-        }
-
-        BusinessClient result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
-            clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
-
-        if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
-            enterpriseRegistrationCopyFile.delete();
-        }
-        if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
-            bankAccountCopyFile.delete();
-        }
-        if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
-            ceoIdCardCopyFile.delete();
-        }
-
-        return result;
-    }
-
-    /**
-     * swagger codegen 으로 코드를 생성할때 Optional 처리를 하지 못해서 임의로 만든 로직
-     */
     public BusinessClient updateBusinessClientFiles(Integer clientId,
                                                     MultipartFile enterpriseRegistrationCopy,
                                                     MultipartFile bankAccountCopy,
