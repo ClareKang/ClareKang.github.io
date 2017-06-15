@@ -17,11 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserTypeListResponse extends BaseResponse {
+public class CodeListResponse extends BaseResponse {
 
     List<CodesDto> data;
 
-    public UserTypeListResponse(ErrorDto error) {
+    public CodeListResponse(ErrorDto error) {
         super(error);
     }
 }

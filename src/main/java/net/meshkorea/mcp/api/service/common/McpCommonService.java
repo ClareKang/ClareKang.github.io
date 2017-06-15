@@ -1,14 +1,15 @@
 package net.meshkorea.mcp.api.service.common;
 
 import net.meshkorea.mcp.api.domain.entity.common.Codes;
-import net.meshkorea.mcp.api.domain.model.auth.UserTypeListResponse;
+import net.meshkorea.mcp.api.domain.model.auth.CodeListResponse;
 import net.meshkorea.mcp.api.domain.model.common.CodesDto;
 import net.meshkorea.mcp.api.domain.model.common.CodesEnum;
-import net.meshkorea.mcp.api.domain.repository.AuthCodesRepository;
+import net.meshkorea.mcp.api.domain.repository.CodesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,24 +17,51 @@ import java.util.List;
  */
 @Service
 public class McpCommonService {
+
     @Autowired
-    AuthCodesRepository authCodesRepository;
+    CodesRepository codesRepository;
 
-    private List<CodesDto> getChildren(Long parent) {
-        return CodesDto.toCodesDtos(authCodesRepository.findAllByParent(parent));
-    }
-
-    private void traversal() {
-
-    }
-
-    // TODO: 순회하면서 하위 트리를 가져오도록 만들어야됨
     @Transactional
-    public UserTypeListResponse getUserTypes() {
-        Codes parent = authCodesRepository.findOneByCode(CodesEnum.USER_TYPE.name());
+    public CodeListResponse getUserTypes() {
+        return new CodeListResponse(getChildren(CodesEnum.USER_TYPE.name()));
+    }
 
-        return new UserTypeListResponse(
-            CodesDto.toCodesDtos(parent.getChildren())
-        );
+    @Transactional
+    public CodeListResponse getUserSearchTypes() {
+        return new CodeListResponse(getChildren(CodesEnum.USER_SEARCH_TYPE.name()));
+    }
+
+    // TODO: 성능 이슈 처리를 위해 수정해야된다. ex) cache
+    private List<CodesDto> getChildren(String code) {
+        if (code == null)
+            return null;
+
+        Codes parent = codesRepository.findOneByCode(code);
+        List<CodesDto> codesDtos = CodesDto.toCodesDtos(parent.getChildren());
+
+        if (codesDtos != null && !codesDtos.isEmpty()) {
+            codesDtos.forEach(codesDto -> {
+                codesDto.setChildren(traversal(codesDto));
+            });
+        }
+
+        return codesDtos;
+    }
+
+    private List<CodesDto> traversal(CodesDto codesDto) {
+        if (codesDto == null)
+            return null;
+
+        List<Codes> codes = codesRepository.findAllByParent(codesDto.getCodeNo());
+        if (codes.isEmpty())
+            return new ArrayList<>();
+        else {
+            List<CodesDto> children = CodesDto.toCodesDtos(codes);
+            children.forEach(child -> {
+                child.setChildren(traversal(child));
+            });
+
+            return children;
+        }
     }
 }

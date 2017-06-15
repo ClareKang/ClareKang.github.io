@@ -1,6 +1,6 @@
 package net.meshkorea.mcp.api.controller.common;
 
-import net.meshkorea.mcp.api.domain.model.auth.UserTypeListResponse;
+import net.meshkorea.mcp.api.domain.model.auth.CodeListResponse;
 import net.meshkorea.mcp.api.service.common.McpCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,13 @@ public class McpCommonController {
     private McpCommonService mcpCommonService;
 
     @GetMapping("/userTypes")
-    public UserTypeListResponse getUserTypes() {
+    public CodeListResponse getUserTypes() {
         return mcpCommonService.getUserTypes();
     }
+
+    @GetMapping("/userSearchTypes")
+    public CodeListResponse getUserSearchType() {
+        return mcpCommonService.getUserSearchTypes();
+    }
+
 }
