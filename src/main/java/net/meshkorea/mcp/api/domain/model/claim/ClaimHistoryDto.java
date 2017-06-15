@@ -27,10 +27,11 @@ public class ClaimHistoryDto {
     private String jsonString;
 
     public void setClaimDto(ClaimDto claimDto) {
+        if (this.claimDto != null)
+            this.claimDto.getClaimHistoryDtos().remove(this);
+
         this.claimDto = claimDto;
-        if (this.claimDto.getClaimHistoryDtos() != null && !this.claimDto.getClaimHistoryDtos().contains(this)) {
-            this.claimDto.getClaimHistoryDtos().add(this);
-        }
+        this.claimDto.getClaimHistoryDtos().add(this);
     }
 
     public static ClaimHistoryDto toClaimHistoryDto(ClaimHistory claimHistory) {

@@ -11,11 +11,19 @@ import net.meshkorea.mcp.api.domain.model.common.PageableRequest;
 @Getter
 @Setter
 public class UserListRequest extends BaseRequest implements PageableRequest {
+
     private String userId;
+
     private String userName;
+
     private String userType;
+
     private Long groupId;
+
     private String groupName;
+
     private Integer page;
+
     private Integer size;
+
 }

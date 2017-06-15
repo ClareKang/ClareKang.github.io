@@ -16,9 +16,10 @@ import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
 @Setter
 public class UserResponse extends BaseResponse {
 
+    UserDto data;
+
     public UserResponse(ErrorDto errorDto) {
         super(errorDto);
     }
 
-    UserDto data;
 }

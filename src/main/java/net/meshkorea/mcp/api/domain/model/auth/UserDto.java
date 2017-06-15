@@ -43,9 +43,9 @@ public class UserDto {
 
     private String memo;
 
-    private List<GroupDto> groupDtos;
+    private List<GroupDto> groupDtos = new ArrayList<>();
 
-    private List<AuthorityDto> authorityDtos;
+    private List<AuthorityDto> authorityDtos = new ArrayList<>();
 
     public static UserDto toUserDto(User user) {
         if (user == null)

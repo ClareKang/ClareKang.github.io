@@ -33,7 +33,7 @@ public class GroupDto {
 
     private String description;
 
-    private List<AuthorityDto> authorityDtos;
+    private List<AuthorityDto> authorityDtos = new ArrayList<>();
 
     public static GroupDto toGroupDto(Group group) {
         if (group == null)

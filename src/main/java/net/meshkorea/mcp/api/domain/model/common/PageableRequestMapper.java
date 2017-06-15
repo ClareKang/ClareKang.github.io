@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
  */
 public class PageableRequestMapper {
 
+    public static Integer DEFAULT_PAGE = 0;
     public static Integer DEFAULT_SIZE = 10;
 
     public static PageRequest getPageRequest(PageableRequest pageableRequest) {
@@ -15,7 +16,7 @@ public class PageableRequestMapper {
             && pageableRequest.getSize() > 0) {
             return new PageRequest(pageableRequest.getPage(), pageableRequest.getSize());
         }
-        return new PageRequest(0, DEFAULT_SIZE);
+        return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE);
     }
 
     public static PageRequest getPageRequest(PageableRequest pageableRequest, Sort sort) {
@@ -23,13 +24,13 @@ public class PageableRequestMapper {
             && pageableRequest.getSize() > 0) {
             return new PageRequest(pageableRequest.getPage(), pageableRequest.getSize(), sort);
         }
-        return new PageRequest(0, DEFAULT_SIZE, sort);
+        return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);
     }
 
     public static PageRequest getPageRequest(Integer page, Integer size, Sort sort) {
         if (page > -1 && size > 0) {
             return new PageRequest(page, size, sort);
         }
-        return new PageRequest(0, DEFAULT_SIZE, sort);
+        return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);
     }
 }

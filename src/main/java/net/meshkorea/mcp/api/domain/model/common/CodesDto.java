@@ -35,7 +35,7 @@ public class CodesDto {
 
     private Date updateDt;
 
-    private List<CodesDto> children;
+    private List<CodesDto> children = new ArrayList<>();
 
     public static CodesDto toCodesDto(Codes codes) {
         if (codes == null)

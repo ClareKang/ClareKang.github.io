@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.entity.auth.SiteCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class SiteCodeDto {
 
     private String siteName;
 
-    private List<AuthorityDto> authorityDtos;
+    private List<AuthorityDto> authorityDtos = new ArrayList<>();
 
     public static SiteCodeDto toSiteCodeDto(SiteCode siteCode) {
         if (siteCode == null)

@@ -32,15 +32,16 @@ public class AuthorityDto {
 
     private String resourceUri;
 
-    private List<UserDto> userDtos;
+    private List<UserDto> userDtos = new ArrayList<>();
 
-    private List<GroupDto> groupDtos;
+    private List<GroupDto> groupDtos = new ArrayList<>();
 
     public void setSiteCodeDto(SiteCodeDto siteCodeDto) {
+        if (this.siteCodeDto != null)
+            this.siteCodeDto.getAuthorityDtos().remove(this);
+
         this.siteCodeDto = siteCodeDto;
-        if (this.siteCodeDto != null && this.siteCodeDto.getAuthorityDtos() != null && !this.siteCodeDto.getAuthorityDtos().contains(this)) {
-            this.siteCodeDto.getAuthorityDtos().add(this);
-        }
+        this.siteCodeDto.getAuthorityDtos().add(this);
     }
 
     public static AuthorityDto toAuthorityDto(Authority authority) {

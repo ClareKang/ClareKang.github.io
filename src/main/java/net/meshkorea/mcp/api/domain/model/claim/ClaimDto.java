@@ -44,7 +44,7 @@ public class ClaimDto {
 
     private Date updateDt;
 
-    private List<ClaimHistoryDto> claimHistoryDtos;
+    private List<ClaimHistoryDto> claimHistoryDtos = new ArrayList<>();
 
     public static ClaimDto toClaimDto(Claim claim) {
         if (claim == null)
