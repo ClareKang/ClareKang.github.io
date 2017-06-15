@@ -3,7 +3,9 @@ package net.meshkorea.mcp.api.config.data;
 import net.meshkorea.mcp.api.McpApiApplication;
 import net.meshkorea.platform.core.web.config.data.MasterDbConfig;
 import net.meshkorea.platform.core.web.config.data.MasterDbProperties;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -68,6 +70,12 @@ public class MasterDb implements MasterDbConfig {
         sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
 
         return sqlSessionFactoryBean;
+    }
+
+    @Bean
+    public SqlSessionTemplate masterSqlSessionTemplate(SqlSessionFactory getSqlSessionFactoryBean) throws Exception {
+        getSqlSessionFactoryBean.getConfiguration().setMapUnderscoreToCamelCase(true);
+        return new SqlSessionTemplate(getSqlSessionFactoryBean);
     }
 
 }

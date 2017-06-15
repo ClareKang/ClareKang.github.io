@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClaimMapper">
+
+
+
+	<select id="findClaims" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimSearchDto" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimRes">
+	  SELECT
+	  	c.claim_no,
+	  	status_code,
+	  	type_code,
+	  	request_code,
+	  	cause_code,
+	  	customer_blame,
+	  	store_blame,
+	  	partner_blame,
+	  	mesh_blame,
+	  	none_blame,
+	  	creator,
+	  	create_dt,
+	  	updater,
+	  	update_dt,
+	  	order_id,
+	  	claim_order_id,
+	  	order_number,
+	  	claim_order_number
+	  FROM
+	  	claim c
+	  	LEFT JOIN order_claim_relation r
+	  	on c.claim_no = r.claim_no
+	</select>
+
+	<select id="getClaimDetail" parameterType="java.lang.Long" resultType="net.meshkorea.mcp.api.domain.model.claim.Claim">
+		SELECT
+	  	c.claim_no,
+	  	status_code,
+	  	type_code,
+	  	request_code,
+	  	cause_code,
+	  	customer_blame,
+	  	store_blame,
+	  	partner_blame,
+	  	mesh_blame,
+	  	none_blame,
+	  	creator,
+	  	create_dt,
+	  	updater,
+	  	update_dt,
+	  	order_id,
+	  	claim_order_id,
+	  	order_number,
+	  	claim_order_number
+	  FROM
+	  	claim c
+	  	LEFT JOIN order_claim_relation r
+	  	on c.claim_no = r.claim_no
+	  WHERE
+	  	c.claim_no = #{id}
+	</select>
+
+	<select id="getClaimDescription" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimDescriptionDto" parameterType="java.lang.Long">
+		SELECT
+			claim_description_no,
+			order_id,
+			claim_no,
+			description,
+			creator,
+			create_dt
+		FROM
+			claim_description
+		WHERE
+			claim_description_no = #{id}
+	</select>
+
+	<select id="getClaimAdjustment" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimAdjustment" parameterType="java.lang.Long">
+		SELECT
+			claim_adjustment_no,
+			order_id,
+			claim_no,
+			adjustment_value,
+			adjustment_type_code,
+			delivery_fee_value,
+			delivery_fee_type_code,
+			cancel_fee_value,
+			cancel_fee_type_code,
+			creator,
+			create_dt,
+			updater,
+			update_dt
+		FROM
+			claim_adjustment
+		WHERE
+			claim_no = #{claimNo}
+	</select>
+
+	<insert id="createClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimReq" useGeneratedKeys="true" keyProperty="claimNo">
+		INSERT INTO claim (
+			status_code,
+			type_code,
+			request_code,
+			cause_code,
+			customer_blame,
+			store_blame,
+			partner_blame,
+			mesh_blame,
+			none_blame,
+			creator,
+			create_dt,
+			updater,
+			update_dt
+		) VALUES (
+			#{claimInfo.statusCode},
+			#{claimInfo.typeCode},
+			#{claimInfo.requestCode},
+			#{claimInfo.causeCode},
+			#{claimInfo.customerBlame},
+			#{claimInfo.storeBlame},
+			#{claimInfo.partnerBlame},
+			#{claimInfo.meshBlame},
+			#{claimInfo.noneBlame},
+			#{creator},
+			now(),
+			#{updater},
+			now()
+		)
+	</insert>
+
+	<update id="updateClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimReq">
+		UPDATE claim SET
+			status_code = #{claimInfo.statusCode},
+			type_code = #{claimInfo.typeCode},
+			request_code = #{claimInfo.requestCode},
+			cause_code = #{claimInfo.causeCode},
+			customer_blame = #{claimInfo.customerBlame},
+			store_blame = #{claimInfo.storeBlame},
+			partner_blame = #{claimInfo.partnerBlame},
+			mesh_blame = #{claimInfo.meshBlame},
+			none_blame = #{claimInfo.noneBlame},
+			updater = #{updater},
+			update_dt = now()
+		WHERE claim_no = #{claimInfo.clainNo}
+	</update>
+
+	<insert id="createOrderClaimRelation" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimReq">
+		INSERT INTO order_claim_relation (
+			order_id,
+			claim_no,
+			claim_order_id,
+			order_number,
+			claim_order_number
+		) VALUES (
+			#{orderId},
+			#{claimNo},
+			#{claimOrderId},
+			#{orderNumber},
+			#{claimOrderNumber}
+		)
+	</insert>
+
+	<select id="getClaimOrderRelation" parameterType="java.lang.Integer" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimOrderRelationDto">
+		SELECT
+			claim_no,
+			order_id,
+			claim_order_id,
+			order_number,
+			claim_order_number
+		FROM
+			order_claim_relation
+		WHERE
+			claim_no = #{claimNo}
+	</select>
+</mapper>
