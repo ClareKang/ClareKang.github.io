@@ -30,7 +30,7 @@ public class Group {
     private String hasPrivacy;
 
     @ManyToOne
-    @JoinColumn(name = "creator")
+    @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
     @Column(name = "create_dt")
@@ -38,7 +38,7 @@ public class Group {
     private Date createDt;
 
     @ManyToOne
-    @JoinColumn(name = "updater")
+    @JoinColumn(name = "updater", referencedColumnName = "user_id")
     private User updater;
 
     @Column(name = "update_dt")
@@ -51,9 +51,6 @@ public class Group {
     @ManyToMany(mappedBy = "groups")
     private List<User> users = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "group_authority_relation",
-        joinColumns = @JoinColumn(name = "group_no"),
-        inverseJoinColumns = @JoinColumn(name = "authority_no"))
-    private List<Authority> authorities = new ArrayList<>();
+    @OneToMany(mappedBy = "group")
+    private List<GroupAuthority> groupAuthorities = new ArrayList<>();
 }

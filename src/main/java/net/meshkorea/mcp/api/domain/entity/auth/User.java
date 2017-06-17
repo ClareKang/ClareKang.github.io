@@ -63,15 +63,12 @@ public class User {
     @Column(name = "memo")
     private String memo;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserAuthority> userAuthorities = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(name = "user_group_relation",
         joinColumns = @JoinColumn(name = "user_no"),
         inverseJoinColumns = @JoinColumn(name = "group_no"))
     private List<Group> groups = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(name = "user_authority_relation",
-        joinColumns = @JoinColumn(name = "user_no"),
-        inverseJoinColumns = @JoinColumn(name = "authority_no"))
-    private List<Authority> authorities = new ArrayList<>();
 }

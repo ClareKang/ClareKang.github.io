@@ -78,3 +78,6 @@ $RECYCLE.BIN/
 
 ### Generated Sources ###
 generated
+
+# Backup file
+*.bak

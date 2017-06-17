@@ -23,6 +23,9 @@ public class Authority {
     @JoinColumn(name = "site_code_no")
     private SiteCode siteCode;
 
+    @Column(name = "parent_authority_no")
+    private Long parentAuthorityNo;
+
     @Column(name = "authority_name")
     private String authorityName;
 
@@ -32,23 +35,28 @@ public class Authority {
     @Column(name = "has_privacy")
     private String hasPrivacy;
 
+    @Column(name = "display_order")
+    private Integer displayOrder;
+
     @Column(name = "view_name")
     private String viewName;
 
     @Column(name = "view_uri")
     private String viewUri;
 
-    @Column(name = "resource_name")
-    private String resourceName;
+    @OneToMany
+    @JoinColumn(name = "parent_authority_no")
+    @OrderBy("display_order ASC")
+    private List<Authority> children = new ArrayList<>();
 
-    @Column(name = "resource_uri")
-    private String resourceUri;
+    @OneToMany(mappedBy = "authority")
+    private List<UserAuthority> userAuthorities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "authorities")
-    private List<User> users = new ArrayList<>();
+    @OneToMany(mappedBy = "authority")
+    private List<GroupAuthority> groupAuthorities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "authorities")
-    private List<Group> groups = new ArrayList<>();
+    @OneToMany(mappedBy = "authority")
+    private List<Resource> resources = new ArrayList<>();
 
     public void setSiteCode(SiteCode siteCode) {
         if (this.siteCode != null)

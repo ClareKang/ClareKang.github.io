@@ -24,17 +24,19 @@ public class AuthorityDto {
 
     private String hasPrivacy;
 
+    private Integer displayOrder;
+
     private String viewName;
 
     private String viewUri;
 
-    private String resourceName;
+    private List<AuthorityDto> children = new ArrayList<>();
 
-    private String resourceUri;
-
-    private List<UserDto> userDtos = new ArrayList<>();
+    private List<UserAuthorityDto> userAuthorityDtos = new ArrayList<>();
 
     private List<GroupDto> groupDtos = new ArrayList<>();
+
+    private List<ResourceDto> resourceDtos = new ArrayList<>();
 
     public void setSiteCodeDto(SiteCodeDto siteCodeDto) {
         if (this.siteCodeDto != null)
@@ -55,10 +57,10 @@ public class AuthorityDto {
         authorityDto.setAuthorityName(authority.getAuthorityName());
         authorityDto.setAuthorityCode(authority.getAuthorityCode());
         authorityDto.setHasPrivacy(authority.getHasPrivacy());
+        authorityDto.setDisplayOrder(authority.getDisplayOrder());
         authorityDto.setViewName(authority.getViewName());
         authorityDto.setViewUri(authority.getViewUri());
-        authorityDto.setResourceName(authority.getResourceName());
-        authorityDto.setResourceUri(authority.getResourceUri());
+        authorityDto.setChildren(AuthorityDto.toAuthorityDtos(authority.getChildren()));
 
         return authorityDto;
     }
@@ -87,10 +89,10 @@ public class AuthorityDto {
         authority.setAuthorityName(authorityDto.getAuthorityName());
         authority.setAuthorityCode(authorityDto.getAuthorityCode());
         authority.setHasPrivacy(authorityDto.getHasPrivacy());
+        authority.setDisplayOrder(authorityDto.getDisplayOrder());
         authority.setViewName(authorityDto.getViewName());
         authority.setViewUri(authorityDto.getViewUri());
-        authority.setResourceName(authorityDto.getResourceName());
-        authority.setResourceUri(authorityDto.getResourceUri());
+        authority.setChildren(AuthorityDto.toAuthorities(authorityDto.getChildren()));
 
         return authority;
     }
