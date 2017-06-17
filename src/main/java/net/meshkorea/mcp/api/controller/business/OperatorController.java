@@ -4,10 +4,7 @@ import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by chaelee on 2017. 3. 10..
@@ -19,27 +16,27 @@ public class OperatorController {
     @Autowired
     OperatorService operatorService;
 
-    @RequestMapping(value = "/findOperators", method = RequestMethod.POST)
+    @PostMapping("/findOperators")
     public ManagerFindOperatorsRes findOperators(ManagerFindOperatorsReq req) throws ApiException {
         return operatorService.findOperators(req);
     }
 
-    @RequestMapping(value = "/getOperatorDetail", method = RequestMethod.POST)
+    @PostMapping("/getOperatorDetail")
     public ManagerGetOperatorDetailRes getOperatorDetail(ManagerGetOperatorDetailReq req) throws ApiException {
         return operatorService.getOperatorDetail(req);
     }
 
-    @RequestMapping(value = "/addOperator", method = RequestMethod.POST)
+    @PostMapping("/addOperator")
     public ManagerAddOperatorRes addOperator(@RequestBody ManagerAddOperatorReq req) throws ApiException {
         return operatorService.addOperator(req);
     }
 
-    @RequestMapping(value = "/removeOperator", method = RequestMethod.POST)
+    @PostMapping("/removeOperator")
     public ManagerRemoveOperatorRes removeOperator(ManagerRemoveOperatorReq req) throws ApiException {
         return operatorService.removeOperator(req);
     }
 
-    @RequestMapping(value = "/updateOperator", method = RequestMethod.POST)
+    @PostMapping("/updateOperator")
     public ManagerUpdateOperatorRes updateOperator(@RequestBody ManagerUpdateOperatorReq req) throws ApiException {
         return operatorService.updateOperator(req);
     }

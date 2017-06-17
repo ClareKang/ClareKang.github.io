@@ -42,4 +42,29 @@ public class PartnerService {
     public ManagerListAllPartnersRes listAllPartners() throws ApiException {
         return lastmileManagerPartnerApi.listAllPartnersUsingGET(lastmileTokenService.getAuthToken());
     }
+
+    public ManagerFindAgentsWithOrderCountRes findAgentsWithOrderCount(ManagerFindAgentsWithOrderCountReq req) throws ApiException {
+        return lastmileManagerPartnerApi.findAgentsWithOrderCountUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerFindClientRes findClients(ManagerFindClientsReq req) throws ApiException {
+        return lastmileManagerPartnerApi.findClientsUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerFindDepartmentsRes findDepartments(ManagerFindDepartmentsReq req) throws ApiException {
+        return lastmileManagerPartnerApi.findDepartmentsUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerAddDepartmentRes addDepartment(ManagerAddDepartmentReq req) throws ApiException {
+        return lastmileManagerPartnerApi.addDepartmentUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerRemoveDepartmentRes removeDepartment(ManagerRemoveDepartmentReq req) throws ApiException {
+        return lastmileManagerPartnerApi.removeDepartmentUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
+    public ManagerAddCustomerRes addCustomer(ManagerAddCustomerReq req) throws ApiException {
+        return lastmileManagerPartnerApi.addCustomerUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
 }
