@@ -23,8 +23,13 @@ public class McpCommonController {
     }
 
     @GetMapping("/userSearchTypes")
-    public CodeListResponse getUserSearchType() {
+    public CodeListResponse getUserSearchTypes() {
         return mcpCommonService.getUserSearchTypes();
+    }
+
+    @GetMapping("/groupSearchTypes")
+    public CodeListResponse getGroupSearchTypes() {
+        return mcpCommonService.getGroupSearchTypes();
     }
 
 }

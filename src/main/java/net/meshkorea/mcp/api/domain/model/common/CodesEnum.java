@@ -5,7 +5,8 @@ package net.meshkorea.mcp.api.domain.model.common;
  */
 public enum CodesEnum {
     USER_TYPE("사용자 유형"),
-    USER_SEARCH_TYPE("사용자 조회 타입");
+    USER_SEARCH_TYPE("사용자 조회 타입"),
+    GROUP_SEARCH_TYPE("그룹 조회 타입");
 
     private String value;
 

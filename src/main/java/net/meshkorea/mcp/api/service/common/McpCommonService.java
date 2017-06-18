@@ -31,6 +31,10 @@ public class McpCommonService {
         return new CodeListResponse(getChildren(CodesEnum.USER_SEARCH_TYPE.name()));
     }
 
+    public CodeListResponse getGroupSearchTypes() {
+        return new CodeListResponse(getChildren(CodesEnum.GROUP_SEARCH_TYPE.name()));
+    }
+
     // TODO: 성능 이슈 처리를 위해 수정해야된다. ex) cache
     private List<CodesDto> getChildren(String code) {
         if (code == null)
