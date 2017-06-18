@@ -29,7 +29,7 @@ public class Group {
     @Column(name = "has_privacy")
     private String hasPrivacy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator", referencedColumnName = "user_id")
     private User creator;
 
@@ -37,7 +37,7 @@ public class Group {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updater", referencedColumnName = "user_id")
     private User updater;
 

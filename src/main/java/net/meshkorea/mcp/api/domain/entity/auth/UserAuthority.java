@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.entity.auth;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
  * Created by reverof on 2017. 6. 16..
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @IdClass(UserAuthorityId.class)
 public class UserAuthority extends AuthorityAttribute {
