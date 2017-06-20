@@ -2,6 +2,9 @@ package net.meshkorea.mcp.api.controller.auth;
 
 import net.meshkorea.mcp.api.domain.model.auth.GroupDto;
 import net.meshkorea.mcp.api.domain.model.auth.GroupListRequest;
+import net.meshkorea.mcp.api.domain.model.auth.GroupListResponse;
+import net.meshkorea.mcp.api.service.auth.GroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -11,14 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/auth/groups")
 public class GroupController {
 
-    @GetMapping
-    public void getGroups(GroupListRequest groupListRequest) {
+    @Autowired
+    private GroupService groupService;
 
+    @GetMapping
+    public GroupListResponse getGroups(@RequestParam(required = false) GroupListRequest groupListRequest) {
+        return groupService.getGroups(groupListRequest);
     }
 
     @GetMapping("/{groupId}")
-    public void getGroup(@PathVariable Long groupId) {
-
+    public GroupDto getGroup(@PathVariable Long groupId) {
+        return groupService.getGroup(groupId);
     }
 
     @PostMapping

@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.entity.auth;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "authority")
+@ToString(exclude = {"userAuthorities", "groupAuthorities", "resources"})
 public class Authority {
 
     @Id
@@ -22,9 +24,6 @@ public class Authority {
     @ManyToOne
     @JoinColumn(name = "site_code_no")
     private SiteCode siteCode;
-
-    @Column(name = "parent_authority_no")
-    private Long parentAuthorityNo;
 
     @Column(name = "authority_name")
     private String authorityName;
@@ -44,11 +43,6 @@ public class Authority {
     @Column(name = "view_uri")
     private String viewUri;
 
-    @OneToMany
-    @JoinColumn(name = "parent_authority_no")
-    @OrderBy("display_order ASC")
-    private List<Authority> children = new ArrayList<>();
-
     @OneToMany(mappedBy = "authority")
     private List<UserAuthority> userAuthorities = new ArrayList<>();
 
@@ -58,11 +52,4 @@ public class Authority {
     @OneToMany(mappedBy = "authority")
     private List<Resource> resources = new ArrayList<>();
 
-    public void setSiteCode(SiteCode siteCode) {
-        if (this.siteCode != null)
-            this.siteCode.getAuthorities().remove(this);
-
-        this.siteCode = siteCode;
-        this.siteCode.getAuthorities().add(this);
-    }
 }

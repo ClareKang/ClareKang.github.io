@@ -30,21 +30,11 @@ public class AuthorityDto {
 
     private String viewUri;
 
-    private List<AuthorityDto> children = new ArrayList<>();
-
     private List<UserAuthorityDto> userAuthorityDtos = new ArrayList<>();
 
-    private List<GroupDto> groupDtos = new ArrayList<>();
+    private List<GroupAuthorityDto> groupAuthorityDtos = new ArrayList<>();
 
     private List<ResourceDto> resourceDtos = new ArrayList<>();
-
-    public void setSiteCodeDto(SiteCodeDto siteCodeDto) {
-        if (this.siteCodeDto != null)
-            this.siteCodeDto.getAuthorityDtos().remove(this);
-
-        this.siteCodeDto = siteCodeDto;
-        this.siteCodeDto.getAuthorityDtos().add(this);
-    }
 
     public static AuthorityDto toAuthorityDto(Authority authority) {
         if (authority == null)
@@ -60,7 +50,6 @@ public class AuthorityDto {
         authorityDto.setDisplayOrder(authority.getDisplayOrder());
         authorityDto.setViewName(authority.getViewName());
         authorityDto.setViewUri(authority.getViewUri());
-        authorityDto.setChildren(AuthorityDto.toAuthorityDtos(authority.getChildren()));
 
         return authorityDto;
     }
@@ -92,7 +81,6 @@ public class AuthorityDto {
         authority.setDisplayOrder(authorityDto.getDisplayOrder());
         authority.setViewName(authorityDto.getViewName());
         authority.setViewUri(authorityDto.getViewUri());
-        authority.setChildren(AuthorityDto.toAuthorities(authorityDto.getChildren()));
 
         return authority;
     }

@@ -10,5 +10,7 @@ import java.util.List;
  */
 @AuthDbConfig.AuthData
 public interface AuthorityRepositoryCustom {
+
     List<Authority> getAllAuthoritiesWithGrantedGroups(Long groupId);
+
 }
