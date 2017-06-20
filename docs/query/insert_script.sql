@@ -12,13 +12,14 @@ VALUES
 INSERT INTO `mcp`.`codes`
 ( `parent_code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
 VALUES
-( 1, 'REGULAR', '정직원', 1, '사용자 유형 코드 - 정직원', 'yjhan', now() ),
-( 1, 'TEMPORARY', '임시직', 2, '사용자 유형 코드 - 임시직', 'yjhan', now() ),
-( 1, 'DISPATCH', '파견직', 3, '사용자 유형 코드 - 파견직', 'yjhan', now() ),
-( 1, 'PARTNER', '협력사', 4, '사용자 유형 코드 - 협력사', 'yjhan', now() ),
-( 1, 'CUSTOMER', '고객사', 5, '사용자 유형 코드 - 고객사', 'yjhan', now() ),
-( 10, 'USER_ID', '통합 ID', 1, '사용자 조회 타입 - 통합 ID', 'yjhan', now() ),
-( 10, 'USER_NAME', '사용자 명', 2, '사용자 조회 타입 - 사용자 명', 'yjhan', now() );
+-- ( 1, 'REGULAR', '정직원', 1, '사용자 유형 코드 - 정직원', 'yjhan', now() ),
+-- ( 1, 'TEMPORARY', '임시직', 2, '사용자 유형 코드 - 임시직', 'yjhan', now() ),
+-- ( 1, 'DISPATCH', '파견직', 3, '사용자 유형 코드 - 파견직', 'yjhan', now() ),
+-- ( 1, 'PARTNER', '협력사', 4, '사용자 유형 코드 - 협력사', 'yjhan', now() ),
+-- ( 1, 'CUSTOMER', '고객사', 5, '사용자 유형 코드 - 고객사', 'yjhan', now() ),
+-- ( 10, 'USER_ID', '통합 ID', 1, '사용자 조회 타입 - 통합 ID', 'yjhan', now() ),
+-- ( 10, 'USER_NAME', '사용자 명', 2, '사용자 조회 타입 - 사용자 명', 'yjhan', now() );
+( 1, 'GENERAL', '일반', 1, '사용자 유형 코드 - 일반', 'yjhan', now() );
 
 INSERT INTO `mcp`.`codes`
 ( `code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
@@ -31,9 +32,19 @@ VALUES
 ( 50, 'GROUP_NAME', '권한 그룹명', 1, '그룹 조회 타입 - 권한 그룹명', 'yjhan', now() ),
 ( 50, 'GROUP_CODE', '권한 그룹 코드', 2, '그룹 조회 타입 - 권한 그룹 코드', 'yjhan', now() );
 
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,11,'권한 관리|계정 관리|목록','목록','/auth/users');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,12,'권한 관리|계정 관리|등록','등록','/auth/users/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,13,'권한 관리|계정 관리|수정','수정','/auth/users/{id}');
+INSERT INTO `mcp`.`codes`
+( `code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
+VALUES
+( 71, 'GROUP_TYPE', '그룹 타입', 1, '그룹 타입 parent', 'yjhan', now() );
+
+INSERT INTO `mcp`.`codes`
+( `parent_code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
+VALUES
+( 71, 'GENERAL', '일반', 1, '그룹 타입 - 일반', 'yjhan', now() );
+
+INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,11,'권한 관리|계정 관리|목록','목록','/auth/accounts');
+INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,12,'권한 관리|계정 관리|등록','등록','/auth/accounts/register');
+INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,13,'권한 관리|계정 관리|수정','수정','/auth/accounts/{id}');
 INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,21,'권한 관리|계정 관리|목록','목록','/auth/groups');
 INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,22,'권한 관리|계정 관리|등록','등록','/auth/groups/register');
 INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,23,'권한 관리|계정 관리|수정','수정','/auth/groups/{id}');

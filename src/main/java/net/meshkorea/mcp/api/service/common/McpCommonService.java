@@ -31,6 +31,12 @@ public class McpCommonService {
         return new CodeListResponse(getChildren(CodesEnum.USER_SEARCH_TYPE.name()));
     }
 
+    @Transactional
+    public CodeListResponse getGroupTypes() {
+        return new CodeListResponse(getChildren(CodesEnum.GROUP_TYPE.name()));
+    }
+
+    @Transactional
     public CodeListResponse getGroupSearchTypes() {
         return new CodeListResponse(getChildren(CodesEnum.GROUP_SEARCH_TYPE.name()));
     }

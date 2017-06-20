@@ -21,10 +21,16 @@ public class AuthorityRepositoryImpl extends AuthRepositoryQueryDslSupport imple
         QResource resource = QResource.resource;
 
         JPQLQuery<Authority> query = from(authority);
-        query.leftJoin(resource)
-            .leftJoin(groupAuthority)
-            .leftJoin(group)
-            .where(group.groupNo.eq(groupId));
+        query.innerJoin(authority.resources, resource)
+            .fetchJoin();
+        if (groupId != null && groupId != 0) {
+            query.leftJoin(authority.groupAuthorities, groupAuthority)
+                .fetchJoin()
+                .leftJoin(groupAuthority.group, group)
+                .on(group.groupNo.eq(groupId));
+        }
+
+        query.orderBy(authority.displayOrder.asc());
 
         return query.fetch();
     }

@@ -14,5 +14,4 @@ public interface GroupRepositoryCustom {
 
     Page<Group> search(GroupListRequest groupListRequest, Pageable pageable);
 
-    Group getGroupWithAuthorities(Long groupId);
 }

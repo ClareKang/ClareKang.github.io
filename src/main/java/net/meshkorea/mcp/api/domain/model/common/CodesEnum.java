@@ -7,6 +7,7 @@ public enum CodesEnum {
 
     USER_TYPE("사용자 유형"),
     USER_SEARCH_TYPE("사용자 조회 타입"),
+    GROUP_TYPE("그룹 유형"),
     GROUP_SEARCH_TYPE("그룹 조회 타입");
 
     private String value;

@@ -27,6 +27,11 @@ public class McpCommonController {
         return mcpCommonService.getUserSearchTypes();
     }
 
+    @GetMapping("/groupTypes")
+    public CodeListResponse getGroupTypes() {
+        return mcpCommonService.getGroupTypes();
+    }
+
     @GetMapping("/groupSearchTypes")
     public CodeListResponse getGroupSearchTypes() {
         return mcpCommonService.getGroupSearchTypes();

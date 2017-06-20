@@ -1,8 +1,6 @@
 package net.meshkorea.mcp.api.controller.auth;
 
-import net.meshkorea.mcp.api.domain.model.auth.GroupDto;
-import net.meshkorea.mcp.api.domain.model.auth.GroupListRequest;
-import net.meshkorea.mcp.api.domain.model.auth.GroupListResponse;
+import net.meshkorea.mcp.api.domain.model.auth.*;
 import net.meshkorea.mcp.api.service.auth.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +21,22 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public GroupDto getGroup(@PathVariable Long groupId) {
+    public GroupResponse getGroup(@PathVariable Long groupId) {
         return groupService.getGroup(groupId);
     }
 
+    @GetMapping("/{groupId}/authorities")
+    public AuthorityListResponse getAuthoritiesByGroup(@PathVariable Long groupId) {
+        return groupService.getAuthoritiesByGroup(groupId);
+    }
+
     @PostMapping
-    public void addGroup(@RequestBody GroupDto groupDto) {
+    public void addGroup(@RequestBody GroupRequest groupRequest) {
+
+    }
+
+    @PostMapping("/{groupId}/authorities")
+    public void updateGroupAuthorities() {
 
     }
 }

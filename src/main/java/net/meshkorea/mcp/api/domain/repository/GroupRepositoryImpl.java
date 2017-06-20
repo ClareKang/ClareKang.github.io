@@ -54,16 +54,4 @@ public class GroupRepositoryImpl extends AuthRepositoryQueryDslSupport implement
         return new PageImpl<>(groups, pageable, totalCount);
     }
 
-    public Group getGroupWithAuthorities(Long groupId) {
-        QGroup group = QGroup.group;
-        QAuthority authority = QAuthority.authority;
-        QGroupAuthority groupAuthority = QGroupAuthority.groupAuthority;
-
-        JPQLQuery<Group> query = from(group);
-        query.innerJoin(groupAuthority)
-            .innerJoin(authority)
-            .where(group.groupNo.eq(groupId));
-
-        return query.fetchOne();
-    }
 }
