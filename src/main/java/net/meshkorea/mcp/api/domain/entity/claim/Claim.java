@@ -4,8 +4,8 @@ import lombok.Data;
 import net.meshkorea.mcp.api.domain.entity.auth.User;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

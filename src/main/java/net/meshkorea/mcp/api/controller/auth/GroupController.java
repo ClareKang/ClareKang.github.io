@@ -32,7 +32,8 @@ public class GroupController {
 
     @PostMapping
     public void addGroup(@RequestBody GroupRequest groupRequest) {
-
+        System.out.println(groupRequest);
+        groupService.addGroup(groupRequest);
     }
 
     @PostMapping("/{groupId}/authorities")

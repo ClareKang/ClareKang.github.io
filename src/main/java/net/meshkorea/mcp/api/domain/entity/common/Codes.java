@@ -3,8 +3,8 @@ package net.meshkorea.mcp.api.domain.entity.common;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

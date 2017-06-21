@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -24,7 +25,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(
     basePackageClasses = {McpApiApplication.class},
-    includeFilters = @ComponentScan.Filter(AuthDbConfig.AuthData.class),
+    includeFilters = @ComponentScan.Filter({AuthDbConfig.AuthData.class}),
     entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME)
 @MapperScan(
     basePackageClasses = {McpApiApplication.class},
@@ -51,7 +52,7 @@ public class AuthDb implements AuthDbConfig {
 
         factoryBean.setDataSource(getDataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName());
+        factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName(), Jsr310JpaConverters.class.getPackage().getName());
         factoryBean.setJpaProperties(jpaProperties);
         factoryBean.setPersistenceUnitName(AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME);
 

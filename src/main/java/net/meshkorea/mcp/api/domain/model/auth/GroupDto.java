@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.entity.auth.Group;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,17 +19,19 @@ public class GroupDto {
 
     private String groupName;
 
+    private String groupType;
+
     private String isActive;
 
     private String hasPrivacy;
 
     private UserDto creator;
 
-    private Date createDt;
+    private LocalDateTime createDt;
 
     private UserDto updater;
 
-    private Date updateDt;
+    private LocalDateTime updateDt;
 
     private String description;
 
@@ -42,6 +44,7 @@ public class GroupDto {
         GroupDto groupDto = new GroupDto();
         groupDto.setGroupNo(group.getGroupNo());
         groupDto.setGroupName(group.getGroupName());
+        groupDto.setGroupType(group.getGroupType());
         groupDto.setIsActive(group.getIsActive());
         groupDto.setHasPrivacy(group.getHasPrivacy());
         groupDto.setCreator(UserDto.toUserDto(group.getCreator()));
@@ -72,6 +75,7 @@ public class GroupDto {
         Group group = new Group();
         group.setGroupNo(groupDto.getGroupNo());
         group.setGroupName(groupDto.getGroupName());
+        group.setGroupType(groupDto.getGroupType());
         group.setIsActive(groupDto.getIsActive());
         group.setHasPrivacy(groupDto.getHasPrivacy());
         group.setCreator(UserDto.toUser(groupDto.getCreator()));

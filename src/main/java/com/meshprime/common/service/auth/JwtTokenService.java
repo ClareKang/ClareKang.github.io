@@ -59,7 +59,7 @@ public abstract class JwtTokenService {
     public String getAuthToken() throws ApiException {
 
         try {
-            if (token == null || tokenExpireDate == null || ! isValidDate(tokenExpireDate)) {
+            if (token == null || tokenExpireDate == null || !isValidDate(tokenExpireDate)) {
 
                 AuthApi authApi = getAuthApi();
                 AuthenticateResult authenticateResult = authApi.login(makeAuthenticateRequest(userId, password));

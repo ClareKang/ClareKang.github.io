@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -24,7 +25,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(
     basePackageClasses = {McpApiApplication.class},
-    includeFilters = @ComponentScan.Filter(MasterDbConfig.MasterData.class),
+    includeFilters = @ComponentScan.Filter({MasterDbConfig.MasterData.class}),
     entityManagerFactoryRef = MasterDbConfig.ENTITY_MANAGER_FACTORY_NAME)
 @MapperScan(
     basePackageClasses = {McpApiApplication.class},
@@ -53,7 +54,7 @@ public class MasterDb implements MasterDbConfig {
 
         factoryBean.setDataSource(getDataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName());
+        factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName(), Jsr310JpaConverters.class.getPackage().getName());
         factoryBean.setJpaProperties(jpaProperties);
         factoryBean.setPersistenceUnitName(MasterDbConfig.ENTITY_MANAGER_FACTORY_NAME);
 

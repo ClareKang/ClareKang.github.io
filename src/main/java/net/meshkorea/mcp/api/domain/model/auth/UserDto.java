@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.entity.auth.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,11 +33,11 @@ public class UserDto {
 
     private UserDto creator;
 
-    private Date createDt;
+    private LocalDateTime createDt;
 
     private UserDto updater;
 
-    private Date updateDt;
+    private LocalDateTime updateDt;
 
     private String description;
 
