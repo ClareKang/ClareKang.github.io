@@ -5,8 +5,8 @@
 
 
 
-	<select id="findClaims" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimSearchDto" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimRes">
-	  SELECT
+	<select id="findClaims" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimSearchDto" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimList">
+	  <!--SELECT
 	  	c.claim_no,
 	  	status_code,
 	  	type_code,
@@ -29,6 +29,100 @@
 	  	claim c
 	  	LEFT JOIN order_claim_relation r
 	  	on c.claim_no = r.claim_no
+		<if test="typeCode != ''">
+			and type_code = #{typeCode}
+		</if>
+		<if test="requestCode != ''">
+			and request_code = #{requestCode}
+		</if>
+		<if test="orderIds.size != 0">
+			and order_id in
+			<foreach collection="orderIds" item="item" index="index" open="(" separator=", " close=")">
+				#{item}
+			</foreach>
+		</if>-->
+		SELECT
+			c.claim_no,
+			status_code,
+			type_code,
+			request_code,
+			cause_code,
+			customer_blame,
+			store_blame,
+			partner_blame,
+			mesh_blame,
+			none_blame,
+			creator,
+			create_dt,
+			updater,
+			update_dt,
+			order_id,
+			claim_order_id,
+			order_number,
+			claim_order_number
+		FROM
+		(
+			SELECT
+				claim_no,
+				status_code,
+				type_code,
+				request_code,
+				cause_code,
+				customer_blame,
+				store_blame,
+				partner_blame,
+				mesh_blame,
+				none_blame,
+				creator,
+				create_dt,
+				updater,
+				update_dt
+			FROM claim
+			WHERE 1 = 1
+			<if test="claimType != null and claimType != ''">
+				AND type_code = #{claimType}
+			</if>
+			<if test="requestType != null and requestType != ''">
+				AND request_code = #{requestType}
+			</if>
+			<if test="claimStatusType != null and claimStatusType.size != 0">
+			  	AND status_code IN
+				<foreach collection="claimStatusType" item="item" index="index" open="(" separator=", " close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="searchType == 'claimNo'">
+				AND claim_no LIKE CONCAT('%', #{searchString}, '%')
+			</if>
+			AND create_dt BETWEEN #{request.startDate} AND #{request.endDate}
+		) c
+		INNER JOIN (
+			SELECT
+				order_id,
+				claim_no,
+				claim_order_id,
+				order_number,
+				claim_order_number
+			FROM order_claim_relation
+			WHERE 1 = 1
+			<if test="orderIds != null and orderIds.size != 0">
+				AND order_id IN
+				<foreach collection="orderIds" item="item" index="index" open="(" separator=", " close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="searchType == 'originOrderNumber'">
+				AND order_number LIKE CONCAT('%', #{searchString}, '%')
+			</if>
+			<if test="searchType == 'claimOrderNumber'">
+				AND claim_order_number LIKE CONCAT('%', #{searchString}, '%')
+			</if>
+			<if test="searchType == 'claimNo'">
+				AND claim_no LIKE CONCAT('%', #{searchString}, '%')
+			</if>
+		) o
+		ON c.claim_no = o.claim_no
+
 	</select>
 
 	<select id="getClaimDetail" parameterType="java.lang.Long" resultType="net.meshkorea.mcp.api.domain.model.claim.Claim">
@@ -94,7 +188,7 @@
 			claim_no = #{claimNo}
 	</select>
 
-	<insert id="createClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimReq" useGeneratedKeys="true" keyProperty="claimNo">
+	<insert id="createClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimRequest" useGeneratedKeys="true" keyProperty="claimNo">
 		INSERT INTO claim (
 			status_code,
 			type_code,
@@ -126,7 +220,21 @@
 		)
 	</insert>
 
-	<update id="updateClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimReq">
+	<insert id="insertClaimHistory" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimHistory">
+		INSERT INTO claim_history (
+			claim_no,
+			creator,
+			create_dt,
+			json_string
+		) VALUES (
+			#{claimNo},
+			#{creator},
+			NOW(),
+			#{jsonString}
+		)
+	</insert>
+
+	<update id="updateClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimRequest">
 		UPDATE claim SET
 			status_code = #{claimInfo.statusCode},
 			type_code = #{claimInfo.typeCode},
@@ -139,10 +247,10 @@
 			none_blame = #{claimInfo.noneBlame},
 			updater = #{updater},
 			update_dt = now()
-		WHERE claim_no = #{claimInfo.clainNo}
+		WHERE claim_no = #{claimInfo.claimNo}
 	</update>
 
-	<insert id="createOrderClaimRelation" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimReq">
+	<insert id="createOrderClaimRelation" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimRequest">
 		INSERT INTO order_claim_relation (
 			order_id,
 			claim_no,
@@ -169,5 +277,46 @@
 			order_claim_relation
 		WHERE
 			claim_no = #{claimNo}
+	</select>
+
+	<insert id="updateClaimDescription" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimDescriptionRequest">
+		INSERT INTO claim_description (
+			order_id,
+			claim_no,
+			description,
+			creator,
+			create_dt
+		) VALUES (
+			#{orderId},
+			#{claimNo},
+			#{description},
+			#{creator},
+			NOW()
+		)
+	</insert>
+
+	<update id="updateClaimAdjustment" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimAdjustmentRequest">
+		UPDATE claim_adjustment SET
+
+	</update>
+
+	<select id="getClaimReasonCode" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimReasonCode">
+		SELECT  t2.code as parentCode, t2.code_name as parentCodeName, t3.code as childCode, t3.code_name as childCodeName
+		FROM codes AS t1
+		LEFT JOIN codes AS t2 ON t2.parent_code_no = t1.code_no
+		LEFT JOIN codes AS t3 ON t3.parent_code_no = t2.code_no
+		LEFT JOIN codes AS t4 ON t4.parent_code_no = t3.code_no
+		WHERE t1.code = 'CAUSE_TYPE'
+	</select>
+
+	<select id="getClaimCode" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimCode" parameterType="java.lang.String">
+		SELECT
+			code,
+			code_name
+		FROM
+			codes
+		WHERE
+			parent_code_no = ( SELECT code_no FROM codes WHERE code = #{code})
+		ORDER BY display_order asc
 	</select>
 </mapper>

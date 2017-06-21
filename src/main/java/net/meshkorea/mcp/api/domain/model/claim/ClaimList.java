@@ -3,17 +3,18 @@ package net.meshkorea.mcp.api.domain.model.claim;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.meshkorea.mcp.api.domain.model.auth.UserDto;
 
 import java.util.Date;
 
 /**
- * Created by reverof on 2017. 4. 13..
+ * Created by sungjae.hong on 2017. 6. 13..
  */
+
 @Getter
 @Setter
 @ToString
-public class Claim {
-
+public class ClaimList {
     private Long claimNo;
 
     private String statusCode;
@@ -38,7 +39,7 @@ public class Claim {
 
     private Date createDt;
 
-    private String updater;
+    private UserDto updater;
 
     private Date updateDt;
 
