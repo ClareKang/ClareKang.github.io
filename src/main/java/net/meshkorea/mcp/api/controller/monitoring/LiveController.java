@@ -49,12 +49,12 @@ public class LiveController {
     }
 
     @PostMapping("/getOrderStatusForAssign")
-    public ManagerGetOrderStatusForAssignRes getOrderStatusForAssign(@RequestBody ManagerGetOrderStatusForAssignReq req) throws ApiException {
+    public ManagerGetOrderStatusForAssignRes getOrderStatusForAssign(ManagerGetOrderStatusForAssignReq req) throws ApiException {
         return liveService.getOrderStatusForAssign(req);
     }
 
     @PostMapping("/assignAgent")
-    public ManagerAssignAgentRes assignAgent(ManagerAssignAgentReq req) throws ApiException {
+    public ManagerAssignAgentRes assignAgent(@RequestBody ManagerAssignAgentReq req) throws ApiException {
         return liveService.assignAgent(req);
     }
 
