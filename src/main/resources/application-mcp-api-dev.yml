@@ -14,7 +14,7 @@ vroong:
         userAgent: MeshControlPlatformApi/java
   admin:
     api:
-      baseUrl: http://10.5.1.211:42100/
+      baseUrl: http://10.5.1.211:42100
       authUrl: /oauth/token
       userId: admin
       password: adminsecret
