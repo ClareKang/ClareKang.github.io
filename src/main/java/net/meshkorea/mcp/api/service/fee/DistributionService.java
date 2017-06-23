@@ -22,8 +22,8 @@ public class DistributionService {
     @Autowired
     AdminPricingPolicyApi adminPricingPolicyApi;
 
-    public AdminPricingPlanListRes findPricingPlans(AdminPricingPlanListReq req) throws Exception {
-        return adminPricingPlanApi.findPricingPlansUsingGET(adminTokenService.getAuthToken(), req);
+    public AdminPricingPlanListRes findPricingPlans(String name) throws Exception {
+        return adminPricingPlanApi.findPricingPlansUsingGET(adminTokenService.getAuthToken(), name);
     }
 
     public AddPricingPlanRes addPricingPlans(AddPricingPlanReq req) throws Exception {
@@ -38,8 +38,8 @@ public class DistributionService {
         return adminPricingPlanApi.updatePricingPlanUsingPUT(adminTokenService.getAuthToken(), req, (long) id);
     }
 
-    public AdminPricingPolicyListRes findPricingPolicies(AdminPricingPolicyListReq req) throws Exception {
-        return adminPricingPolicyApi.findPricingPoliciesUsingGET(adminTokenService.getAuthToken(), req);
+    public AdminPricingPolicyListRes findPricingPolicies(String name) throws Exception {
+        return adminPricingPolicyApi.findPricingPoliciesUsingGET(adminTokenService.getAuthToken(), name);
     }
 
     public AddPricingPolicyRes addPricingPolicy(AddPricingPolicyReq req) throws Exception {

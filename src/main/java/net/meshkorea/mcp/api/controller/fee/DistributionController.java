@@ -21,9 +21,8 @@ public class DistributionController {
 
 
     @RequestMapping(value = "/pricingPlans", method = RequestMethod.GET)
-    public AdminPricingPlanListRes findPricingPlans(AdminPricingPlanListReq req) throws Exception {
-        logger.info("findPricingPlans : " + req.toString());
-        AdminPricingPlanListRes res = distributionService.findPricingPlans(req);
+    public AdminPricingPlanListRes findPricingPlans(String name) throws Exception {
+        AdminPricingPlanListRes res = distributionService.findPricingPlans(name);
         return res;
     }
 
@@ -45,8 +44,8 @@ public class DistributionController {
     }
 
     @RequestMapping(value = "/pricingPolicies", method = RequestMethod.GET)
-    public AdminPricingPolicyListRes findPricingPolicies(AdminPricingPolicyListReq req) throws Exception {
-        return distributionService.findPricingPolicies(req);
+    public AdminPricingPolicyListRes findPricingPolicies(String name) throws Exception {
+        return distributionService.findPricingPolicies(name);
         //return new AdminPricingPolicyListRes();
     }
 
