@@ -50,4 +50,9 @@ public class UserService {
         User user = userRepository.save(UserDto.toUser(userDto));
         return new UserResponse(UserDto.toUserDto(user));
     }
+
+    public UserResponse updateUser(UserDto userDto) {
+        User user = userRepository.save(UserDto.toUser(userDto));
+        return new UserResponse(UserDto.toUserDto(user));
+    }
 }

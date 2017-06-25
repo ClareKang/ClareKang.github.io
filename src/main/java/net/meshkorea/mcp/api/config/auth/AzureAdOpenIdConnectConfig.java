@@ -2,34 +2,36 @@ package net.meshkorea.mcp.api.config.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.common.AuthenticationScheme;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 import java.util.Arrays;
 
 /**
  * Created by jihunlee on 2017. 5. 17..
  */
-// @Configuration
-// @EnableOAuth2Client
+//@Configuration
+//@EnableOAuth2Client
 public class AzureAdOpenIdConnectConfig {
-    @Value("${azureAd.clientId}")
+
+    @Value("${azure.ad.clientId}")
     private String clientId;
 
-    @Value("${azureAd.clientSecret}")
+    @Value("${azure.ad.clientSecret}")
     private String clientSecret;
 
-    @Value("${azureAd.accessTokenUri}")
+    @Value("${azure.ad.resourceUri}")
+    private String resourceUri;
+
+    @Value("${azure.ad.accessTokenUri}")
     private String accessTokenUri;
 
-    @Value("${azureAd.userAuthorizationUri}")
-    private String userAuthorizationUri;
-
-    @Value("${azureAd.redirectUri}")
-    private String redirectUri;
+    @Value("${azure.ad.grantType}")
+    private String grantType;
 
     @Bean
     public OAuth2ProtectedResourceDetails azureAdOpenId() {
@@ -37,11 +39,9 @@ public class AzureAdOpenIdConnectConfig {
         details.setClientId(clientId);
         details.setClientSecret(clientSecret);
         details.setAccessTokenUri(accessTokenUri);
-        details.setUserAuthorizationUri(userAuthorizationUri);
+        details.setGrantType(grantType);
         details.setScope(Arrays.asList("openid"));
-        details.setPreEstablishedRedirectUri(redirectUri);
-        details.setClientAuthenticationScheme(AuthenticationScheme.form);
-        details.setUseCurrentUri(false);
+        // details.setUseCurrentUri(false);
         return details;
     }
 
@@ -49,4 +49,5 @@ public class AzureAdOpenIdConnectConfig {
     public OAuth2RestTemplate azureAdOpenIdTemplate(OAuth2ClientContext clientContext) {
         return new OAuth2RestTemplate(azureAdOpenId(), clientContext);
     }
+
 }

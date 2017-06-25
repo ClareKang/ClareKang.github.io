@@ -1,7 +1,6 @@
 package net.meshkorea.mcp.api.domain.repository;
 
 import com.querydsl.jpa.JPQLQuery;
-import net.meshkorea.mcp.api.domain.entity.auth.QGroup;
 import net.meshkorea.mcp.api.domain.entity.auth.QUser;
 import net.meshkorea.mcp.api.domain.entity.auth.User;
 import net.meshkorea.mcp.api.domain.model.auth.UserListRequest;
@@ -25,7 +24,6 @@ public class UserRepositoryImpl extends AuthRepositoryQueryDslSupport implements
     @Override
     public Page<User> search(UserListRequest userListRequest, Pageable pageable) {
         QUser user = QUser.user;
-        QGroup group = QGroup.group;
 
         JPQLQuery<User> query = from(user);
 
@@ -38,15 +36,6 @@ public class UserRepositoryImpl extends AuthRepositoryQueryDslSupport implements
             }
             if (userListRequest.getUserType() != null) {
                 query.where(user.userType.eq(userListRequest.getUserType()));
-            }
-            if (userListRequest.getGroupId() != null || userListRequest.getGroupName() != null) {
-                query.leftJoin(user.groups, group);
-                if (userListRequest.getGroupId() != null) {
-                    query.where(group.groupNo.eq(userListRequest.getGroupId()));
-                }
-                if (userListRequest.getGroupName() != null) {
-                    query.where(group.groupName.eq(userListRequest.getGroupName()));
-                }
             }
         }
 
