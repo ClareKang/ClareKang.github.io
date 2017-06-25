@@ -2,6 +2,7 @@ package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import net.meshkorea.mcp.api.domain.model.store.CheckStoreName;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +27,18 @@ public class StoreController {
 
     @RequestMapping(value = "/stores", method = RequestMethod.GET)
     public StoresResult listStores(String storeType, String storeCertificationStatus, String storeOperatingStatus,
-                            String storeName, String clientName, String storePhone, String storeAddress,
-                            String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
-                            Integer size, Integer page) throws Exception {
+                                   String storeName, String clientName, String storePhone, String storeAddress,
+                                   String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
+                                   Integer size, Integer page) throws Exception {
         return storeService.listStores(storeType, storeCertificationStatus,
-            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
-            storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
+                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
+                storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
     }
 
     @RequestMapping(value = "/stores/list", method = RequestMethod.GET)
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
-                                           String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
-                                         ) throws ApiException{
+                                        String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
+    ) throws ApiException {
         System.out.println(storeType + ", " + storeName + ", " + clientName + ", " + storePhone + ", " + storeAddress + ", " + tag + ", " + storeManagementDepartmentId + ", " + vroongMonitoringPartnerId);
         return storeService.getStoreList(storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
@@ -78,8 +79,13 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
-    public Boolean checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
-        return storeService.checkStoreUserExists(req);
+    public CheckStoreName checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
+        boolean value = storeService.checkStoreUserExists(req);
+        System.out.println(req);
+        System.out.println(value);
+        CheckStoreName result = new CheckStoreName();
+        result.setResult(value);
+        return result;
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
@@ -95,7 +101,7 @@ public class StoreController {
 
     @PutMapping(value = "/stores/{id}/pricingPolicy")
     public UpdatePricingPolicyResponse updateStorePricingPolicy(@PathVariable Integer id,
-                                             @RequestBody PricingPolicy pricingPolicy) throws ApiException {
+                                                                @RequestBody PricingPolicy pricingPolicy) throws ApiException {
         return storeService.updateStorePricingPolicy(id, pricingPolicy);
     }
 
@@ -135,7 +141,7 @@ public class StoreController {
     }
 
     @PutMapping(value = "/stores/{id}/operating_status")
-    public ResponseEntity updateStoreOperatingStatus(@PathVariable String id, @RequestBody ChangeStoreOperatingStatusRequest req) throws  ApiException {
+    public ResponseEntity updateStoreOperatingStatus(@PathVariable String id, @RequestBody ChangeStoreOperatingStatusRequest req) throws ApiException {
         return storeService.updateStoreOperatingStatus(id, req);
     }
 
