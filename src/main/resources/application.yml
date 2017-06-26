@@ -13,16 +13,16 @@ sk:
       searchtypCd: A
       count: 99
 
-#azureAd:
-#  clientId: f2966b28-5d87-41f5-90d4-3fe9bab0fa8b
-#  clientSecret: zfZspRF5mLS8tjrllxFD7Mzmz54ODMxhsT3+A2jHqOE=
-#  accessTokenUri: https://login.microsoftonline.com/e8157cf4-811d-4a75-95f9-4c051e944030/oauth2/token
-#  userAuthorizationUri: https://login.microsoftonline.com/e8157cf4-811d-4a75-95f9-4c051e944030/oauth2/authorize
-
 azure:
   ad:
-    accessTokenUri: https://login.microsoftonline.com/meshkorea.net/oauth2/token
-    resourceUri: https://graph.microsoft.com/
+    accessTokenUri: https://login.microsoftonline.com/meshkorea.net/oauth2/v2.0/token
+    stsDiscoveryEndpoint: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+    scope: https://graph.microsoft.com/.default
     grantType: client_credentials
     clientId: 2da95571-ed3f-4851-b784-e02f37fe5978
     clientSecret: DZTnyOxoOJ5rFT0jwprZeOQ
+    graph:
+      api:
+        users:
+          url: https://graph.microsoft.com/v1.0/users
+          top: 1000

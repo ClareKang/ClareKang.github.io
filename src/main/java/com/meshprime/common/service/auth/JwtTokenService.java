@@ -27,11 +27,11 @@ public abstract class JwtTokenService {
     @Setter
     private String password;
 
-    private String jwtToken;
+    private static String jwtToken;
 
-    private String token;
+    private static String token;
 
-    private LocalDateTime tokenExpireDate;
+    private static LocalDateTime tokenExpireDate;
 
     public abstract AuthApi getAuthApi();
 
