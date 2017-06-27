@@ -39,3 +39,8 @@ time:
 
 storage:
   location: /tmp
+
+kmc:
+  cert:
+    companyId: test
+    urlCode: test

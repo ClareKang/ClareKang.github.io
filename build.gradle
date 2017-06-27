@@ -81,6 +81,8 @@ dependencies {
 
     compile "com.auth0:java-jwt:${javaJwtVersion}"
 
+    compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
+
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
