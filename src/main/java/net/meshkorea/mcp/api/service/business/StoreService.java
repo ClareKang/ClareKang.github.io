@@ -79,8 +79,12 @@ public class StoreService {
         return intraStoresApi.getStore(intraTokenService.getAuthToken(), id);
     }
 
-    public StoreRequest updateStore(String id, StoreRequest store) throws Exception {
-        return intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store);
+    public ResponseEntity updateStore(String id, StoreRequest store) throws Exception {
+        try {
+            return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
+        } catch (ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
     }
 
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,

@@ -94,8 +94,7 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.PUT)
-    public StoreRequest updateStore(@PathVariable Integer id, @RequestBody StoreRequest store) throws Exception {
-        System.out.println(store.toString());
+    public ResponseEntity updateStore(@PathVariable Integer id, @RequestBody StoreRequest store) throws Exception {
         return storeService.updateStore(id.toString(), store);
     }
 
