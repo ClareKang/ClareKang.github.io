@@ -9,7 +9,7 @@
 <script type="text/javascript">
   document.domain = window.location.hostname;
   function load() {
-    window.opener.handleCertResult("${result}", "${certId}");
+    window.opener.handleCertResult("[[${result}]]", "$[[{certId}]]");
     self.close();
   }
 </script>
