@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>본인인증서비스</title>
+    </meta>
+</head>
+<body onload="submit()">
+<form id="kmcis_form" name="kmcis_form" method="POST">
+    <input type="hidden" name="recCert" value="{{recCert}}"/>
+    <input type="hidden" name="certNum" value="{{certNum}}"/>
+</form>
+<script type="text/javascript">
+  document.domain = window.location.hostname;
+  var returnUrl = "{{returnUrl}}";
+
+  function submit() {
+    var UserAgent = navigator.userAgent;
+
+    // 결과 페이지 경로 셋팅
+    document.kmcis_form.action = returnUrl;
+
+    if (UserAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null) {
+      document.kmcis_form.submit();
+    } else {
+      document.kmcis_form.target = opener.window.name;
+      document.kmcis_form.submit();
+      self.close();
+    }
+  }
+</script>
+</body>
+</html>
