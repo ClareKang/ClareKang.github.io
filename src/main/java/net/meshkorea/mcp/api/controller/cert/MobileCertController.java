@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.controller.cert;
 import net.meshkorea.mcp.api.domain.model.kmc.CertRequest;
 import net.meshkorea.mcp.api.domain.model.kmc.CertResponseDecrypt;
 import net.meshkorea.mcp.api.service.cert.MobileCertService;
+import net.meshkorea.mcp.api.utils.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class MobileCertController {
 
         model.put("cert", certRequest.encrypt());
         model.put("callbackUrl", callbackUrl);
+        model.put("domain", UrlUtils.getSiteDomain(callbackUrl));
 
         return "cert_request_form";
     }

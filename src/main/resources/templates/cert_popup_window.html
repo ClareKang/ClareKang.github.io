@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>본인인증서비스</title>
@@ -7,12 +7,12 @@
 </head>
 <body onload="submit()">
 <form id="kmcis_form" name="kmcis_form" method="POST">
-    <input type="hidden" name="recCert" value="{{recCert}}"/>
-    <input type="hidden" name="certNum" value="{{certNum}}"/>
+    <input type="hidden" name="recCert" th:value="${recCert}"/>
+    <input type="hidden" name="certNum" th:value="${certNum}"/>
 </form>
 <script type="text/javascript">
   document.domain = window.location.hostname;
-  var returnUrl = "{{returnUrl}}";
+  var returnUrl = "${returnUrl}";
 
   function submit() {
     var UserAgent = navigator.userAgent;

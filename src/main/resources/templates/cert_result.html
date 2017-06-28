@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>본인인증서비스</title>
@@ -9,7 +9,7 @@
 <script type="text/javascript">
   document.domain = window.location.hostname;
   function load() {
-    window.opener.handleCertResult("{{result}}", "{{certId}}");
+    window.opener.handleCertResult("${result}", "${certId}");
     self.close();
   }
 </script>
