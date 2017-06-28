@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
-public class CertService {
+public class MobileCertService {
 
     @Autowired
     private KmcConfiguration kmcConfiguration;

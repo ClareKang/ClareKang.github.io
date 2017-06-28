@@ -1,10 +1,8 @@
 package net.meshkorea.mcp.api.controller.cert;
 
-import net.meshkorea.mcp.api.domain.model.cert.MobileCertResponse;
 import net.meshkorea.mcp.api.domain.model.kmc.CertRequest;
 import net.meshkorea.mcp.api.domain.model.kmc.CertResponseDecrypt;
-import net.meshkorea.mcp.api.service.cert.CertService;
-import org.bouncycastle.asn1.cmp.CertResponse;
+import net.meshkorea.mcp.api.service.cert.MobileCertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +22,11 @@ import java.util.Map;
 public class MobileCertController {
 
     @Autowired
-    private CertService certService;
+    private MobileCertService mobileCertService;
 
     @GetMapping(value = "/identification")
     public String getCertRequestData(Map<String, Object> model) {
-        CertRequest certRequest = certService.createRequest();
+        CertRequest certRequest = mobileCertService.createRequest();
 
         UriComponents uriComponents = ServletUriComponentsBuilder
             .fromCurrentServletMapping()
