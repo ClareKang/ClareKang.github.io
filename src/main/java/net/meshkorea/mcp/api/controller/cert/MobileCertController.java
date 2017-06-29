@@ -37,7 +37,7 @@ public class MobileCertController {
 
         model.put("cert", certRequest.encrypt());
         model.put("callbackUrl", uriComponents.toUriString());
-        model.put("domain", UrlUtils.getSiteDomain("qa.intra-api.vroong.com"));
+        model.put("domain", UrlUtils.getSiteDomain(uriComponents));
 
         return "cert_request_form";
     }
