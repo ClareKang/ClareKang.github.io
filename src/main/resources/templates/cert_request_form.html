@@ -13,8 +13,8 @@
     <input type="hidden" name="tr_url" th:value="${callbackUrl}"/>
 </form>
 
-<script language="javascript">
-  document.domain = "[[${domain}]]";
+<script th:inline="javascript">
+  document.domain = [[${domain}]];
   window.name = "kmcis_web";
   function openKMCISWindow() {
     var userAgent = navigator.userAgent;

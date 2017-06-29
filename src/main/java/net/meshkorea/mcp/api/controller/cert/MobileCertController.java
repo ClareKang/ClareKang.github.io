@@ -32,25 +32,32 @@ public class MobileCertController {
         UriComponents uriComponents = ServletUriComponentsBuilder
             .fromCurrentServletMapping()
             .path("v1/cert/mobile/identification/callback/" + certRequest.getCertNum())
-            .build();
-        String callbackUrl = uriComponents.encode().toUriString();
+            .build()
+            .encode();
 
         model.put("cert", certRequest.encrypt());
-        model.put("callbackUrl", callbackUrl);
-        model.put("domain", UrlUtils.getSiteDomain(callbackUrl));
+        model.put("callbackUrl", uriComponents.toUriString());
+        model.put("domain", UrlUtils.getSiteDomain(uriComponents));
 
         return "cert_request_form";
     }
 
     @GetMapping(value = "/identification/callback/{certNum}")
     public String handleCallback(@RequestParam("rec_cert") String recCert, @PathVariable("certNum") String certNum, Map<String, Object> model) {
+        UriComponents uriComponents = ServletUriComponentsBuilder
+            .fromCurrentServletMapping()
+            .build();
+
+        String domain = UrlUtils.getSiteDomain(uriComponents);
 
         CertResponseDecrypt certResponse;
         try {
             certResponse = new CertResponseDecrypt(recCert, certNum);
+            model.put("domain", domain);
             model.put("result", certResponse.getResult());
             model.put("certId", certResponse.getCi());
         } catch (Exception e) {
+            model.put("domain", domain);
             model.put("result", "F");
             model.put("certId", "");
         }

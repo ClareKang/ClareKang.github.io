@@ -31,7 +31,7 @@ public class UrlUtils {
         return getSiteDomainParts(uriComponents.getHost());
     }
 
-    public static String getSiteDomain(String url) {
-        return getSiteDomainParts(url);
+    public static String getSiteDomain(String hostname) {
+        return getSiteDomainParts(hostname);
     }
 }

@@ -6,10 +6,10 @@
     </meta>
 </head>
 <body onload="load()">
-<script type="text/javascript">
-  document.domain = window.location.hostname;
+<script th:inline="javascript">
+  document.domain = [[${domain}]];
   function load() {
-    window.opener.handleCertResult("[[${result}]]", "$[[{certId}]]");
+    window.opener.handleCertResult([[${result}]], [[${certId}]]);
     self.close();
   }
 </script>
