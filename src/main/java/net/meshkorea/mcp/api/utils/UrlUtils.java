@@ -15,9 +15,9 @@ public class UrlUtils {
         if (StringUtils.isEmpty(url) || StringUtils.contains(url, "localhost")) {
             return url;
         }
-        String[] urlParts = url.split(".");
+        String[] urlParts = url.split("\\.");
         if (urlParts.length > 2) {
-            return String.join(".", Arrays.copyOfRange(urlParts, -2, urlParts.length));
+            return String.join(".", Arrays.copyOfRange(urlParts, urlParts.length - 2, urlParts.length));
         } else {
             return String.join(".", urlParts);
         }
