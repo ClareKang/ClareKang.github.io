@@ -83,7 +83,6 @@ public class ClaimService {
             }
             claimSearchDto.setOrderIds(orderIds);
         }
-        System.out.println(claimSearchDto);
         List<ClaimList> list = claimDao.findClaims(claimSearchDto);
 
         return new ClaimListResponse(list);
@@ -94,7 +93,6 @@ public class ClaimService {
         request.setCreator("sungjae.hong");
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
-        System.out.println(claimNo);
 
         int result = claimDao.createOrderClaimRelation(request);
 

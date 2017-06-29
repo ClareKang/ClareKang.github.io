@@ -18,7 +18,6 @@ public class LiveController {
 
     @PostMapping("/findOrders")
     public ManagerFindOrdersRes findOrders(@RequestBody ManagerFindOrdersReq req) throws ApiException {
-        System.out.println(req);
         return liveService.findOrders(req);
     }
 
@@ -29,7 +28,6 @@ public class LiveController {
 
     @PostMapping("/updateOrder")
     public ManagerUpdateOrderRes updateOrder(@RequestBody ManagerUpdateOrderReq req) throws ApiException {
-        System.out.println(req);
         return liveService.updateOrder(req);
     }
 

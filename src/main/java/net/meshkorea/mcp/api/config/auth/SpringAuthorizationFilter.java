@@ -25,18 +25,14 @@ public class SpringAuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException{
         //여기서 권한체크
-        System.out.println("************AFTER*************");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession(false);
         session.setAttribute("name", authentication.getName());
         request.setAttribute("auth", authentication.getAuthorities());
-        System.out.println(session);
 
         filterChain.doFilter(request, response);
-        System.out.println("************AFTER DONE*************");
     }
 
     @Override
