@@ -44,7 +44,7 @@ public class MobileCertController {
     public String handleCallback(@RequestParam("rec_cert") String recCert, @PathVariable("certNum") String certNum, Map<String, Object> model) {
         UriComponents uriComponents = ServletUriComponentsBuilder
             .fromCurrentServletMapping()
-            .path("identification/result")
+            .path("v1/cert/mobile/identification/result")
             .build()
             .encode();
         String resultUrl = uriComponents.toUriString();
