@@ -23,6 +23,9 @@ public class MobileCertService {
         String cpId = kmcConfiguration.getCompanyId();
         String urlCode = kmcConfiguration.getUrlCode();
 
+        System.out.println(cpId);
+        System.out.println(urlCode);
+
         String date = formatter.format(LocalDateTime.now());
         String certMethod = "M";
         String extendVar = "0000000000000000";
