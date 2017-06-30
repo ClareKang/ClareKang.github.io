@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
 import net.meshkorea.mcp.api.domain.model.common.CodesDto;
-import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import mybatis.IntraErrorDto;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import mybatis.IntraErrorDto;
 
 /**
  * Created by reverof on 2017. 6. 20..

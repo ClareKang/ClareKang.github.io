@@ -10,7 +10,7 @@ import com.vroong.lastmile.api.client.model.OrderDto;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
-import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import mybatis.IntraErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
