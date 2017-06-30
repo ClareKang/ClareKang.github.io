@@ -10,7 +10,7 @@ import com.vroong.lastmile.api.client.model.OrderDto;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
-import mybatis.IntraErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,6 @@ import java.util.List;
 @Service
 public class ClaimService {
 
-
     @Autowired
     private ClaimDao claimDao;
 
@@ -34,7 +33,6 @@ public class ClaimService {
 
     @Autowired
     LastmileTokenService lastmileTokenService;
-
 
     @Transactional
     public ClaimDetailResponse getClaimDetail(Long claimNo) throws ApiException {
@@ -58,15 +56,14 @@ public class ClaimService {
         return orderDto.getOrder();
     }
 
-
     @Transactional
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
 
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
-                || "claimNo".equals(claimSearchDto.getSearchType())
-                || "claimOrderNumber".equals(claimSearchDto.getSearchType())
-                || claimSearchDto.getSearchString().isEmpty()
-                || claimSearchDto.getSearchType().isEmpty()) {
+            || "claimNo".equals(claimSearchDto.getSearchType())
+            || "claimOrderNumber".equals(claimSearchDto.getSearchType())
+            || claimSearchDto.getSearchString().isEmpty()
+            || claimSearchDto.getSearchType().isEmpty()) {
         } else {
             ManagerFindOrdersRes response = new ManagerFindOrdersRes();
             response = lastmileManagerOrderApi.findOrdersUsingPOST(lastmileTokenService.getAuthToken(), claimSearchDto.getRequest());
@@ -102,7 +99,6 @@ public class ClaimService {
         }
         return new CreateClaimResponse(claimRes);
     }
-
 
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
@@ -145,7 +141,6 @@ public class ClaimService {
         String key = "";
         List<ClaimReasonCode> claimReasonCode = claimDao.getClaimReasonCode();
         List<ClaimReasonCodeForConvert> list = new ArrayList<>();
-
 
         for (int i = 0; i < claimReasonCode.size(); i++) {
             if (!key.equals(claimReasonCode.get(i).getParentCode())) {

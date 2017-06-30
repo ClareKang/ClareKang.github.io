@@ -1,7 +1,5 @@
 package net.meshkorea.mcp.api.domain.model.common;
 
-import mybatis.IntraErrorDto;
-
 /**
  * Created by reverof on 2017. 6. 1..
  */
