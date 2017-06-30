@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import net.meshkorea.mcp.api.domain.model.common.PageableResponse;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AuthorityListResponse extends BaseResponse implements PageableRespo
 
     List<AuthorityDto> data;
 
-    public AuthorityListResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public AuthorityListResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 }

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
 import net.meshkorea.mcp.api.domain.model.common.CodesDto;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class CodeListResponse extends BaseResponse {
 
     List<CodesDto> data;
 
-    public CodeListResponse(ErrorDto error) {
+    public CodeListResponse(IntraErrorDto error) {
         super(error);
     }
 }

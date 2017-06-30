@@ -6,14 +6,14 @@ package net.meshkorea.mcp.api.domain.model.common;
 public abstract class BaseResponse {
 
     private ResponseStatus status;
-    private ErrorDto error;
+    private IntraErrorDto error;
 
     protected BaseResponse() {
         this.status = ResponseStatus.SUCCESS;
         this.error = null;
     }
 
-    protected BaseResponse(ErrorDto error) {
+    protected BaseResponse(IntraErrorDto error) {
         this.status = ResponseStatus.ERROR;
         this.error = error;
     }
@@ -26,7 +26,7 @@ public abstract class BaseResponse {
         return this.status;
     }
 
-    public ErrorDto getError() {
+    public IntraErrorDto getError() {
         return this.error;
     }
 

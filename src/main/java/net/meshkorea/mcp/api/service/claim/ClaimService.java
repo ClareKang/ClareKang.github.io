@@ -10,7 +10,7 @@ import com.vroong.lastmile.api.client.model.OrderDto;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -75,11 +75,11 @@ public class ClaimService {
                 orderIds.add(o.getId());
             }
             if (response.getOrders().size() >= 100) {
-                ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 100건을 초과하여 조회가 불가능합니다. 조회 조건을 좀더 상세히 입력하여 재시도하세요.");
-                return new ClaimListResponse(errorDto);
+                IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 100건을 초과하여 조회가 불가능합니다. 조회 조건을 좀더 상세히 입력하여 재시도하세요.");
+                return new ClaimListResponse(intraErrorDto);
             } else if (response.getOrders().size() == 0) {
-                ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 없습니다. 조회 조건을 변경해서 재시도하세요.");
-                return new ClaimListResponse(errorDto);
+                IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 없습니다. 조회 조건을 변경해서 재시도하세요.");
+                return new ClaimListResponse(intraErrorDto);
             }
             claimSearchDto.setOrderIds(orderIds);
         }

@@ -2,7 +2,7 @@ package net.meshkorea.mcp.api.domain.model.claim;
 
 import lombok.*;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ClaimReasonCodeResponse extends BaseResponse {
 
     private List<ClaimReasonCodeForConvert> data;
 
-    public ClaimReasonCodeResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public ClaimReasonCodeResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 }

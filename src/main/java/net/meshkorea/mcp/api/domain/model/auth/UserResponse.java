@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 /**
  * Created by reverof on 2017-06-13.
@@ -18,8 +18,8 @@ public class UserResponse extends BaseResponse {
 
     UserDto data;
 
-    public UserResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public UserResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import net.meshkorea.mcp.api.domain.model.common.PageableResponse;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class UserListResponse extends BaseResponse implements PageableResponse {
 
     List<UserDto> data;
 
-    public UserListResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public UserListResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 
 }

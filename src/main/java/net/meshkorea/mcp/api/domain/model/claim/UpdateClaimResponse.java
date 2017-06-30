@@ -2,7 +2,7 @@ package net.meshkorea.mcp.api.domain.model.claim;
 
 import lombok.*;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 /**
  * Created by sungjae.hong on 2017. 6. 12..
@@ -16,8 +16,8 @@ public class UpdateClaimResponse extends BaseResponse {
 
     private UpdateClaimRequest data;
 
-    public UpdateClaimResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public UpdateClaimResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 
 }
