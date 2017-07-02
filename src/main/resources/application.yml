@@ -26,3 +26,8 @@ azure:
         users:
           url: https://graph.microsoft.com/v1.0/users
           top: 1000
+
+google:
+  openidConnect:
+    jwksUri: https://www.googleapis.com/oauth2/v3/certs
+    resourceId: 791029310581-lbcc802mm1n87ektvo98klr0gbp7eun5.apps.googleusercontent.com
