@@ -62,6 +62,8 @@ dependencies {
     compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
     compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
 
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+
     compile "org.apache.httpcomponents:fluent-hc:${apacheHttpcomponentsVersion}"
 
     // Swagger
@@ -83,6 +85,7 @@ dependencies {
 
     compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
 
+    compileOnly "javax.servlet:jstl"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"

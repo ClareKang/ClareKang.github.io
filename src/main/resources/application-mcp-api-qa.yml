@@ -42,5 +42,5 @@ storage:
 
 kmc:
   cert:
-    companyId: test
-    urlCode: test
+    companyId: MSKM1001
+    urlCode: '007001'

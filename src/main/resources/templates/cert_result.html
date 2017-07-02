@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>본인인증서비스</title>
+    </meta>
+</head>
+<body onload="load()">
+<script th:inline="javascript">
+  document.domain = [[${domain}]];
+  function load() {
+    window.opener.handleCertResult([[${result}]], [[${certId}]]);
+    self.close();
+  }
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class UpdateClaimDescriptionResponse extends BaseResponse {
     List<ClaimDescriptionDto> data;
 
-    public UpdateClaimDescriptionResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public UpdateClaimDescriptionResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 }

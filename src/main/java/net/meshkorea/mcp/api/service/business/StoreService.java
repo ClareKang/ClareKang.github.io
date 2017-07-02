@@ -141,7 +141,6 @@ public class StoreService {
     }
 
     public Store addSubscriptionAdminMemo(String id, SubscriptionAdminMemo req) throws ApiException {
-        System.out.println(id + ", " + req.toString());
         return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 

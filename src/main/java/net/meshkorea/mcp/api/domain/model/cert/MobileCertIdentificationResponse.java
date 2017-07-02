@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.meshkorea.mcp.api.domain.model.common.BaseResponse;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 
 /**
  * Created by yjhan on 2017. 6. 27..
@@ -22,7 +22,7 @@ public class MobileCertIdentificationResponse extends BaseResponse {
 
     private String callbackUrl;
 
-    public MobileCertIdentificationResponse(ErrorDto errorDto) {
-        super(errorDto);
+    public MobileCertIdentificationResponse(IntraErrorDto intraErrorDto) {
+        super(intraErrorDto);
     }
 }

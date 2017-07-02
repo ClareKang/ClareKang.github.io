@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExtraFeeService {
 
-    final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     IntraTokenService intraTokenService;
 
@@ -30,14 +28,10 @@ public class ExtraFeeService {
     }
 
     public ExtraFee findExtraFeeById(int id) throws ApiException{
-        ExtraFee extraFee = new ExtraFee();
-        extraFee = intraExtraFeesApi.getExtraFee(intraTokenService.getAuthToken(), id);
-        logger.info(extraFee.toString());
-        return extraFee;
+        return intraExtraFeesApi.getExtraFee(intraTokenService.getAuthToken(), id);
     }
 
     public ExtraFee clearTargetStore(int id) throws ApiException{
-        System.out.println("id :" + id);
         return intraExtraFeesApi.clearTargetStores(intraTokenService.getAuthToken(), id);
     }
 

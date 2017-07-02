@@ -40,15 +40,11 @@ public class ExtraFeeController {
 
     @PostMapping(value = "/extraFees")
     public ExtraFee createExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest) throws ApiException {
-        System.out.println(extraFeeRequest);
-        //return new ExtraFee();
         return extraFeeService.createExtraFee(extraFeeRequest);
     }
 
     @PutMapping(value = "/extraFees/{id}")
     public ExtraFee updateExtraFee(@RequestBody ExtraFeeRequest extraFeeRequest, @PathVariable int id) throws ApiException {
-        System.out.println(extraFeeRequest);
-        //return new ExtraFee();
         return extraFeeService.updateExtraFee(extraFeeRequest, id);
     }
 

@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
-public class CertService {
+public class MobileCertService {
 
     @Autowired
     private KmcConfiguration kmcConfiguration;
@@ -26,6 +26,10 @@ public class CertService {
         String date = formatter.format(LocalDateTime.now());
         String certMethod = "M";
         String extendVar = "0000000000000000";
+
+        System.out.println(cpId);
+        System.out.println(urlCode);
+        System.out.println(date);
 
         CertRequestBuilder builder = new CertRequestBuilder()
             .setCpId(cpId)

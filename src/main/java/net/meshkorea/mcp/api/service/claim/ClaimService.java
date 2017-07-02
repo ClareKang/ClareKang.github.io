@@ -10,7 +10,7 @@ import com.vroong.lastmile.api.client.model.OrderDto;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
-import net.meshkorea.mcp.api.domain.model.common.ErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,6 @@ import java.util.List;
 @Service
 public class ClaimService {
 
-
     @Autowired
     private ClaimDao claimDao;
 
@@ -34,7 +33,6 @@ public class ClaimService {
 
     @Autowired
     LastmileTokenService lastmileTokenService;
-
 
     @Transactional
     public ClaimDetailResponse getClaimDetail(Long claimNo) throws ApiException {
@@ -58,15 +56,14 @@ public class ClaimService {
         return orderDto.getOrder();
     }
 
-
     @Transactional
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
 
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
-                || "claimNo".equals(claimSearchDto.getSearchType())
-                || "claimOrderNumber".equals(claimSearchDto.getSearchType())
-                || claimSearchDto.getSearchString().isEmpty()
-                || claimSearchDto.getSearchType().isEmpty()) {
+            || "claimNo".equals(claimSearchDto.getSearchType())
+            || "claimOrderNumber".equals(claimSearchDto.getSearchType())
+            || claimSearchDto.getSearchString().isEmpty()
+            || claimSearchDto.getSearchType().isEmpty()) {
         } else {
             ManagerFindOrdersRes response = new ManagerFindOrdersRes();
             response = lastmileManagerOrderApi.findOrdersUsingPOST(lastmileTokenService.getAuthToken(), claimSearchDto.getRequest());
@@ -75,15 +72,14 @@ public class ClaimService {
                 orderIds.add(o.getId());
             }
             if (response.getOrders().size() >= 100) {
-                ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 100건을 초과하여 조회가 불가능합니다. 조회 조건을 좀더 상세히 입력하여 재시도하세요.");
-                return new ClaimListResponse(errorDto);
+                IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 100건을 초과하여 조회가 불가능합니다. 조회 조건을 좀더 상세히 입력하여 재시도하세요.");
+                return new ClaimListResponse(intraErrorDto);
             } else if (response.getOrders().size() == 0) {
-                ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 없습니다. 조회 조건을 변경해서 재시도하세요.");
-                return new ClaimListResponse(errorDto);
+                IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 없습니다. 조회 조건을 변경해서 재시도하세요.");
+                return new ClaimListResponse(intraErrorDto);
             }
             claimSearchDto.setOrderIds(orderIds);
         }
-        System.out.println(claimSearchDto);
         List<ClaimList> list = claimDao.findClaims(claimSearchDto);
 
         return new ClaimListResponse(list);
@@ -94,7 +90,6 @@ public class ClaimService {
         request.setCreator("sungjae.hong");
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
-        System.out.println(claimNo);
 
         int result = claimDao.createOrderClaimRelation(request);
 
@@ -104,7 +99,6 @@ public class ClaimService {
         }
         return new CreateClaimResponse(claimRes);
     }
-
 
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
@@ -147,7 +141,6 @@ public class ClaimService {
         String key = "";
         List<ClaimReasonCode> claimReasonCode = claimDao.getClaimReasonCode();
         List<ClaimReasonCodeForConvert> list = new ArrayList<>();
-
 
         for (int i = 0; i < claimReasonCode.size(); i++) {
             if (!key.equals(claimReasonCode.get(i).getParentCode())) {

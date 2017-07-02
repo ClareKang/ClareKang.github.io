@@ -39,7 +39,6 @@ public class StoreController {
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
                                         String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
     ) throws ApiException {
-        System.out.println(storeType + ", " + storeName + ", " + clientName + ", " + storePhone + ", " + storeAddress + ", " + tag + ", " + storeManagementDepartmentId + ", " + vroongMonitoringPartnerId);
         return storeService.getStoreList(storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 
@@ -60,20 +59,17 @@ public class StoreController {
 
     @RequestMapping(value = "/stores/individual", method = RequestMethod.POST)
     public StoreResponse createIndividualStore(@RequestBody CreateIndividualStoreRequest req) throws Exception {
-        System.out.println(req);
         return storeService.createIndividualStore(req);
     }
 
     @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
     public StoreResponse createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
-        System.out.println(req);
         return storeService.createFranchiseIndividualStore(req);
         //return new CreateFranchiseIndividualStoreRequest();
     }
 
     @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
     public StoreResponse createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
-        System.out.println(req);
         return storeService.createFranchiseCorporateStore(req);
         //return new CreateFranchiseCorporateStoreRequest();
     }
@@ -81,8 +77,6 @@ public class StoreController {
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)
     public CheckStoreName checkStoreUserExists(@RequestBody CheckStoreUsersRequest req) throws Exception {
         boolean value = storeService.checkStoreUserExists(req);
-        System.out.println(req);
-        System.out.println(value);
         CheckStoreName result = new CheckStoreName();
         result.setResult(value);
         return result;
@@ -146,7 +140,6 @@ public class StoreController {
 
     @PostMapping(value = "/stores/{id}/subscription/admin_memo")
     public Store addSubscriptionAdminMemo(@PathVariable String id, @RequestBody SubscriptionAdminMemo req) throws ApiException {
-        System.out.println(req.toString());
         return storeService.addSubscriptionAdminMemo(id, req);
     }
 

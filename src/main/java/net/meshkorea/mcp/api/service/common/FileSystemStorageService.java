@@ -4,6 +4,8 @@ import net.meshkorea.mcp.api.config.StorageProperties;
 import net.meshkorea.mcp.api.storage.StorageException;
 import net.meshkorea.mcp.api.storage.StorageFileNotFoundException;
 import net.meshkorea.mcp.api.storage.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,12 +18,24 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final Path rootLocation;
+
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+    }
+
+    private String getFileName(String fileName) {
+        String fileExtension = getFileExtension(fileName);
+        return UUID.nameUUIDFromBytes(fileName.getBytes()).toString() + "." + fileExtension;
+    }
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
@@ -43,7 +57,8 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            Path tmp = this.rootLocation.resolve(file.getOriginalFilename());
+            Path tmp = this.rootLocation.resolve(getFileName(file.getOriginalFilename()));
+            logger.debug(tmp.toString());
             Files.copy(file.getInputStream(), tmp);
             return tmp;
         } catch (IOException e) {
