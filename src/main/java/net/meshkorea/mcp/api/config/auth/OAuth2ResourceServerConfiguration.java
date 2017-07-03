@@ -34,15 +34,16 @@ public class OAuth2ResourceServerConfiguration implements ResourceServerConfigur
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.tokenStore(tokenStore())
-                .resourceId(resourceId);
+            .resourceId(resourceId);
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()//allow CORS option calls
-                .antMatchers("/v1/common/**").permitAll()
-                .anyRequest().authenticated();
+            .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //allow CORS option calls
+            .antMatchers("/v1/common/**").permitAll()
+            .antMatchers("/v1/cert/mobile/**").permitAll()
+            .anyRequest().authenticated();
     }
 }
