@@ -44,6 +44,8 @@ public class OAuth2ResourceServerConfiguration implements ResourceServerConfigur
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //allow CORS option calls
             .antMatchers("/v1/common/**").permitAll()
             .antMatchers("/v1/cert/mobile/**").permitAll()
+            .antMatchers("/v2/api-docs").permitAll()
+            .antMatchers("/swagger-ui.html").permitAll()
             .anyRequest().authenticated();
     }
 }
