@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
+import com.meshprime.intra.api.IntraDeliveriesApi;
 import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
@@ -30,6 +31,9 @@ public class StoreService {
     @Autowired
     IntraRegionsApi intraRegionsApi;
 
+    @Autowired
+    IntraDeliveriesApi intraDeliveriesApi;
+
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
     }
@@ -41,6 +45,10 @@ public class StoreService {
         return intraStoresApi.listStores(intraTokenService.getAuthToken(), storeType, storeCertificationStatus,
                 storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
                 vroongMonitoringPartnerId, size, page);
+    }
+
+    public List<VroongPartner> listVroongPartners() throws ApiException {
+        return intraDeliveriesApi.getVroongPartners(intraTokenService.getAuthToken());
     }
 
     public List<MonitoringPartner> listPartners() throws Exception {
