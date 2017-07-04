@@ -71,6 +71,15 @@ public class LiveController {
         return liveService.makePayments(req);
     }
 
+    @PostMapping("/updatePayment")
+    public ManagerUpdatePaymentRes updatePayment(@RequestBody ManagerUpdatePaymentReq req) throws ApiException {
+        return liveService.updatePayment(req);
+    }
+
+    @PostMapping("/cancelPayments")
+    public ManagerCancelMultiPaymentRes cancelPayments(@RequestBody ManagerCancelMultiPaymentReq req) throws ApiException {
+        return liveService.cancelPayments(req);
+    }
 }
 
 
