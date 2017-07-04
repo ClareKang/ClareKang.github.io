@@ -42,6 +42,11 @@ public class StoreController {
         return storeService.getStoreList(storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 
+    @GetMapping(value = "/stores/vroong_partners")
+    public List<VroongPartner> listVroongPartners() throws ApiException {
+        return storeService.listVroongPartners();
+    }
+
     @RequestMapping(value = "/stores/monitoring_partners", method = RequestMethod.GET)
     public List<MonitoringPartner> listPartners() throws Exception {
         return storeService.listPartners();
