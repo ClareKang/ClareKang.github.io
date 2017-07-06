@@ -8,7 +8,7 @@ import net.meshkorea.mcp.api.domain.model.mms.ReceiverDto;
 import net.meshkorea.mcp.api.domain.repository.MmsGroupRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
-import net.meshkorea.mcp.api.view.ExcelReadComponent;
+import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

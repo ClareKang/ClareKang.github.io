@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.utils;
+package net.meshkorea.mcp.api.util.http;
 
 import org.springframework.web.util.UriComponents;
 import org.thymeleaf.util.StringUtils;

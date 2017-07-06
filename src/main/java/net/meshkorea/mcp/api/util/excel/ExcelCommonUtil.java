@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.utils;
+package net.meshkorea.mcp.api.util.excel;
 
 import net.meshkorea.mcp.api.domain.model.mms.ExcelConfig;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

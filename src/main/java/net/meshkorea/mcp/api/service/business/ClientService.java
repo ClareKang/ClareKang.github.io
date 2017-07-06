@@ -4,7 +4,7 @@ import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
-import net.meshkorea.mcp.api.storage.StorageService;
+import net.meshkorea.mcp.api.util.storage.StorageService;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;

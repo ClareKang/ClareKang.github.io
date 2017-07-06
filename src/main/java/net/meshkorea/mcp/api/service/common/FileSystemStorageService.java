@@ -1,9 +1,9 @@
 package net.meshkorea.mcp.api.service.common;
 
 import net.meshkorea.mcp.api.config.StorageProperties;
-import net.meshkorea.mcp.api.storage.StorageException;
-import net.meshkorea.mcp.api.storage.StorageFileNotFoundException;
-import net.meshkorea.mcp.api.storage.StorageService;
+import net.meshkorea.mcp.api.util.storage.StorageException;
+import net.meshkorea.mcp.api.util.storage.StorageFileNotFoundException;
+import net.meshkorea.mcp.api.util.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
