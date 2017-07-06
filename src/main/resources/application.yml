@@ -34,3 +34,5 @@ google:
 
 mms:
   callbackNum: '18008255'
+  transfer:
+    maxReceiverAtOnce: 100

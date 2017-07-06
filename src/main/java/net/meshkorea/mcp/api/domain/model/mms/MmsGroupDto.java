@@ -2,7 +2,6 @@ package net.meshkorea.mcp.api.domain.model.mms;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.meshkorea.mcp.api.domain.entity.mms.MmsSummary;
 
 import java.time.LocalDateTime;
 import java.util.List;

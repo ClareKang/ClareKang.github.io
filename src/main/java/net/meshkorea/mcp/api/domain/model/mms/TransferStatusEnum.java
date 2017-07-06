@@ -1,13 +1,16 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
+import lombok.Getter;
+
 /**
  * Created by yjhan on 2017. 7. 5..
  *
- *  1:전송 (메시지 초기 입력 상태 )
- *  4:전송중
- *  2:KSKYB 전송완료
- *  3:전송완료 결과수신
+ * 1:전송 (메시지 초기 입력 상태 )
+ * 4:전송중
+ * 2:KSKYB 전송완료
+ * 3:전송완료 결과수신
  */
+@Getter
 public enum TransferStatusEnum {
 
     REQUEST("1"),

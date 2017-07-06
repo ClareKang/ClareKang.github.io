@@ -3,16 +3,18 @@ package net.meshkorea.mcp.api.domain.model.mms;
 import lombok.Getter;
 
 /**
- * Created by yjhan on 2017. 7. 5..
+ * Created by yjhan on 2017. 7. 6..
  */
 @Getter
-public enum TransferResultEnum {
+public enum ExcelExtensionEnum {
 
-    SUCCESS("1000");
+    XLS("xls"),
+    XLSX("xlsx");
 
     private String value;
 
-    TransferResultEnum(String value) {
+    private ExcelExtensionEnum(String value) {
         this.value = value;
     }
+
 }

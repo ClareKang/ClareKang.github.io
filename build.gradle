@@ -84,6 +84,9 @@ dependencies {
 
     compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
 
+    compile "org.apache.poi:poi:${poiVersion}"
+    compile "org.apache.poi:poi-ooxml:${poiVersion}"
+
     compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 
     apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
