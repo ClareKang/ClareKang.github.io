@@ -39,6 +39,11 @@ public class ClaimController {
         return claimService.updateDescription(request);
     }
 
+    @GetMapping("/description")
+    public ClaimDescriptionCountResponse getDescription(Long claimNo) {
+        return claimService.getDescription(claimNo);
+    }
+
     //create claim
     @PostMapping("/createClaim")
     public CreateClaimResponse createClaim(@RequestBody CreateClaimRequest request) throws ApiException {
@@ -48,6 +53,21 @@ public class ClaimController {
     @PutMapping("/updateClaim")
     public UpdateClaimResponse updateClaim(@RequestBody UpdateClaimRequest request) {
         return claimService.updateClaim(request);
+    }
+
+    @GetMapping("getClaimHistory")
+    public ClaimHistoryResponse getClaimHistory(Long claimNo){
+        return claimService.getClaimHistory(claimNo);
+    }
+
+    @GetMapping("getClaimAdjustmentHistory")
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo){
+        return claimService.getClaimAdjustmentHistory(claimNo);
+    }
+
+    @PostMapping("/addAdjustment")
+    public CreateClaimAdjustmentResponse createClaimAdjustment(@RequestBody CreateClaimAdjustmentRequest request) {
+        return claimService.createClaimAdjustment(request);
     }
 
     @PutMapping("/updateAdjustment")
@@ -64,11 +84,5 @@ public class ClaimController {
     public ClaimCodeResponse getClaimCode(String code) {
         return claimService.getClaimCode(code);
     }
-    //2. 클레임 parent 사유 코드 api
-    //@GetMapping("/listParentCode")
-
-
-    //3. 클레임 child 사유 코드 api
-    //@GetMapping("/listChildCode")
 
 }

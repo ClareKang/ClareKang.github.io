@@ -6,41 +6,6 @@
 
 
 	<select id="findClaims" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimSearchDto" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimList">
-	  <!--SELECT
-	  	c.claim_no,
-	  	status_code,
-	  	type_code,
-	  	request_code,
-	  	cause_code,
-	  	customer_blame,
-	  	store_blame,
-	  	partner_blame,
-	  	mesh_blame,
-	  	none_blame,
-	  	creator,
-	  	create_dt,
-	  	updater,
-	  	update_dt,
-	  	order_id,
-	  	claim_order_id,
-	  	order_number,
-	  	claim_order_number
-	  FROM
-	  	claim c
-	  	LEFT JOIN order_claim_relation r
-	  	on c.claim_no = r.claim_no
-		<if test="typeCode != ''">
-			and type_code = #{typeCode}
-		</if>
-		<if test="requestCode != ''">
-			and request_code = #{requestCode}
-		</if>
-		<if test="orderIds.size != 0">
-			and order_id in
-			<foreach collection="orderIds" item="item" index="index" open="(" separator=", " close=")">
-				#{item}
-			</foreach>
-		</if>-->
 		SELECT
 			c.claim_no,
 			status_code,
@@ -122,6 +87,7 @@
 			</if>
 		) o
 		ON c.claim_no = o.claim_no
+		ORDER BY claim_no DESC
 
 	</select>
 
@@ -164,8 +130,40 @@
 		FROM
 			claim_description
 		WHERE
-			claim_description_no = #{id}
+			claim_no = #{claimNo}
+		ORDER BY claim_description_no DESC
+		LIMIT 30
 	</select>
+	
+	<insert id="createClaimAdjustment" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimAdjustmentRequest">
+		INSERT INTO claim_adjustment (
+			order_id,
+			claim_no,
+			adjustment_value,
+			adjustment_type_code,
+			delivery_fee_value,
+			delivery_fee_type_code,
+			cancel_fee_value,
+			cancel_fee_type_code,
+			creator,
+			create_dt,
+			updater,
+			update_dt
+		) VALUE (
+			#{orderId},
+			#{claimNo},
+			#{adjustmentValue},
+			#{adjustmentTypeCode},
+			#{deliveryFeeValue},
+			#{deliveryFeeTypeCode},
+			#{cancelFeeValue},
+			#{cancelFeeTypeCode},
+			#{creator},
+			now(),
+			#{updater},
+			now()
+		)
+	</insert>
 
 	<select id="getClaimAdjustment" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimAdjustment" parameterType="java.lang.Long">
 		SELECT
@@ -234,6 +232,29 @@
 		)
 	</insert>
 
+	<select id="getClaimHistory" parameterType="java.lang.Long" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimHistory">
+		SELECT
+			claim_no,
+			creator,
+			create_dt,
+			json_string
+		FROM
+			claim_history
+		WHERE claim_no = #{claimNo}
+		ORDER BY claim_history_no DESC
+	</select>
+
+	<select id="getClaimAdjustmentHistory" parameterType="java.lang.Long" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimAdjustmentHistory">
+		SELECT
+			claim_adjustment_no,
+			creator,
+			create_dt,
+			json_string
+		FROM claim_adjustment_history
+		WHERE claim_adjustment_no = (SELECT claim_adjustment_no FROM claim_adjustment WHERE claim_no = #{claimNo})
+		ORDER BY claim_adjustment_history_no DESC
+	</select>
+
 	<update id="updateClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimRequest">
 		UPDATE claim SET
 			status_code = #{claimInfo.statusCode},
@@ -266,6 +287,13 @@
 		)
 	</insert>
 
+	<update id="updateOrderClaimRelation" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimRequest">
+		UPDATE order_claim_relation SET
+			claim_order_id = #{claimOrderId},
+			claim_order_number = #{claimOrderNumber}
+		  WHERE claim_no = #{claimInfo.claimNo}
+	</update>
+
 	<select id="getClaimOrderRelation" parameterType="java.lang.Integer" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimOrderRelationDto">
 		SELECT
 			claim_no,
@@ -295,9 +323,32 @@
 		)
 	</insert>
 
+	<insert id="createAdjustmentHistory" parameterType="net.meshkorea.mcp.api.domain.model.claim.ClaimAdjustmentHistory">
+		INSERT INTO claim_adjustment_history (
+			claim_adjustment_no,
+			creator,
+			create_dt,
+			json_string
+		) VALUES (
+			#{claimAdjustmentNo},
+			#{creator},
+			now(),
+			#{jsonString}
+		)
+	</insert>
+
 	<update id="updateClaimAdjustment" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimAdjustmentRequest">
 		UPDATE claim_adjustment SET
-
+			order_id = #{orderId},
+			adjustment_value = #{adjustmentValue},
+			adjustment_type_code = #{adjustmentTypeCode},
+			delivery_fee_value = #{deliveryFeeValue},
+			delivery_fee_type_code = #{deliveryFeeTypeCode},
+			cancel_fee_value = #{cancelFeeValue},
+			cancel_fee_type_code = #{cancelFeeTypeCode},
+			updater = #{updater},
+			update_dt = now()
+		WHERE claim_no = #{claimNo}
 	</update>
 
 	<select id="getClaimReasonCode" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimReasonCode">

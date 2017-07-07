@@ -57,6 +57,16 @@ public class ClaimService {
     }
 
     @Transactional
+    public ClaimHistoryResponse getClaimHistory(Long claimNo) {
+        return new ClaimHistoryResponse(claimDao.getClaimHistory(claimNo));
+    }
+
+    @Transactional
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo) {
+        return new ClaimAdjustmentHistoryResponse(claimDao.getClaimAdjustmentHistory(claimNo));
+    }
+
+    @Transactional
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
 
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
@@ -88,12 +98,14 @@ public class ClaimService {
     @Transactional
     public CreateClaimResponse createClaim(CreateClaimRequest request) throws ApiException {
         request.setCreator("sungjae.hong");
+        request.setUpdater("sungjae.hong");
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
 
         int result = claimDao.createOrderClaimRelation(request);
-
         if (result > 0) {
+            Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimNo());
+            insertClaimHistory(beforeUpdateClaim);
             claimRes.setOrder(setOrderDto(request.getOrderId()));
             claimRes.setClaimOrder(setOrderDto(request.getClaimOrderId()));
         }
@@ -103,16 +115,30 @@ public class ClaimService {
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
         Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
-        Gson gson = new Gson();
-        ClaimHistory history = new ClaimHistory();
-        history.setOrderId(beforeUpdateClaim.getOrderId());
-        history.setClaimNo(beforeUpdateClaim.getClaimNo());
-        history.setCreator("sungjae.hong");
-        history.setJsonString(gson.toJson(beforeUpdateClaim));
-        claimDao.insertClaimHistory(history);
+        insertClaimHistory(beforeUpdateClaim);
         claimDao.updateClaim(request);
+        claimDao.updateOrderClaimRelation(request);
 
         return new UpdateClaimResponse(request);
+    }
+
+    public void insertClaimHistory(Claim claim) {
+        Gson gson = new Gson();
+        ClaimHistory history = new ClaimHistory();
+        history.setOrderId(claim.getOrderId());
+        history.setClaimNo(claim.getClaimNo());
+        history.setCreator("sungjae.hong");
+        history.setJsonString(gson.toJson(claim));
+        claimDao.insertClaimHistory(history);
+    }
+
+    public void insertAdjustmentHistory(ClaimAdjustment claimAdjustment) {
+        Gson gson = new Gson();
+        ClaimAdjustmentHistory history = new ClaimAdjustmentHistory();
+        history.setClaimAdjustmentNo(claimAdjustment.getClaimAdjustmentNo());
+        history.setCreator("sungjae.hong");
+        history.setJsonString(gson.toJson(claimAdjustment));
+        claimDao.insertAdjustmentHistory(history);
     }
 
     @Transactional
@@ -121,18 +147,26 @@ public class ClaimService {
         List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
         return new UpdateClaimDescriptionResponse(claimList);
     }
+    @Transactional
+    public ClaimDescriptionCountResponse getDescription(Long claimNo) {
+        return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(claimNo).size());
+    }
+
+    @Transactional
+    public CreateClaimAdjustmentResponse createClaimAdjustment(CreateClaimAdjustmentRequest request) {
+        request.setCreator("sungjae.hong");
+        claimDao.createClaimAdjustment(request);
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        insertAdjustmentHistory(beforeUpdateClaimAdjustment);
+        return new CreateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
+    }
 
     @Transactional
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
-        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
-        Gson gson = new Gson();
-        ClaimAdjustmentHistory history = new ClaimAdjustmentHistory();
-        history.setClaimAdjustmentNo(beforeUpdateClaimAdjustment.getClaimAdjustmentNo());
-        history.setCreator("sungjae.hong");
-        history.setJsonString(gson.toJson(beforeUpdateClaimAdjustment));
         claimDao.updateClaimAdjustment(request);
-
-        return new UpdateClaimAdjustmentResponse();
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        insertAdjustmentHistory(beforeUpdateClaimAdjustment);
+        return new UpdateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
     }
 
     @Transactional
