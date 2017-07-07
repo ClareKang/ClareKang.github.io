@@ -18,9 +18,7 @@ public class MmsTransferDto {
 
     private String receiverPhone;
 
-    private String extend;
-
-    private TransferStatusEnum transferStatus;
+    private String transferStatus;
 
     private LocalDateTime sendRequestDate;
 
@@ -33,4 +31,5 @@ public class MmsTransferDto {
     private String telecommunicationCompany;
 
     private String receiver;
+
 }

@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.domain.model.mms;
+package net.meshkorea.mcp.api.config.excel;
 
 public class ExcelConfig {
 
@@ -6,6 +6,4 @@ public class ExcelConfig {
     public static final String HEAD = "head";
     public static final String BODY = "body";
 
-    public static final String XLS = "xls";
-    public static final String XLSX = "xlsx";
 }

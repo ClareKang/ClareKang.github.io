@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.util.excel;
 
-import net.meshkorea.mcp.api.domain.model.mms.ExcelConfig;
+import net.meshkorea.mcp.api.config.excel.ExcelConfig;
+import net.meshkorea.mcp.api.domain.model.mms.ExcelExtensionEnum;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,6 +19,16 @@ public class ExcelCommonUtil {
     private Map<String, Object> model;
     private HttpServletResponse response;
 
+    /**
+     * model 에 fileName, head, body 정보가 다 포함되어 넘어와야된다.
+     * String fileName
+     * List<String> head
+     * List<List<String>> body
+     *
+     * @param workbook
+     * @param model
+     * @param response
+     */
     public ExcelCommonUtil(Workbook workbook, Map<String, Object> model, HttpServletResponse response) {
         this.workbook = workbook;
         this.model = model;
@@ -52,13 +63,13 @@ public class ExcelCommonUtil {
 
     private String setFileExtension(String fileName) {
         if (workbook instanceof XSSFWorkbook) {
-            fileName += ".xlsx";
+            fileName += "." + ExcelExtensionEnum.XLSX.getValue();
         }
         if (workbook instanceof SXSSFWorkbook) {
-            fileName += ".xlsx";
+            fileName += "." + ExcelExtensionEnum.XLSX.getValue();
         }
         if (workbook instanceof HSSFWorkbook) {
-            fileName += ".xls";
+            fileName += "." + ExcelExtensionEnum.XLS.getValue();
         }
 
         return fileName;

@@ -23,9 +23,9 @@ public class MmsGroupDto {
 
     private LocalDateTime sendRequestDate;
 
-    private TransferTypeEnum transferType;
+    private Integer transferType;
 
-    private TransferStatusEnum transferStatus;
+    private String transferStatus;
 
     private LocalDateTime transferStartDate;
 

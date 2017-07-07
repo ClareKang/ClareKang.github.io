@@ -2,8 +2,6 @@ package net.meshkorea.mcp.api.domain.entity.mms;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.meshkorea.mcp.api.domain.model.mms.TransferStatusEnum;
-import net.meshkorea.mcp.api.domain.model.mms.TransferTypeEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -56,11 +54,11 @@ public class MmsGroup implements Serializable {
 
     @Enumerated
     @Column(name = "TRAN_TYPE")
-    private TransferTypeEnum transferType;
+    private Integer transferType;
 
     @Enumerated
     @Column(name = "TRAN_STATUS")
-    private TransferStatusEnum transferStatus;
+    private String transferStatus;
 
     @Column(name = "TRAN_SENDDATE")
     private LocalDateTime transferStartDate;

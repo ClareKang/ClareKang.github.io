@@ -90,6 +90,7 @@ dependencies {
     compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 
     apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    apt "org.projectlombok:lombok:${lombokVersion}"
 
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
