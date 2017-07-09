@@ -132,7 +132,9 @@ public class MmsService {
     }
 
     public void sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) throws IOException, InvalidFormatException {
-        mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+        if (multipartFile != null) {
+            mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+        }
         sendMessage(mmsSendRequest);
     }
 
