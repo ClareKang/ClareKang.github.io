@@ -4,6 +4,8 @@ import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
 import net.meshkorea.mcp.api.service.monitoring.LiveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,6 +31,11 @@ public class LiveController {
     @PostMapping("/updateOrder")
     public ManagerUpdateOrderRes updateOrder(@RequestBody ManagerUpdateOrderReq req) throws ApiException {
         return liveService.updateOrder(req);
+    }
+
+    @PostMapping("/exportExcel")
+    public ResponseEntity<Resource> exportExcelFile(@RequestBody ManagerFindOrdersReq req) throws Exception {
+        return liveService.excelFindOrder(req);
     }
 
     @PostMapping("/pricingPlan")

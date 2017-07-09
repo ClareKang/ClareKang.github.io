@@ -5,7 +5,17 @@ import com.vroong.lastmile.api.client.ApiException;
 import com.vroong.lastmile.api.client.model.*;
 import com.vroong.lastmile.service.auth.LastmileTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by jypark on 2017. 5. 30..
@@ -51,7 +61,21 @@ public class LiveService {
         return lastmileManagerOrderApi.deliverOrderUsingPOST1(lastmileTokenService.getAuthToken(), req);
     }
 
-    // excelFindOrders ??
+    public ResponseEntity<Resource> excelFindOrder(ManagerFindOrdersReq req) throws Exception {
+        File file = lastmileManagerOrderApi.excelFindOrdersUsingPOST(lastmileTokenService.getAuthToken(), req);
+        String fileNameTmp =  DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Description", "File Transfer");
+        httpHeaders.add("Content-Description", "attachment; filename=" + "order_" + fileNameTmp + ".xls");
+
+        return ResponseEntity.ok()
+                .headers(httpHeaders)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
+    }
 
     public ManagerFindMonitoringAndSalesOrdersRes findMonitoringAndSalesOrders(ManagerFindMonitoringAndSalesOrdersReq req) throws ApiException {
         return lastmileManagerOrderApi.findMonitoringAndSalesOrdersUsingPOST(lastmileTokenService.getAuthToken(), req);
@@ -80,8 +104,6 @@ public class LiveService {
     public ManagerGetOrderStatusForAssignRes getOrderStatusForAssign(ManagerGetOrderStatusForAssignReq req) throws ApiException {
         return lastmileManagerOrderApi.getOrderStatusForAssignUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
-
-    // getSignatureImage ??
 
     public ManagerListPartnerOrdersRes listPartnerOrders(ManagerListPartnerOrdersReq req) throws ApiException {
         return lastmileManagerOrderApi.listPartnerOrdersUsingPOST(lastmileTokenService.getAuthToken(), req);
