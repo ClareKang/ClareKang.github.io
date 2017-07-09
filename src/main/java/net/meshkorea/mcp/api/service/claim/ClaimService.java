@@ -11,6 +11,7 @@ import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
 import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class ClaimService {
     @Autowired
     LastmileTokenService lastmileTokenService;
 
+    @Autowired
+
+    private OAuthUserService oAuthUserService;
+
     @Transactional
     public ClaimDetailResponse getClaimDetail(Long claimNo) throws ApiException {
         ClaimDetail claimDetail = new ClaimDetail();
@@ -54,6 +59,16 @@ public class ClaimService {
         vroongReq.setOrderId(orderId);
         ManagerGetOrderDetailRes orderDto = lastmileManagerOrderApi.getOrderDetailUsingPOST1(lastmileTokenService.getAuthToken(), vroongReq);
         return orderDto.getOrder();
+    }
+
+    @Transactional
+    public ClaimHistoryResponse getClaimHistory(Long claimNo) {
+        return new ClaimHistoryResponse(claimDao.getClaimHistory(claimNo));
+    }
+
+    @Transactional
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo) {
+        return new ClaimAdjustmentHistoryResponse(claimDao.getClaimAdjustmentHistory(claimNo));
     }
 
     @Transactional
@@ -87,13 +102,15 @@ public class ClaimService {
 
     @Transactional
     public CreateClaimResponse createClaim(CreateClaimRequest request) throws ApiException {
-        request.setCreator("sungjae.hong");
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
-
         int result = claimDao.createOrderClaimRelation(request);
-
         if (result > 0) {
+            Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimNo());
+            insertClaimHistory(beforeUpdateClaim);
+            claimRes.setClaim(beforeUpdateClaim);
             claimRes.setOrder(setOrderDto(request.getOrderId()));
             claimRes.setClaimOrder(setOrderDto(request.getClaimOrderId()));
         }
@@ -102,37 +119,64 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
-        Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
-        Gson gson = new Gson();
-        ClaimHistory history = new ClaimHistory();
-        history.setOrderId(beforeUpdateClaim.getOrderId());
-        history.setClaimNo(beforeUpdateClaim.getClaimNo());
-        history.setCreator("sungjae.hong");
-        history.setJsonString(gson.toJson(beforeUpdateClaim));
-        claimDao.insertClaimHistory(history);
         claimDao.updateClaim(request);
+        Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
+        insertClaimHistory(beforeUpdateClaim);
+        claimDao.updateOrderClaimRelation(request);
 
         return new UpdateClaimResponse(request);
     }
 
+    public void insertClaimHistory(Claim claim) {
+        Gson gson = new Gson();
+        ClaimHistory history = new ClaimHistory();
+        history.setOrderId(claim.getOrderId());
+        history.setClaimNo(claim.getClaimNo());
+        history.setCreator(oAuthUserService.getCurrentUser().getId());
+        history.setJsonString(gson.toJson(claim));
+        claimDao.insertClaimHistory(history);
+    }
+
+    public void insertAdjustmentHistory(ClaimAdjustment claimAdjustment) {
+        Gson gson = new Gson();
+        ClaimAdjustmentHistory history = new ClaimAdjustmentHistory();
+        history.setClaimAdjustmentNo(claimAdjustment.getClaimAdjustmentNo());
+        history.setCreator(oAuthUserService.getCurrentUser().getId());
+        history.setJsonString(gson.toJson(claimAdjustment));
+        claimDao.insertAdjustmentHistory(history);
+    }
+
     @Transactional
     public UpdateClaimDescriptionResponse updateDescription(UpdateClaimDescriptionRequest request) {
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
         claimDao.updateDescription(request);
         List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
         return new UpdateClaimDescriptionResponse(claimList);
     }
 
     @Transactional
-    public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
-        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
-        Gson gson = new Gson();
-        ClaimAdjustmentHistory history = new ClaimAdjustmentHistory();
-        history.setClaimAdjustmentNo(beforeUpdateClaimAdjustment.getClaimAdjustmentNo());
-        history.setCreator("sungjae.hong");
-        history.setJsonString(gson.toJson(beforeUpdateClaimAdjustment));
-        claimDao.updateClaimAdjustment(request);
+    public ClaimDescriptionCountResponse getDescription(Long claimNo) {
+        return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(claimNo).size());
+    }
 
-        return new UpdateClaimAdjustmentResponse();
+    @Transactional
+    public CreateClaimAdjustmentResponse createClaimAdjustment(CreateClaimAdjustmentRequest request) {
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        claimDao.createClaimAdjustment(request);
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        insertAdjustmentHistory(beforeUpdateClaimAdjustment);
+        return new CreateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
+    }
+
+    @Transactional
+    public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        claimDao.updateClaimAdjustment(request);
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        insertAdjustmentHistory(beforeUpdateClaimAdjustment);
+        return new UpdateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
     }
 
     @Transactional

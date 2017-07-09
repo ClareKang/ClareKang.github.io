@@ -37,6 +37,14 @@ public class ClaimDao {
         return sqlSession.selectOne(namespace + "getClaimOrderRelation", claimNo);
     }
 
+    public List<ClaimHistory> getClaimHistory(Long claimNo) {
+        return sqlSession.selectList(namespace + "getClaimHistory", claimNo);
+    }
+
+    public List<ClaimAdjustmentHistory> getClaimAdjustmentHistory(Long claimNo) {
+        return sqlSession.selectList(namespace + "getClaimAdjustmentHistory", claimNo);
+    }
+
     public int createOrderClaimRelation(CreateClaimRequest req) {
         return sqlSession.insert(namespace + "createOrderClaimRelation", req);
     }
@@ -44,7 +52,9 @@ public class ClaimDao {
     public int updateClaim(UpdateClaimRequest req) {
         return sqlSession.update(namespace + "updateClaim", req);
     }
-
+    public int updateOrderClaimRelation(UpdateClaimRequest request) {
+        return sqlSession.update(namespace + "updateOrderClaimRelation", request);
+    }
     public Claim getClaimDetail(Long id) {
         return sqlSession.selectOne(namespace + "getClaimDetail", id);
     }
@@ -63,6 +73,14 @@ public class ClaimDao {
 
     public int updateDescription(UpdateClaimDescriptionRequest request) {
         return sqlSession.update(namespace + "updateClaimDescription", request);
+    }
+
+    public int createClaimAdjustment(CreateClaimAdjustmentRequest request) {
+        return sqlSession.insert(namespace + "createClaimAdjustment", request);
+    }
+
+    public int insertAdjustmentHistory(ClaimAdjustmentHistory history) {
+        return sqlSession.insert(namespace + "createAdjustmentHistory", history);
     }
 
     public int updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
