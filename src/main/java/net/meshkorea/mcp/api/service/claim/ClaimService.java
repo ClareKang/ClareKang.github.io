@@ -101,11 +101,11 @@ public class ClaimService {
         request.setUpdater("sungjae.hong");
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
-
         int result = claimDao.createOrderClaimRelation(request);
         if (result > 0) {
             Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimNo());
             insertClaimHistory(beforeUpdateClaim);
+            claimRes.setClaim(beforeUpdateClaim);
             claimRes.setOrder(setOrderDto(request.getOrderId()));
             claimRes.setClaimOrder(setOrderDto(request.getClaimOrderId()));
         }
@@ -114,9 +114,9 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
+        claimDao.updateClaim(request);
         Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
         insertClaimHistory(beforeUpdateClaim);
-        claimDao.updateClaim(request);
         claimDao.updateOrderClaimRelation(request);
 
         return new UpdateClaimResponse(request);
@@ -143,6 +143,7 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimDescriptionResponse updateDescription(UpdateClaimDescriptionRequest request) {
+        request.setCreator("sungjae.hong");
         claimDao.updateDescription(request);
         List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
         return new UpdateClaimDescriptionResponse(claimList);
@@ -155,6 +156,7 @@ public class ClaimService {
     @Transactional
     public CreateClaimAdjustmentResponse createClaimAdjustment(CreateClaimAdjustmentRequest request) {
         request.setCreator("sungjae.hong");
+        request.setUpdater("sungjae.hong");
         claimDao.createClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
@@ -163,6 +165,8 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
+        request.setCreator("sungjae.hong");
+        request.setUpdater("sungjae.hong");
         claimDao.updateClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);

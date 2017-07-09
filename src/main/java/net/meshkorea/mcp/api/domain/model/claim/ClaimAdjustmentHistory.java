@@ -16,7 +16,7 @@ public class ClaimAdjustmentHistory {
 
     private String creator;
 
-    private String create_dt;
+    private String createDt;
 
     private String jsonString;
 }
