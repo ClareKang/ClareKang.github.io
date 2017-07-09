@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by yjhan on 2017. 7. 5..
- *
+ * <p>
  * `TRAN_GRP_KEY` VARCHAR(16) NOT NULL COMMENT 'PK',
  * `TRAN_REFKEY` VARCHAR(20) NULL DEFAULT NULL COMMENT '업체측에서 사용하는 필드',
  * `TRAN_ID` VARCHAR(20) NULL DEFAULT NULL COMMENT '업체측에서 사용하는 필드',
@@ -52,11 +52,9 @@ public class MmsGroup implements Serializable {
     @Column(name = "TRAN_DATE")
     private LocalDateTime sendRequestDate;
 
-    @Enumerated
     @Column(name = "TRAN_TYPE")
     private Integer transferType;
 
-    @Enumerated
     @Column(name = "TRAN_STATUS")
     private String transferStatus;
 

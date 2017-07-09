@@ -32,5 +32,6 @@ public class MmsSummary implements Serializable {
     @Column(name = "mms_trans_date", updatable = false)
     private LocalDateTime mmsTransDate;
 
+    @OneToMany(mappedBy = "mmsSummary")
     private List<MmsGroup> mmsGroups;
 }

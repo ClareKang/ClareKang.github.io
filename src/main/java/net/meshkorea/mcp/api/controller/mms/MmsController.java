@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.controller.mms;
 
 import net.meshkorea.mcp.api.domain.model.mms.ReceiverDto;
+import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,12 @@ public class MmsController {
     @Autowired
     private ExcelReadComponent excelReadComponent;
 
-    public void sendMms() {
-        
+    @Autowired
+    private OAuthUserService userService;
+
+    @GetMapping("/token")
+    public void mmsToken() {
+        userService.getCurrentUser();
     }
 
     @PostMapping("/excel")

@@ -11,6 +11,7 @@ import net.meshkorea.mcp.api.domain.model.mms.TransferTypeEnum;
 import net.meshkorea.mcp.api.domain.repository.MmsGroupRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
+import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class MmsService {
 
     @Autowired
     private ExcelReadComponent excelReadComponent;
+
+    @Autowired
+    private OAuthUserService oAuthUserService;
 
     private String makeTransferKey(String base, int index) {
         return String.format(base + "%3d", index);
@@ -114,7 +118,7 @@ public class MmsService {
     public void sendMessage(MmsSendRequest mmsSendRequest) {
         if (mmsSendRequest != null && mmsSendRequest.getReceivers() != null) {
             MmsSummary mmsSummary = new MmsSummary();
-            mmsSummary.setMmsSender("yjhan"); // TODO: 여기 수정
+            mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
             // 분할 발송
             if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
@@ -125,6 +129,11 @@ public class MmsService {
                 sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
             }
         }
+    }
+
+    public void sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) throws IOException, InvalidFormatException {
+        mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+        sendMessage(mmsSendRequest);
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
