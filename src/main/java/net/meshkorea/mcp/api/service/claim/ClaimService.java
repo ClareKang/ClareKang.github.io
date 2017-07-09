@@ -11,6 +11,7 @@ import com.vroong.lastmile.service.auth.LastmileTokenService;
 import net.meshkorea.mcp.api.domain.dao.ClaimDao;
 import net.meshkorea.mcp.api.domain.model.claim.*;
 import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class ClaimService {
 
     @Autowired
     LastmileTokenService lastmileTokenService;
+
+    @Autowired
+
+    private OAuthUserService oAuthUserService;
 
     @Transactional
     public ClaimDetailResponse getClaimDetail(Long claimNo) throws ApiException {
@@ -97,8 +102,8 @@ public class ClaimService {
 
     @Transactional
     public CreateClaimResponse createClaim(CreateClaimRequest request) throws ApiException {
-        request.setCreator("sungjae.hong");
-        request.setUpdater("sungjae.hong");
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
         int result = claimDao.createOrderClaimRelation(request);
@@ -127,7 +132,7 @@ public class ClaimService {
         ClaimHistory history = new ClaimHistory();
         history.setOrderId(claim.getOrderId());
         history.setClaimNo(claim.getClaimNo());
-        history.setCreator("sungjae.hong");
+        history.setCreator(oAuthUserService.getCurrentUser().getId());
         history.setJsonString(gson.toJson(claim));
         claimDao.insertClaimHistory(history);
     }
@@ -136,18 +141,19 @@ public class ClaimService {
         Gson gson = new Gson();
         ClaimAdjustmentHistory history = new ClaimAdjustmentHistory();
         history.setClaimAdjustmentNo(claimAdjustment.getClaimAdjustmentNo());
-        history.setCreator("sungjae.hong");
+        history.setCreator(oAuthUserService.getCurrentUser().getId());
         history.setJsonString(gson.toJson(claimAdjustment));
         claimDao.insertAdjustmentHistory(history);
     }
 
     @Transactional
     public UpdateClaimDescriptionResponse updateDescription(UpdateClaimDescriptionRequest request) {
-        request.setCreator("sungjae.hong");
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
         claimDao.updateDescription(request);
         List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
         return new UpdateClaimDescriptionResponse(claimList);
     }
+
     @Transactional
     public ClaimDescriptionCountResponse getDescription(Long claimNo) {
         return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(claimNo).size());
@@ -155,8 +161,8 @@ public class ClaimService {
 
     @Transactional
     public CreateClaimAdjustmentResponse createClaimAdjustment(CreateClaimAdjustmentRequest request) {
-        request.setCreator("sungjae.hong");
-        request.setUpdater("sungjae.hong");
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
         claimDao.createClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
@@ -165,8 +171,8 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
-        request.setCreator("sungjae.hong");
-        request.setUpdater("sungjae.hong");
+        request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
         claimDao.updateClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
