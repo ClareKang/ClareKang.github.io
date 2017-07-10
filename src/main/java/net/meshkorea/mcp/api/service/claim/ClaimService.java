@@ -119,6 +119,7 @@ public class ClaimService {
 
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
+        request.setUpdater(oAuthUserService.getCurrentUser().getId());
         claimDao.updateClaim(request);
         Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
         insertClaimHistory(beforeUpdateClaim);
