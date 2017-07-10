@@ -1,81 +1,62 @@
-INSERT INTO `auth`.`site_code`
-( `site_code`, `site_name` )
-VALUES
-( 'MCP', 'Mesh Control Platform' );
+/*
+-- Query: SELECT * FROM mcp.codes
+LIMIT 0, 1000
 
-INSERT INTO `mcp`.`codes`
-( `code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
-( 1, 'USER_TYPE', '사용자 유형', 1, '사용자 유형 코드 parent', 'yjhan', now() ),
-( 10, 'USER_SEARCH_TYPE', '사용자 조회 타입', 1, '사용자 조회 타입 parent', 'yjhan', now() );
-
-INSERT INTO `mcp`.`codes`
-( `parent_code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
--- ( 1, 'REGULAR', '정직원', 1, '사용자 유형 코드 - 정직원', 'yjhan', now() ),
--- ( 1, 'TEMPORARY', '임시직', 2, '사용자 유형 코드 - 임시직', 'yjhan', now() ),
--- ( 1, 'DISPATCH', '파견직', 3, '사용자 유형 코드 - 파견직', 'yjhan', now() ),
--- ( 1, 'PARTNER', '협력사', 4, '사용자 유형 코드 - 협력사', 'yjhan', now() ),
--- ( 1, 'CUSTOMER', '고객사', 5, '사용자 유형 코드 - 고객사', 'yjhan', now() ),
--- ( 10, 'USER_ID', '통합 ID', 1, '사용자 조회 타입 - 통합 ID', 'yjhan', now() ),
--- ( 10, 'USER_NAME', '사용자 명', 2, '사용자 조회 타입 - 사용자 명', 'yjhan', now() );
-( 1, 'GENERAL', '일반', 1, '사용자 유형 코드 - 일반', 'yjhan', now() );
-
-INSERT INTO `mcp`.`codes`
-( `code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
-( 50, 'GROUP_SEARCH_TYPE', '그룹 조회 타입', 1, '그룹 조회 타입 parent', 'yjhan', now() );
-
-INSERT INTO `mcp`.`codes`
-( `parent_code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
-( 50, 'GROUP_NAME', '권한 그룹명', 1, '그룹 조회 타입 - 권한 그룹명', 'yjhan', now() ),
-( 50, 'GROUP_CODE', '권한 그룹 코드', 2, '그룹 조회 타입 - 권한 그룹 코드', 'yjhan', now() );
-
-INSERT INTO `mcp`.`codes`
-( `code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
-( 71, 'GROUP_TYPE', '그룹 타입', 1, '그룹 타입 parent', 'yjhan', now() );
-
-INSERT INTO `mcp`.`codes`
-( `parent_code_no`, `code`, `code_name`, `display_order`, `description`, `creator`, `create_dt` )
-VALUES
-( 71, 'GENERAL', '일반', 1, '그룹 타입 - 일반', 'yjhan', now() );
-
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,11,'권한 관리|계정 관리|목록','목록','/auth/accounts');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,12,'권한 관리|계정 관리|등록','등록','/auth/accounts/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,13,'권한 관리|계정 관리|수정','수정','/auth/accounts/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,21,'권한 관리|계정 관리|목록','목록','/auth/groups');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,22,'권한 관리|계정 관리|등록','등록','/auth/groups/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,23,'권한 관리|계정 관리|수정','수정','/auth/groups/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,31,'배송비 관리|요금 분배 관리|목록','목록','/fee/distribution');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,32,'배송비 관리|요금 분배 관리|등록','등록','/fee/distribution/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,33,'배송비 관리|요금 분배 관리|수정','수정','/fee/distribution/modify/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,41,'배송비 관리|거리별 요금 관리|목록','목록','/fee/distance');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,42,'배송비 관리|거리별 요금 관리|등록','등록','/fee/distance/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,43,'배송비 관리|거리별 요금 관리|수정','수정','/fee/distance/modify/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,51,'배송비 관리|할증 관리|목록','목록','/fee/extra');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,52,'배송비 관리|할증 관리|등록','등록','/fee/extra/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,53,'배송비 관리|할증 관리|수정','수정','/fee/extra/modify/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,61,'업체 관리|파트너 관리|목록','목록','/business/partner/list');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,62,'업체 관리|파트너 관리|등록','등록','/business/partner/form/create');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,63,'업체 관리|파트너 관리|수정','수정','/business/partner/form/edit/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,71,'업체 관리|오퍼레이터 관리|목록','목록','/business/operator/list');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,72,'업체 관리|오퍼레이터 관리|등록','등록','/business/operator/form/create');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,73,'업체 관리|오퍼레이터 관리|수정','수정','/business/operator/form/edit/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,81,'업체 관리|기사 관리|목록','목록','/business/agent/list');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,82,'업체 관리|기사 관리|등록','등록','/business/agent/form/create');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,83,'업체 관리|기사 관리|수정','수정','/business/agent/form/edit/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,91,'업체 관리|본사 관리|목록','목록','/business/client');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,92,'업체 관리|본사 관리|등록','등록','/business/client/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,93,'업체 관리|본사 관리|수정','수정','/business/client/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,101,'업체 관리|상점 관리|목록','목록','/business/client');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,102,'업체 관리|상점 관리|등록','등록','/business/client/register');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,103,'업체 관리|상점 관리|수정','수정','/business/client/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,111,'관제 관리|관제 현황|목록','목록','/monitoring/live');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,112,'관제 관리|관제 현황|상세','상세','/monitoring/form/{id}');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,121,'관제 관리|상담이력 관리|목록','목록','');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,122,'관제 관리|상담이력 관리|등록','등록','');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,123,'관제 관리|상담이력 관리|수정','수정','');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,131,'관제 관리|문자 관리|목록','목록','');
-INSERT INTO `auth`.`authority` ( `site_code_no`,`display_order`,`authority_name`,`view_name`,`view_uri` ) VALUES (1,132,'관제 관리|문자 관리|발송','발송','');
+-- Date: 2017-07-10 15:08
+*/
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (1,NULL,'USER_TYPE','사용자 유형',1,'사용자 유형 코드 parent','yjhan','2017-06-15 18:59:59',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (2,1,'GENERAL','일반',1,'사용자 유형 코드 - 일반','yjhan','2017-06-15 18:59:59',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (7,NULL,'USER_SEARCH_TYPE','사용자 조회 타입',1,'사용자 조회 타입 parent','yjhan','2017-06-15 18:59:59',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (8,7,'USER_ID','통합 ID',1,'사용자 조회 타입 - 통합 ID','yjhan','2017-06-15 18:59:59',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (9,7,'USER_NAME','사용자 명',2,'사용자 조회 타입 - 사용자 명','yjhan','2017-06-15 18:59:59',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (10,NULL,'CLAIM_STATUS_TYPE','클레임 상태',1,'클레임 상태 코드 parent','sungjae.hong','2017-06-16 16:12:26',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (11,10,'ACCEPT','접수',1,'클레임 상태 코드 - 접수','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (12,10,'IN_PROGRESS','처리중',2,'클레임 상태 코드 - 처리중','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (13,10,'HOLD','보류',3,'클레임 상태 코드 - 보류','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (14,10,'RESOLVE','해결',4,'클레임 상태 코드 - 해결','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (15,10,'RETRACTION','철회',5,'클레임 상태 코드 - 철회','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (16,10,'TRANSFER','이관',6,'클레임 상태 코드 - 이관','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (17,10,'UNPROCESSED','미처리(처리불가)',7,'클레임 상태 코드 - 미처리(처리불가)','sungjae.hong','2017-06-16 17:46:03',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (18,NULL,'CLAIM_TYPE','클레임 유형',1,'클레임 유형 코드 parent','sungjae.hong','2017-06-16 18:00:12',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (19,18,'CANCELED','취소',1,'클레임 유형 코드 - 취소','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (20,18,'REFUND','환불',2,'클레임 유형 코드 - 환불','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (21,18,'RESEND','재배송',3,'클레임 유형 코드 - 재배송','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (22,18,'EXCHANGE','교환',4,'클레임 유형 코드 - 교환','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (23,18,'CHANGE_DEST','배송지변경',5,'클레임 유형 코드 - 배송지변경','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (24,18,'CHANGE_PAY_METHOD','결제수단변경',6,'클레임 유형 코드 - 결제수단변경','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (25,18,'CHANGE_AMOUNT','결제금액변경',7,'클레임 유형 코드 - 결제금액변경','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (26,18,'ETC','기타',8,'클레임 유형 코드 - 기타','sungjae.hong','2017-06-16 18:23:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (27,NULL,'REQUEST_TYPE','요청 주체',1,'요청 주체 코드 parent','sungjae.hong','2017-06-18 17:06:01',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (28,27,'STORE','상점',1,'요청 주체 코드 - 상점','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (29,27,'CLIENT','고객',2,'요청 주체 코드 - 고객','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (30,27,'PARTNER','파트너',3,'요청 주체 코드 - 파트너','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (31,27,'AGENT','배송기사',4,'요청 주체 코드 - 배송기사','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (32,27,'MESHKOREA','메쉬코리아',5,'요청 주체 코드 - 메쉬코리아','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (33,27,'THE_OTHERS','기타',6,'요청 주체 코드 - 기타','sungjae.hong','2017-06-18 17:17:19',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (34,NULL,'CAUSE_TYPE','클레임 사유',1,'클레임 사유 parent','sungjae.hong','2017-06-18 17:36:22',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (35,34,'DELIVERY','배송',1,'클레임 사유 대분류 - 배송','sungjae.hong','2017-06-18 17:45:51',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (36,34,'PAYMENT','결제',2,'클레임 사유 대분류 - 결제','sungjae.hong','2017-06-18 17:45:51',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (37,34,'PRODUCT','상품',3,'클레임 사유 대분류 - 상품','sungjae.hong','2017-06-18 17:45:51',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (38,34,'THE_OTHERS','기타',4,'클레임 사유 대분류 - 기타','sungjae.hong','2017-06-18 17:45:51',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (39,35,'ALLOCATION_DELAY','배차지연',1,'클레임 사유 중분류 - 배차지연','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (40,35,'PICKUP_DELAY','픽업지연',2,'클레임 사유 중분류 - 픽업지연','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (41,35,'DELIVERY_DELAY','배송지연',3,'클레임 사유 중분류 - 배송지연','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (42,35,'CAN_NOT_DELIVERY','배송불가',4,'클레임 사유 중분류 - 배송불가','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (43,35,'DELIVERY_CANCEL','배차취소',5,'클레임 사유 중분류 - 배차취소','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (44,35,'WRONG_DELIVERY','오배송',6,'클레임 사유 중분류 - 오배송','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (45,35,'OVERLOAD','과적',7,'클레임 사유 중분류 - 과적','sungjae.hong','2017-06-18 18:47:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (46,36,'CAN_NOT_PAYMENT','결제불가',1,'클레임 사유 중분류 - 결제불가','sungjae.hong','2017-06-18 18:51:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (47,36,'WRONG_PAYMENT','오결제',2,'클레임 사유 중분류 - 오결제','sungjae.hong','2017-06-18 18:51:52',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (50,NULL,'GROUP_SEARCH_TYPE','그룹 조회 타입',1,'그룹 조회 타입 parent','yjhan','2017-06-18 18:56:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (51,50,'GROUP_NAME','권한 그룹명',1,'그룹 조회 타입 - 권한 그룹명','yjhan','2017-06-18 18:56:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (52,50,'GROUP_CODE','권한 그룹 코드',2,'그룹 조회 타입 - 권한 그룹 코드','yjhan','2017-06-18 18:56:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (63,37,'DEFECTIVE_GOODS','상품불량',1,'클레임 사유 중분류 - 상품불량','sungjae.hong','2017-06-18 20:11:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (64,37,'OMITTED_GOODS','상품누락',2,'클레임 사유 중분류 - 상품누락','sungjae.hong','2017-06-18 20:11:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (65,37,'SOLD_OUT','품절',3,'클레임 사유 중분류 - 품절','sungjae.hong','2017-06-18 20:11:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (66,37,'PREPARE_GOODS_DELAY','상품준비지연',4,'클레임 사유 중분류 - 상품준비지연','sungjae.hong','2017-06-18 20:11:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (67,37,'CHANGE_GOODS','주문상품 정정',5,'클레임 사유 중분류 - 주문상품 정정','sungjae.hong','2017-06-18 20:11:50',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (68,38,'INEXPERIENCED','조작 미숙',1,'클레임 사유 중분류 - 조작 미숙','sungjae.hong','2017-06-18 20:22:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (69,38,'SYSTEM_ERROR','시스템 오류',2,'클레임 사유 중분류 - 시스템 오류','sungjae.hong','2017-06-18 20:22:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (70,38,'ETC','기타',3,'클레임 사유 중분류 - 기타','sungjae.hong','2017-06-18 20:22:57',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (71,NULL,'GROUP_TYPE','그룹 타입',1,'그룹 타입 parent','yjhan','2017-06-20 18:18:38',NULL,NULL);
+INSERT INTO `codes` (`code_no`,`parent_code_no`,`code`,`code_name`,`display_order`,`description`,`creator`,`create_dt`,`updater`,`update_dt`) VALUES (72,71,'GENERAL','일반',1,'그룹 타입 - 일반','yjhan','2017-06-20 18:18:38',NULL,NULL);
