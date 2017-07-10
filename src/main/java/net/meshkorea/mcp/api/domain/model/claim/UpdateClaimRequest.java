@@ -26,4 +26,5 @@ public class UpdateClaimRequest {
 
     private String updater;
 
+    private String updateDt;
 }

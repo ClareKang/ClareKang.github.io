@@ -159,9 +159,9 @@
 			#{cancelFeeValue},
 			#{cancelFeeTypeCode},
 			#{creator},
-			now(),
+			#{createDt},
 			#{updater},
-			now()
+			#{updateDt}
 		)
 	</insert>
 
@@ -212,9 +212,9 @@
 			#{claimInfo.meshBlame},
 			#{claimInfo.noneBlame},
 			#{creator},
-			now(),
+			#{createDt},
 			#{updater},
-			now()
+			#{updateDt}
 		)
 	</insert>
 
@@ -267,7 +267,7 @@
 			mesh_blame = #{claimInfo.meshBlame},
 			none_blame = #{claimInfo.noneBlame},
 			updater = #{updater},
-			update_dt = now()
+			update_dt = #{updateDt}
 		WHERE claim_no = #{claimInfo.claimNo}
 	</update>
 
@@ -319,7 +319,7 @@
 			#{claimNo},
 			#{description},
 			#{creator},
-			NOW()
+			#{createDt}
 		)
 	</insert>
 
@@ -332,7 +332,7 @@
 		) VALUES (
 			#{claimAdjustmentNo},
 			#{creator},
-			now(),
+			#{createDt},
 			#{jsonString}
 		)
 	</insert>
@@ -347,7 +347,7 @@
 			cancel_fee_value = #{cancelFeeValue},
 			cancel_fee_type_code = #{cancelFeeTypeCode},
 			updater = #{updater},
-			update_dt = now()
+			update_dt = #{updateDt}
 		WHERE claim_no = #{claimNo}
 	</update>
 

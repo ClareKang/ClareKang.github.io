@@ -17,8 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by reverof on 2017. 3. 24..
@@ -75,10 +79,10 @@ public class ClaimService {
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
 
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
-            || "claimNo".equals(claimSearchDto.getSearchType())
-            || "claimOrderNumber".equals(claimSearchDto.getSearchType())
-            || claimSearchDto.getSearchString().isEmpty()
-            || claimSearchDto.getSearchType().isEmpty()) {
+                || "claimNo".equals(claimSearchDto.getSearchType())
+                || "claimOrderNumber".equals(claimSearchDto.getSearchType())
+                || claimSearchDto.getSearchString().isEmpty()
+                || claimSearchDto.getSearchType().isEmpty()) {
         } else {
             ManagerFindOrdersRes response = new ManagerFindOrdersRes();
             response = lastmileManagerOrderApi.findOrdersUsingPOST(lastmileTokenService.getAuthToken(), claimSearchDto.getRequest());
@@ -104,11 +108,15 @@ public class ClaimService {
     public CreateClaimResponse createClaim(CreateClaimRequest request) throws ApiException {
         request.setCreator(oAuthUserService.getCurrentUser().getId());
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        request.setCreateDt(convertDateTime());
+        request.setUpdateDt(convertDateTime());
+        System.out.println(request.toString());
         int claimNo = claimDao.createClaim(request);
         ClaimDetail claimRes = new ClaimDetail();
         int result = claimDao.createOrderClaimRelation(request);
         if (result > 0) {
             Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimNo());
+            beforeUpdateClaim.setUpdateDt(beforeUpdateClaim.getUpdateDt());
             insertClaimHistory(beforeUpdateClaim);
             claimRes.setClaim(beforeUpdateClaim);
             claimRes.setOrder(setOrderDto(request.getOrderId()));
@@ -120,12 +128,19 @@ public class ClaimService {
     @Transactional
     public UpdateClaimResponse updateClaim(UpdateClaimRequest request) {
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        request.setUpdateDt(convertDateTime());
         claimDao.updateClaim(request);
         Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
         insertClaimHistory(beforeUpdateClaim);
         claimDao.updateOrderClaimRelation(request);
 
         return new UpdateClaimResponse(request);
+    }
+
+    public String convertDateTime() {
+        Date date = new Date();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        return formatter.format(date);
     }
 
     public void insertClaimHistory(Claim claim) {
@@ -135,6 +150,7 @@ public class ClaimService {
         history.setClaimNo(claim.getClaimNo());
         history.setCreator(oAuthUserService.getCurrentUser().getId());
         history.setJsonString(gson.toJson(claim));
+        history.setCreateDt(convertDateTime());
         claimDao.insertClaimHistory(history);
     }
 
@@ -144,12 +160,14 @@ public class ClaimService {
         history.setClaimAdjustmentNo(claimAdjustment.getClaimAdjustmentNo());
         history.setCreator(oAuthUserService.getCurrentUser().getId());
         history.setJsonString(gson.toJson(claimAdjustment));
+        history.setCreateDt(convertDateTime());
         claimDao.insertAdjustmentHistory(history);
     }
 
     @Transactional
     public UpdateClaimDescriptionResponse updateDescription(UpdateClaimDescriptionRequest request) {
         request.setCreator(oAuthUserService.getCurrentUser().getId());
+        request.setCreateDt(convertDateTime());
         claimDao.updateDescription(request);
         List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
         return new UpdateClaimDescriptionResponse(claimList);
@@ -162,8 +180,11 @@ public class ClaimService {
 
     @Transactional
     public CreateClaimAdjustmentResponse createClaimAdjustment(CreateClaimAdjustmentRequest request) {
+        String dateString = convertDateTime();
         request.setCreator(oAuthUserService.getCurrentUser().getId());
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        request.setCreateDt(dateString);
+        request.setUpdateDt(dateString);
         claimDao.createClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
@@ -174,6 +195,7 @@ public class ClaimService {
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(UpdateClaimAdjustmentRequest request) {
         request.setCreator(oAuthUserService.getCurrentUser().getId());
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
+        request.setUpdateDt(convertDateTime());
         claimDao.updateClaimAdjustment(request);
         ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);

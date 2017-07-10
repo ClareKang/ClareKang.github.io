@@ -28,4 +28,8 @@ public class CreateClaimRequest {
 
     private String updater;
 
+    private String createDt;
+
+    private String updateDt;
+
 }

@@ -48,6 +48,7 @@ public class ClaimController {
     @PostMapping("/createClaim")
     public CreateClaimResponse createClaim(@RequestBody CreateClaimRequest request) throws ApiException {
         return claimService.createClaim(request);
+        // return new CreateClaimResponse();
     }
 
     @PutMapping("/updateClaim")
@@ -56,12 +57,12 @@ public class ClaimController {
     }
 
     @GetMapping("getClaimHistory")
-    public ClaimHistoryResponse getClaimHistory(Long claimNo){
+    public ClaimHistoryResponse getClaimHistory(Long claimNo) {
         return claimService.getClaimHistory(claimNo);
     }
 
     @GetMapping("getClaimAdjustmentHistory")
-    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo){
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo) {
         return claimService.getClaimAdjustmentHistory(claimNo);
     }
 
