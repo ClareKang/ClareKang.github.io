@@ -55,8 +55,7 @@ public class ExcelReadComponent {
         return fileName.endsWith(ExcelExtensionEnum.XLSX.getValue());
     }
 
-    private Workbook multipartFileToWorkbook(MultipartFile multipartFile)
-        throws IOException, InvalidFormatException {
+    private Workbook multipartFileToWorkbook(MultipartFile multipartFile) throws IOException {
         if (isExcelXls(multipartFile.getOriginalFilename())) {
             return new HSSFWorkbook(multipartFile.getInputStream());
         } else {

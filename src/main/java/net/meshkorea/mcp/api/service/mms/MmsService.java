@@ -4,10 +4,9 @@ import net.meshkorea.mcp.api.config.mms.MmsConfiguration;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsGroup;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsSummary;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsTransfer;
-import net.meshkorea.mcp.api.domain.model.mms.MmsSendRequest;
-import net.meshkorea.mcp.api.domain.model.mms.ReceiverDto;
-import net.meshkorea.mcp.api.domain.model.mms.TransferStatusEnum;
-import net.meshkorea.mcp.api.domain.model.mms.TransferTypeEnum;
+import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
+import net.meshkorea.mcp.api.domain.model.common.IntraException;
+import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.domain.repository.MmsGroupRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
@@ -15,6 +14,7 @@ import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,7 +92,7 @@ public class MmsService {
         }
     }
 
-    private void sendMessage(MmsSummary mmsSummary, String message, List<ReceiverDto> receivers) {
+    private MmsSendResponse sendMessage(MmsSummary mmsSummary, String message, List<ReceiverDto> receivers) throws IntraException {
         if (mmsSummary != null && receivers != null && receivers.size() > 0) {
             LocalDateTime requestDate = LocalDateTime.now();
             MmsGroup mmsGroup = new MmsGroup();
@@ -108,34 +108,48 @@ public class MmsService {
             sendMessage(mmsGroup, receivers);
 
             mmsGroupRepository.save(mmsGroup);
+
+            return new MmsSendResponse();
         }
+        throw new IntraException("수신번호를 1건 이상 입력하세요.");
     }
 
     /**
      * 1) mms_summary
      */
     @Transactional
-    public void sendMessage(MmsSendRequest mmsSendRequest) {
-        if (mmsSendRequest != null && mmsSendRequest.getReceivers() != null) {
+    public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest) throws IntraException {
+        if (mmsSendRequest != null) {
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
             // 분할 발송
             if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
                 for (int page = 0; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
-                    sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
+                    return sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
                 }
             } else { // 전체 발송
-                sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
+                return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
             }
         }
+        throw new IntraException("수신번호를 1건 이상 입력하세요.");
     }
 
-    public void sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) throws IOException, InvalidFormatException {
+    public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) {
         if (multipartFile != null) {
-            mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+            try {
+                mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+            } catch (InvalidFormatException ife) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "파일 형식은 xls, xlsx 만 업로드 가능 합니다."));
+            } catch (IOException ioe) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "액셀 파일 읽기 오류."));
+            }
         }
-        sendMessage(mmsSendRequest);
+        try {
+            return sendMessage(mmsSendRequest);
+        } catch (IntraException ie) {
+            return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
+        }
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {

@@ -1,6 +1,5 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MmsSendResponse extends BaseResponse {
 
     public MmsSendResponse(IntraErrorDto intraErrorDto) {

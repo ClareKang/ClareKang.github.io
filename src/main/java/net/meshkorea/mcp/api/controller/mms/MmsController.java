@@ -1,15 +1,11 @@
 package net.meshkorea.mcp.api.controller.mms;
 
-import net.meshkorea.mcp.api.domain.model.mms.ReceiverDto;
-import net.meshkorea.mcp.api.service.auth.OAuthUserService;
-import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import net.meshkorea.mcp.api.domain.model.mms.MmsSendRequest;
+import net.meshkorea.mcp.api.domain.model.mms.MmsSendResponse;
+import net.meshkorea.mcp.api.service.mms.MmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by yjhan on 2017. 7. 6..
@@ -19,24 +15,11 @@ import java.util.List;
 public class MmsController {
 
     @Autowired
-    private ExcelReadComponent excelReadComponent;
+    private MmsService mmsService;
 
-    @Autowired
-    private OAuthUserService userService;
-
-    @GetMapping("/token")
-    public void mmsToken() {
-        userService.getCurrentUser();
+    @GetMapping("/send")
+    public MmsSendResponse sendMms(@RequestBody MmsSendRequest mmsSendRequest, @RequestPart(required = false) MultipartFile multipartFile) {
+        return mmsService.sendMessage(mmsSendRequest, multipartFile);
     }
 
-    @PostMapping("/excel")
-    public List<ReceiverDto> uploadExcel(@RequestParam("file") MultipartFile multipartFile)
-        throws IOException, InvalidFormatException {
-        return excelReadComponent.readExcelToList(multipartFile, ReceiverDto::rowOf);
-    }
-
-    @GetMapping("/excel")
-    public void downloadExcel() {
-
-    }
 }
