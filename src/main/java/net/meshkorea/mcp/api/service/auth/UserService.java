@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserListResponse getUsers(UserListRequest userListRequest) {
         Pageable pageable = PageableRequestMapper.getPageRequest(
@@ -55,4 +55,5 @@ public class UserService {
         User user = userRepository.save(UserDto.toUser(userDto));
         return new UserResponse(UserDto.toUserDto(user));
     }
+
 }

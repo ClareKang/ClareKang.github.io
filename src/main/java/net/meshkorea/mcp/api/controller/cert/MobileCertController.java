@@ -4,7 +4,7 @@ import net.meshkorea.mcp.api.domain.model.kmc.CertRequest;
 import net.meshkorea.mcp.api.domain.model.kmc.CertResponseDecrypt;
 import net.meshkorea.mcp.api.domain.model.kmc.CertResultRequest;
 import net.meshkorea.mcp.api.service.cert.MobileCertService;
-import net.meshkorea.mcp.api.utils.UrlUtils;
+import net.meshkorea.mcp.api.util.http.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

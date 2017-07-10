@@ -1,6 +1,5 @@
 package net.meshkorea.mcp.api.config;
 
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,7 +12,6 @@ import java.util.List;
  * Created by reverof on 2017. 4. 10..
  */
 @Component
-@EnableJpaAuditing
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override

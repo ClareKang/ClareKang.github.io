@@ -1,4 +1,4 @@
-package net.meshkorea.mcp.api.storage;
+package net.meshkorea.mcp.api.util.storage;
 
 public class StorageException extends RuntimeException {
 

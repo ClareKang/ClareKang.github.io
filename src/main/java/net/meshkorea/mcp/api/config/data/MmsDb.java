@@ -1,8 +1,8 @@
 package net.meshkorea.mcp.api.config.data;
 
 import net.meshkorea.mcp.api.McpApiApplication;
-import net.meshkorea.platform.core.web.config.data.AuthDbConfig;
-import net.meshkorea.platform.core.web.config.data.AuthDbProperties;
+import net.meshkorea.platform.core.web.config.data.MmsDbConfig;
+import net.meshkorea.platform.core.web.config.data.MmsDbProperties;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,31 +20,28 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-/**
- * Created by sungjae.hong on 2017. 3. 2..
- */
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(
     basePackageClasses = {McpApiApplication.class},
-    includeFilters = @ComponentScan.Filter({AuthDbConfig.AuthData.class}),
-    entityManagerFactoryRef = AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME)
+    includeFilters = @ComponentScan.Filter({MmsDbConfig.MmsData.class}),
+    entityManagerFactoryRef = MmsDbConfig.ENTITY_MANAGER_FACTORY_NAME)
 @MapperScan(
     basePackageClasses = {McpApiApplication.class},
-    annotationClass = AuthDbConfig.AuthData.class,
-    sqlSessionFactoryRef = AuthDbConfig.SQL_SESSION_FACTORY_NAME)
-@EnableConfigurationProperties(AuthDbProperties.class)
-public class AuthDb implements AuthDbConfig {
+    annotationClass = MmsDbConfig.MmsData.class,
+    sqlSessionFactoryRef = MmsDbConfig.SQL_SESSION_FACTORY_NAME)
+@EnableConfigurationProperties(MmsDbProperties.class)
+public class MmsDb implements MmsDbConfig {
 
     private static final String LOCATION_PATTERN = "classpath*:mybatis/mapper/**/*.xml";
 
     @Autowired
-    private AuthDbProperties authDbProperties;
+    private MmsDbProperties mmsDbProperties;
 
     @Override
     @Bean(DATA_SOURCE_NAME)
     public DataSource getDataSource() {
-        return authDbProperties.toAtomikosNonXADataSourceBean();
+        return mmsDbProperties.toAtomikosNonXADataSourceBean();
     }
 
     @Override
@@ -56,7 +53,7 @@ public class AuthDb implements AuthDbConfig {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         factoryBean.setPackagesToScan(McpApiApplication.class.getPackage().getName(), Jsr310JpaConverters.class.getPackage().getName());
         factoryBean.setJpaProperties(jpaProperties);
-        factoryBean.setPersistenceUnitName(AuthDbConfig.ENTITY_MANAGER_FACTORY_NAME);
+        factoryBean.setPersistenceUnitName(MmsDbConfig.ENTITY_MANAGER_FACTORY_NAME);
 
         return factoryBean;
     }

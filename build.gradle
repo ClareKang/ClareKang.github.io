@@ -10,6 +10,7 @@ buildscript { scriptHandler ->
     dependencies {
         classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "net.ltgt.gradle:gradle-apt-plugin:${aptPluginVersion}"
     }
 }
 
@@ -75,8 +76,6 @@ dependencies {
     compile "com.querydsl:querydsl-apt:${querydslVersion}"
     compile "com.querydsl:querydsl-jpa:${querydslVersion}"
 
-    compile "org.modelmapper:modelmapper:${modelMapperVersion}"
-
     compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
     compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
     compile "org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}"
@@ -85,7 +84,14 @@ dependencies {
 
     compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
 
-    compileOnly "javax.servlet:jstl"
+    compile "org.apache.poi:poi:${poiVersion}"
+    compile "org.apache.poi:poi-ooxml:${poiVersion}"
+
+    compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
+
+    apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    apt "org.projectlombok:lombok:${lombokVersion}"
+
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
