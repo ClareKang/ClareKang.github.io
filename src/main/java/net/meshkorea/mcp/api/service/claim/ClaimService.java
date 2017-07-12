@@ -50,10 +50,8 @@ public class ClaimService {
         claimDetail.setClaim(claim);
         claimDetail.setOrder(setOrderDto(claim.getOrderId()));
         claimDetail.setClaimOrder(setOrderDto(claim.getClaimOrderId()));
-        claimDetail.setClaimDescriptions(claimDao.getClaimDescription(claimNo));
-        claimDetail.setClaimAdjustment(claimDao.getClaimAdjustment(claimNo));
-        claimDetail.setClaimDescriptions(claimDao.getClaimDescription(claimNo));
-        claimDetail.setClaimAdjustment(claimDao.getClaimAdjustment(claimNo));
+        claimDetail.setClaimDescriptions(claimDao.getClaimDescription(claim.getOrderId()));
+        claimDetail.setClaimAdjustment(claimDao.getClaimAdjustment(claim.getOrderId()));
 
         return new ClaimDetailResponse(claimDetail);
     }
@@ -71,8 +69,8 @@ public class ClaimService {
     }
 
     @Transactional
-    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo) {
-        return new ClaimAdjustmentHistoryResponse(claimDao.getClaimAdjustmentHistory(claimNo));
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long orderId) {
+        return new ClaimAdjustmentHistoryResponse(claimDao.getClaimAdjustmentHistory(orderId));
     }
 
     @Transactional
@@ -130,9 +128,9 @@ public class ClaimService {
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
         request.setUpdateDt(convertDateTime());
         claimDao.updateClaim(request);
+        claimDao.updateOrderClaimRelation(request);
         Claim beforeUpdateClaim = claimDao.getClaimDetail(request.getClaimInfo().getClaimNo());
         insertClaimHistory(beforeUpdateClaim);
-        claimDao.updateOrderClaimRelation(request);
 
         return new UpdateClaimResponse(request);
     }
@@ -169,13 +167,13 @@ public class ClaimService {
         request.setCreator(oAuthUserService.getCurrentUser().getId());
         request.setCreateDt(convertDateTime());
         claimDao.updateDescription(request);
-        List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getClaimNo());
+        List<ClaimDescriptionDto> claimList = claimDao.getClaimDescription(request.getOrderId());
         return new UpdateClaimDescriptionResponse(claimList);
     }
 
     @Transactional
-    public ClaimDescriptionCountResponse getDescription(Long claimNo) {
-        return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(claimNo).size());
+    public ClaimDescriptionCountResponse getDescription(Long orderId) {
+        return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(orderId).size());
     }
 
     @Transactional
@@ -186,9 +184,9 @@ public class ClaimService {
         request.setCreateDt(dateString);
         request.setUpdateDt(dateString);
         claimDao.createClaimAdjustment(request);
-        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getOrderId());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
-        return new CreateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
+        return new CreateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getOrderId()));
     }
 
     @Transactional
@@ -197,9 +195,9 @@ public class ClaimService {
         request.setUpdater(oAuthUserService.getCurrentUser().getId());
         request.setUpdateDt(convertDateTime());
         claimDao.updateClaimAdjustment(request);
-        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getClaimNo());
+        ClaimAdjustment beforeUpdateClaimAdjustment = claimDao.getClaimAdjustment(request.getOrderId());
         insertAdjustmentHistory(beforeUpdateClaimAdjustment);
-        return new UpdateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getClaimNo()));
+        return new UpdateClaimAdjustmentResponse(claimDao.getClaimAdjustment(request.getOrderId()));
     }
 
     @Transactional
