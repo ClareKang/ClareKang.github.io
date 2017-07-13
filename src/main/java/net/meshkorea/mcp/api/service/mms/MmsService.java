@@ -48,7 +48,7 @@ public class MmsService {
     private OAuthUserService oAuthUserService;
 
     private String makeTransferKey(String base, int index) {
-        return String.format(base + "%3d", index);
+        return String.format(base + "%03d", index);
     }
 
     private <T> List<T> getSubList(List<T> list, int page, int size) {
@@ -101,12 +101,14 @@ public class MmsService {
             mmsGroup.setMessage(message);
             mmsGroup.setMmsSummary(mmsSummary);
             mmsGroup.setReceiverCount(receivers.size());
-            mmsGroup.setSendRequestDate(LocalDateTime.now());
+            mmsGroup.setSendRequestDate(requestDate.plusHours(1)); // 1시간 뒤
             mmsGroup.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
             mmsGroup.setTransferType(TransferTypeEnum.MMS.getValue());
+            mmsGroupRepository.save(mmsGroup);
 
             sendMessage(mmsGroup, receivers);
 
+            mmsGroup.setSendRequestDate(requestDate); // 요청시각 변경
             mmsGroupRepository.save(mmsGroup);
 
             return new MmsSendResponse();

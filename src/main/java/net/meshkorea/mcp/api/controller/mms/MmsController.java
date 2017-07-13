@@ -17,7 +17,7 @@ public class MmsController {
     @Autowired
     private MmsService mmsService;
 
-    @GetMapping("/send")
+    @PostMapping("/send")
     public MmsSendResponse sendMms(@RequestBody MmsSendRequest mmsSendRequest, @RequestPart(required = false) MultipartFile multipartFile) {
         return mmsService.sendMessage(mmsSendRequest, multipartFile);
     }

@@ -7,7 +7,7 @@ ext {
 
     gradleWrapperVersion = '3.5'
     springBootVersion = '1.5.4.RELEASE'
-    springfoxVersion = '2.6.1'
+    springfoxVersion = '2.7.0'
     apacheHttpcomponentsVersion = '4.5.3'
     querydslVersion = '4.1.4'
     querydslGradlePluginVersion = '1.0.9'
