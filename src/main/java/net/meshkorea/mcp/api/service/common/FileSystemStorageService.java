@@ -34,7 +34,7 @@ public class FileSystemStorageService implements StorageService {
 
     private String getFileName(String fileName) {
         String fileExtension = getFileExtension(fileName);
-        return UUID.nameUUIDFromBytes(fileName.getBytes()).toString() + "." + fileExtension;
+        return UUID.randomUUID().toString() + "." + fileExtension;
     }
 
     @Autowired
