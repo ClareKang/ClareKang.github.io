@@ -22,7 +22,7 @@ public class ClaimHistory {
 
     private String creator;
 
-    private Date createDt;
+    private String createDt;
 
     private String jsonString;
 }

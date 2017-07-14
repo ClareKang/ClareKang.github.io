@@ -31,4 +31,8 @@ public class CreateClaimAdjustmentRequest {
     private String creator;
 
     private String updater;
+
+    private String createDt;
+
+    private String updateDt;
 }

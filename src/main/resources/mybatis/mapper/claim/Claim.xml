@@ -130,7 +130,7 @@
 		FROM
 			claim_description
 		WHERE
-			claim_no = #{claimNo}
+			order_id = #{orderId}
 		ORDER BY claim_description_no DESC
 		LIMIT 30
 	</select>
@@ -159,9 +159,9 @@
 			#{cancelFeeValue},
 			#{cancelFeeTypeCode},
 			#{creator},
-			now(),
+			#{createDt},
 			#{updater},
-			now()
+			#{updateDt}
 		)
 	</insert>
 
@@ -183,7 +183,7 @@
 		FROM
 			claim_adjustment
 		WHERE
-			claim_no = #{claimNo}
+			order_id = #{orderId}
 	</select>
 
 	<insert id="createClaim" parameterType="net.meshkorea.mcp.api.domain.model.claim.CreateClaimRequest" useGeneratedKeys="true" keyProperty="claimNo">
@@ -212,9 +212,9 @@
 			#{claimInfo.meshBlame},
 			#{claimInfo.noneBlame},
 			#{creator},
-			now(),
+			#{createDt},
 			#{updater},
-			now()
+			#{updateDt}
 		)
 	</insert>
 
@@ -251,7 +251,7 @@
 			create_dt,
 			json_string
 		FROM claim_adjustment_history
-		WHERE claim_adjustment_no = (SELECT claim_adjustment_no FROM claim_adjustment WHERE claim_no = #{claimNo})
+		WHERE claim_adjustment_no = (SELECT claim_adjustment_no FROM claim_adjustment WHERE order_id = #{orderId})
 		ORDER BY claim_adjustment_history_no DESC
 	</select>
 
@@ -267,7 +267,7 @@
 			mesh_blame = #{claimInfo.meshBlame},
 			none_blame = #{claimInfo.noneBlame},
 			updater = #{updater},
-			update_dt = now()
+			update_dt = #{updateDt}
 		WHERE claim_no = #{claimInfo.claimNo}
 	</update>
 
@@ -319,7 +319,7 @@
 			#{claimNo},
 			#{description},
 			#{creator},
-			NOW()
+			#{createDt}
 		)
 	</insert>
 
@@ -332,7 +332,7 @@
 		) VALUES (
 			#{claimAdjustmentNo},
 			#{creator},
-			now(),
+			#{createDt},
 			#{jsonString}
 		)
 	</insert>
@@ -340,6 +340,7 @@
 	<update id="updateClaimAdjustment" parameterType="net.meshkorea.mcp.api.domain.model.claim.UpdateClaimAdjustmentRequest">
 		UPDATE claim_adjustment SET
 			order_id = #{orderId},
+			claim_no = #{claimNo},
 			adjustment_value = #{adjustmentValue},
 			adjustment_type_code = #{adjustmentTypeCode},
 			delivery_fee_value = #{deliveryFeeValue},
@@ -347,8 +348,8 @@
 			cancel_fee_value = #{cancelFeeValue},
 			cancel_fee_type_code = #{cancelFeeTypeCode},
 			updater = #{updater},
-			update_dt = now()
-		WHERE claim_no = #{claimNo}
+			update_dt = #{updateDt}
+		WHERE order_id = #{orderId}
 	</update>
 
 	<select id="getClaimReasonCode" resultType="net.meshkorea.mcp.api.domain.model.claim.ClaimReasonCode">

@@ -5,12 +5,12 @@ import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import net.meshkorea.mcp.api.util.storage.StorageService;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -83,7 +83,7 @@ public class ClientService {
         try {
             return intraBusinessClientsApi.getBusinessClientApiKey(intraTokenService.getAuthToken(), clientId);
         } catch (ApiException e) {
-            if (e.getCode() == HttpStatus.SC_NOT_FOUND) {
+            if (e.getCode() == HttpStatus.NOT_FOUND.value()) {
                 return new ApiKey();
             } else {
                 throw e;
@@ -120,27 +120,33 @@ public class ClientService {
         File bankAccountCopyFile = null;
         File ceoIdCardCopyFile = null;
 
-        if (enterpriseRegistrationCopy != null) {
-            enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy).toFile();
-        }
-        if (bankAccountCopy != null) {
-            bankAccountCopyFile = storageService.store(bankAccountCopy).toFile();
-        }
-        if (ceoIdCardCopy != null) {
-            ceoIdCardCopyFile = storageService.store(ceoIdCardCopy).toFile();
-        }
+        BusinessClient result = null;
 
-        BusinessClient result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
-            clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
+        try {
+            if (enterpriseRegistrationCopy != null) {
+                enterpriseRegistrationCopyFile = storageService.store(enterpriseRegistrationCopy).toFile();
+            }
+            if (bankAccountCopy != null) {
+                bankAccountCopyFile = storageService.store(bankAccountCopy).toFile();
+            }
+            if (ceoIdCardCopy != null) {
+                ceoIdCardCopyFile = storageService.store(ceoIdCardCopy).toFile();
+            }
 
-        if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
-            enterpriseRegistrationCopyFile.delete();
-        }
-        if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
-            bankAccountCopyFile.delete();
-        }
-        if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
-            ceoIdCardCopyFile.delete();
+            result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
+                clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
+        } catch (Exception e) {
+
+        } finally {
+            if (enterpriseRegistrationCopyFile != null && enterpriseRegistrationCopyFile.exists()) {
+                enterpriseRegistrationCopyFile.delete();
+            }
+            if (bankAccountCopyFile != null && bankAccountCopyFile.exists()) {
+                bankAccountCopyFile.delete();
+            }
+            if (ceoIdCardCopyFile != null && ceoIdCardCopyFile.exists()) {
+                ceoIdCardCopyFile.delete();
+            }
         }
 
         return result;

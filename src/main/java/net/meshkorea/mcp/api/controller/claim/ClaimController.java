@@ -16,11 +16,7 @@ public class ClaimController {
     @Autowired
     ClaimService claimService;
 
-    /*
-    1. 리스트 조회
-    7. 배송오더 조회(클레임배송오더 매핑)
-    8. 클레임 사유 코드
-     */
+
     //detail Api 완료
     @GetMapping(value = "/{claimNo}")
     public ClaimDetailResponse getClaimDetail(@PathVariable Long claimNo) throws ApiException {
@@ -33,21 +29,13 @@ public class ClaimController {
         return claimService.findClaims(claimSearchDto);
     }
 
-    //insert description
-    @PutMapping("/description")
-    public UpdateClaimDescriptionResponse updateDescription(@RequestBody UpdateClaimDescriptionRequest request) {
-        return claimService.updateDescription(request);
-    }
 
-    @GetMapping("/description")
-    public ClaimDescriptionCountResponse getDescription(Long claimNo) {
-        return claimService.getDescription(claimNo);
-    }
 
     //create claim
     @PostMapping("/createClaim")
     public CreateClaimResponse createClaim(@RequestBody CreateClaimRequest request) throws ApiException {
         return claimService.createClaim(request);
+        // return new CreateClaimResponse();
     }
 
     @PutMapping("/updateClaim")
@@ -56,13 +44,18 @@ public class ClaimController {
     }
 
     @GetMapping("getClaimHistory")
-    public ClaimHistoryResponse getClaimHistory(Long claimNo){
+    public ClaimHistoryResponse getClaimHistory(Long claimNo) {
         return claimService.getClaimHistory(claimNo);
     }
 
+
+
+
+
+
     @GetMapping("getClaimAdjustmentHistory")
-    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long claimNo){
-        return claimService.getClaimAdjustmentHistory(claimNo);
+    public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long orderId) {
+        return claimService.getClaimAdjustmentHistory(orderId);
     }
 
     @PostMapping("/addAdjustment")
@@ -74,6 +67,17 @@ public class ClaimController {
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(@RequestBody UpdateClaimAdjustmentRequest request) {
         return claimService.updateClaimAdjustment(request);
     }
+    //insert description
+    @PutMapping("/description")
+    public UpdateClaimDescriptionResponse updateDescription(@RequestBody UpdateClaimDescriptionRequest request) {
+        return claimService.updateDescription(request);
+    }
+    @GetMapping("/description")
+    public ClaimDescriptionCountResponse getDescription(Long orderId) {
+        return claimService.getDescription(orderId);
+    }
+
+
 
     @GetMapping("/getClaimReasonCode")
     public ClaimReasonCodeResponse getClaimReasonCode() {

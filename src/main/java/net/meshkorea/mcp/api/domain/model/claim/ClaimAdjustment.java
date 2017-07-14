@@ -32,9 +32,9 @@ public class ClaimAdjustment {
 
     private String creator;
 
-    private Date createDt;
+    private String createDt;
 
     private String updater;
 
-    private Date updateDt;
+    private String updateDt;
 }
