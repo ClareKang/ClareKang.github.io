@@ -83,7 +83,7 @@ public class ClientService {
         try {
             return intraBusinessClientsApi.getBusinessClientApiKey(intraTokenService.getAuthToken(), clientId);
         } catch (ApiException e) {
-            if (e.getCode() == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            if (e.getCode() == HttpStatus.NOT_FOUND.value()) {
                 return new ApiKey();
             } else {
                 throw e;
