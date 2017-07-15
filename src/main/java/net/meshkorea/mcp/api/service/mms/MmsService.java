@@ -12,6 +12,7 @@ import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
 import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,7 +84,7 @@ public class MmsService {
                 MmsTransfer mmsTransfer = new MmsTransfer();
                 mmsTransfer.setMmsGroup(mmsGroup);
                 mmsTransfer.setTranferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
-                mmsTransfer.setReceiverPhone(receiver.getPhoneNumber());
+                mmsTransfer.setReceiverPhone(receiver.getPhone());
                 mmsTransfer.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
                 mmsTransfer.setSendRequestDate(mmsGroup.getSendRequestDate());
                 mmsTransfer.setReceiver(receiver.getName());
@@ -133,6 +134,8 @@ public class MmsService {
             } else { // 전체 발송
                 return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
             }
+        } else if (StringUtils.isEmpty(mmsSendRequest.getMessage())) {
+            throw new IntraException("메세지를 입력해주세요.");
         }
         throw new IntraException("수신번호를 1건 이상 입력하세요.");
     }
@@ -152,6 +155,14 @@ public class MmsService {
         } catch (IntraException ie) {
             return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
         }
+    }
+
+    public MmsSendResponse sendMessage(String message, MultipartFile multipartFile) {
+        if (StringUtils.isNotEmpty(message)) {
+            MmsSendRequest mmsSendRequest = new MmsSendRequest(message);
+            return sendMessage(mmsSendRequest, multipartFile);
+        }
+        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
