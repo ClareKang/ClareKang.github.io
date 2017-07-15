@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>본인인증서비스</title>
+    <title>본인인증서비스1</title>
     </meta>
 </head>
-<body onload="openKMCISWindow()">
+<body onload="openKMCISWindow()" onbeforeunload="onBeforeUnload()">
 <h2>본인인증서비스</h2>
 
 <form name="reqKMCISForm" method="post" action="#">
@@ -16,13 +16,15 @@
 <script th:inline="javascript">
   document.domain = [[${domain}]];
   window.name = "kmcis_web";
+  var popupWindow = null;
+
   function openKMCISWindow() {
     var userAgent = navigator.userAgent;
 
     if (userAgent.match(/iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || userAgent.match(/LG|SAMSUNG|Samsung/) != null) {
       document.reqKMCISForm.target = '';
     } else {
-      var popupWindow = window.open('', 'KMCISWindow', 'width=425, height=550, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250');
+      popupWindow = window.open('', 'KMCISWindow', 'width=425, height=550, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250');
       if (popupWindow == null) {
         alert(" ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.");
       }
@@ -43,6 +45,14 @@
     document.reqKMCISForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp';
     document.reqKMCISForm.submit();
   }
+
+  function onBeforeUnload() {
+    window.opener.handleCertResult("F", "")
+    if (popupWindow != null) {
+      popupWindow.close();
+    }
+  }
+
 </script>
 </body>
 </html>
