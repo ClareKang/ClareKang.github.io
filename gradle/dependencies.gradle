@@ -16,7 +16,7 @@ ext {
     springSecurityOauth2Version = '2.1.1.RELEASE'
     springSecurityJwtVersion = '1.0.8.RELEASE'
     aptPluginVersion = '0.10'
-    mapstructVersion = '1.2.0.Beta3'
+    mapstructVersion = '1.2.0.CR1'
     poiVersion = '3.16'
     lombokVersion = '1.16.18'
 

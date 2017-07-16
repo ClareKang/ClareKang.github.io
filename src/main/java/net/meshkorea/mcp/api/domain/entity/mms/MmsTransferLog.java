@@ -36,7 +36,7 @@ public class MmsTransferLog implements Serializable {
 
     @Id
     @Column(name = "TRAN_MSG_KEY")
-    private String tranferKey;
+    private String transferKey;
 
     @Column(name = "TRAN_PHONE")
     private String receiverPhone;

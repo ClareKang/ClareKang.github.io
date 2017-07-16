@@ -1,8 +1,7 @@
 package net.meshkorea.mcp.api.controller.mms;
 
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
-import net.meshkorea.mcp.api.domain.model.mms.MmsSendRequest;
-import net.meshkorea.mcp.api.domain.model.mms.MmsSendResponse;
+import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.service.mms.MmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,14 @@ public class MmsController {
     private MmsService mmsService;
 
     @GetMapping
-    public void list() {
+    public void sendHistories(String startDate,
+                              String endDate,
+                              SearchOptionEnum searchOption,
+                              String keyword,
+                              ResultOptionEnum resultOption,
+                              OrderOptionEnum orderOption,
+                              Integer page,
+                              Integer size) {
 
     }
 

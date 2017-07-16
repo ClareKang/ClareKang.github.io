@@ -83,7 +83,7 @@ public class MmsService {
             for (ReceiverDto receiver : receivers) {
                 MmsTransfer mmsTransfer = new MmsTransfer();
                 mmsTransfer.setMmsGroup(mmsGroup);
-                mmsTransfer.setTranferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
+                mmsTransfer.setTransferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
                 mmsTransfer.setReceiverPhone(receiver.getPhone());
                 mmsTransfer.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
                 mmsTransfer.setSendRequestDate(mmsGroup.getSendRequestDate());
@@ -126,8 +126,9 @@ public class MmsService {
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
-            // 분할 발송
+
             try {
+                // 분할 발송
                 if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
                     for (int page = 0; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
                         return sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
@@ -167,6 +168,10 @@ public class MmsService {
             return sendMessage(mmsSendRequest, multipartFile);
         }
         return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
+    }
+
+    public void sendHistories() {
+
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
