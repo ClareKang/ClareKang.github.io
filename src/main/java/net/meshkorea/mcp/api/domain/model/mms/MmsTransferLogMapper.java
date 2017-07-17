@@ -1,5 +1,7 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
+import net.meshkorea.mcp.api.domain.entity.mms.MmsGroupLog;
+import net.meshkorea.mcp.api.domain.entity.mms.MmsSummary;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsTransferLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -9,12 +11,7 @@ import java.util.List;
 /**
  * Created by yjhan on 2017. 7. 5..
  */
-@Mapper(
-    componentModel = "spring",
-    uses = {
-        MmsGroupLogMapper.class
-    }
-)
+@Mapper
 public interface MmsTransferLogMapper {
 
     MmsTransferLogMapper INSTANCE = Mappers.getMapper(MmsTransferLogMapper.class);
@@ -23,8 +20,12 @@ public interface MmsTransferLogMapper {
 
     MmsTransferLogDto mmsTransferLogToMmsTransferLogDto(MmsTransferLog mmsTransferLog);
 
-    List<MmsTransferLog> mmsTransferLogDtosToMmsTransferLogs(List<MmsTransferLogDto> mmsTransferLogDtos);
+    MmsGroupLog mmsGroupLogDtoToMmsGroupLog(MmsGroupLogDto mmsGroupLogDto);
 
-    List<MmsTransferLogDto> mmsTransferLogsToMmsTransferLogDtos(List<MmsTransferLog> mmsTransferLogs);
+    MmsGroupLogDto mmsGroupLogToMmsGroupLogDto(MmsGroupLog mmsGroupLog);
+
+    MmsSummary mmsSummaryDtoToMmsSummary(MmsSummaryDto mmsSummaryDto);
+
+    MmsSummaryDto mmsSummaryToMmsSummaryDto(MmsSummary mmsSummary);
 
 }

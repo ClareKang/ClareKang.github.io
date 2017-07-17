@@ -23,15 +23,26 @@ public class MmsController {
     private MmsService mmsService;
 
     @GetMapping
-    public void sendHistories(String startDate,
-                              String endDate,
-                              SearchOptionEnum searchOption,
-                              String keyword,
-                              ResultOptionEnum resultOption,
-                              OrderOptionEnum orderOption,
-                              Integer page,
-                              Integer size) {
+    public MmsListResponse sendHistories(String startDate,
+                                         String endDate,
+                                         SearchOptionEnum searchOption,
+                                         String keyword,
+                                         ResultOptionEnum resultOption,
+                                         OrderOptionEnum orderOption,
+                                         Integer page,
+                                         Integer size) {
+        MmsListRequest request = MmsListRequest.builder()
+            .searchOption(searchOption)
+            .keyword(keyword)
+            .resultOption(resultOption)
+            .orderOption(orderOption)
+            .page(page)
+            .size(size)
+            .build();
+        request.setStartDate(startDate);
+        request.setEndDate(endDate);
 
+        return mmsService.sendHistories(request);
     }
 
     @PostMapping(path = "/send")

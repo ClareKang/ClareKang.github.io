@@ -1,11 +1,9 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.meshkorea.mcp.api.domain.model.common.BaseRequest;
 import net.meshkorea.mcp.api.domain.model.common.PageableRequest;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,11 +11,14 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by reverof on 2017-07-17.
  */
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MmsListRequest extends BaseRequest implements PageableRequest {
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private String pattern = "yyyy-MM-dd";
 
     @Getter
     private LocalDateTime startDate;
@@ -54,7 +55,9 @@ public class MmsListRequest extends BaseRequest implements PageableRequest {
     }
 
     public void setStartDate(String startDate) {
-        this.startDate = LocalDateTime.parse(startDate, dateFormatter);
+        if (StringUtils.isNotEmpty(startDate)) {
+            this.startDate = LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern(pattern));
+        }
     }
 
     public void setEndDate(LocalDateTime endDate) {
@@ -62,7 +65,9 @@ public class MmsListRequest extends BaseRequest implements PageableRequest {
     }
 
     public void setEndDate(String endDate) {
-        this.endDate = LocalDateTime.parse(endDate, dateFormatter);
+        if (StringUtils.isNotEmpty(endDate)) {
+            this.endDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern(pattern));
+        }
     }
 
 }

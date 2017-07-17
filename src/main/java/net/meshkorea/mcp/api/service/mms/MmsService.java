@@ -4,17 +4,23 @@ import net.meshkorea.mcp.api.config.mms.MmsConfiguration;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsGroup;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsSummary;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsTransfer;
+import net.meshkorea.mcp.api.domain.entity.mms.MmsTransferLog;
 import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import net.meshkorea.mcp.api.domain.model.common.IntraException;
+import net.meshkorea.mcp.api.domain.model.common.PageableRequestMapper;
 import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.domain.repository.MmsGroupRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
+import net.meshkorea.mcp.api.domain.repository.MmsTransferLogRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
 import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +29,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yjhan on 2017. 7. 6..
@@ -41,6 +48,9 @@ public class MmsService {
 
     @Autowired
     private MmsTransferRepository mmsTransferRepository;
+
+    @Autowired
+    private MmsTransferLogRepository mmsTransferLogRepository;
 
     @Autowired
     private ExcelReadComponent excelReadComponent;
@@ -170,8 +180,24 @@ public class MmsService {
         return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
     }
 
-    public void sendHistories() {
+    @Transactional
+    public MmsListResponse sendHistories(MmsListRequest mmsListRequest) {
+        Pageable pageable = PageableRequestMapper.getPageRequest(
+            mmsListRequest,
+            new Sort(Sort.Direction.DESC, "transferKey")
+        );
 
+        Page<MmsTransferLog> mmsTransferLogs = mmsTransferLogRepository.search(mmsListRequest, pageable);
+
+        return new MmsListResponse(
+            mmsTransferLogs.getNumber(),
+            mmsTransferLogs.getSize(),
+            mmsTransferLogs.getTotalPages(),
+            mmsTransferLogs.getTotalElements(),
+            mmsTransferLogs.getContent().stream().map(mmsTransferLog -> {
+                return MmsTransferLogMapper.INSTANCE.mmsTransferLogToMmsTransferLogDto(mmsTransferLog);
+            }).collect(Collectors.toList())
+        );
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {

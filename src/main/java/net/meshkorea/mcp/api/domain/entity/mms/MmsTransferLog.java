@@ -32,7 +32,7 @@ public class MmsTransferLog implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "TRAN_GRP_KEY")
-    private MmsGroup mmsGroup;
+    private MmsGroupLog mmsGroupLog;
 
     @Id
     @Column(name = "TRAN_MSG_KEY")

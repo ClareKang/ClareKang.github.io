@@ -20,8 +20,9 @@ public class PageableRequestMapper {
     }
 
     public static PageRequest getPageRequest(PageableRequest pageableRequest, Sort sort) {
-        if (pageableRequest.getPage() > -1
-            && pageableRequest.getSize() > 0) {
+        if (pageableRequest != null
+            && pageableRequest.getPage() != null && pageableRequest.getPage() > -1
+            && pageableRequest.getSize() != null && pageableRequest.getSize() > 0) {
             return new PageRequest(pageableRequest.getPage(), pageableRequest.getSize(), sort);
         }
         return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);

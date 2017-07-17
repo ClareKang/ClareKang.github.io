@@ -9,13 +9,7 @@ import java.util.List;
 /**
  * Created by yjhan on 2017. 7. 5..
  */
-@Mapper(
-    componentModel = "spring",
-    uses = {
-        MmsSummaryMapper.class,
-        MmsTransferLogMapper.class
-    }
-)
+@Mapper
 public interface MmsGroupLogMapper {
 
     MmsGroupLogMapper INSTANCE = Mappers.getMapper(MmsGroupLogMapper.class);
@@ -23,9 +17,5 @@ public interface MmsGroupLogMapper {
     MmsGroupLog mmsGroupLogDtoToMmsGroupLog(MmsGroupLogDto mmsGroupLogDto);
 
     MmsGroupLogDto mmsGroupLogToMmsGroupLogDto(MmsGroupLog mmsGroupLog);
-
-    List<MmsGroupLog> mmsGroupLogDtosToMmsGroupLogs(List<MmsGroupLogDto> mmsGroupLogDtos);
-
-    List<MmsGroupLogDto> mmsGroupLogsToMmsGroupLogDtos(List<MmsGroupLog> mmsGroupLogs);
 
 }

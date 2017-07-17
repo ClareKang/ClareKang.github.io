@@ -68,6 +68,7 @@ public class MmsGroupLog implements Serializable {
     @JoinColumn(name = "mms_summary_no")
     private MmsSummary mmsSummary;
 
-    @OneToMany(mappedBy = "mmsGroup")
-    private List<MmsTransfer> mmsTransfers;
+    @OneToMany(mappedBy = "mmsGroupLog")
+    private List<MmsTransferLog> mmsTransferLogs;
+
 }

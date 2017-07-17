@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,9 +11,10 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class MmsTransferLogDto {
 
-    private MmsGroupLogDto mmsGroup;
+    private MmsGroupLogDto mmsGroupLog;
 
     private String transferKey;
 

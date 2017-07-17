@@ -27,7 +27,7 @@ public class MmsListResponse extends BaseResponse implements PageableResponse {
 
     Long totalItems;
 
-    List<MmsTransferDto> data;
+    List<MmsTransferLogDto> data;
 
     public MmsListResponse(IntraErrorDto intraErrorDto) {
         super(intraErrorDto);
