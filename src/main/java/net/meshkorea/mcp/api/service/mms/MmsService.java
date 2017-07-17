@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -198,6 +199,34 @@ public class MmsService {
                 return MmsTransferLogMapper.INSTANCE.mmsTransferLogToMmsTransferLogDto(mmsTransferLog);
             }).collect(Collectors.toList())
         );
+    }
+
+    public List<List<String>> excelBodies(MmsListRequest mmsListRequest) {
+        Pageable pageable = PageableRequestMapper.getPageRequest(
+            0,
+            1000,
+            new Sort(Sort.Direction.DESC, "transferKey")
+        );
+
+        Page<MmsTransferLog> mmsTransferLogs = mmsTransferLogRepository.search(mmsListRequest, pageable);
+
+        List<MmsTransferLogDto> rows = mmsTransferLogs.getContent().stream().map(mmsTransferLog -> {
+            return MmsTransferLogMapper.INSTANCE.mmsTransferLogToMmsTransferLogDto(mmsTransferLog);
+        }).collect(Collectors.toList());
+
+        return MmsExcelDtoMapper.convert(rows);
+    }
+
+    public List<String> excelHeader() {
+        List<String> result = new ArrayList<>();
+        result.add("발송회차");
+        result.add("발송일시");
+        result.add("수신자명");
+        result.add("수신번호");
+        result.add("발송자");
+        result.add("발송결과");
+
+        return result;
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {

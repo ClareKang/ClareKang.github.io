@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.controller.mms;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.service.mms.MmsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,14 +24,14 @@ public class MmsController {
     private MmsService mmsService;
 
     @GetMapping
-    public MmsListResponse sendHistories(String startDate,
-                                         String endDate,
-                                         SearchOptionEnum searchOption,
-                                         String keyword,
-                                         ResultOptionEnum resultOption,
-                                         OrderOptionEnum orderOption,
-                                         Integer page,
-                                         Integer size) {
+    public MmsListResponse sendHistories(@RequestParam(required = false) String startDate,
+                                         @RequestParam(required = false) String endDate,
+                                         @RequestParam(required = false) SearchOptionEnum searchOption,
+                                         @RequestParam(required = false) String keyword,
+                                         @RequestParam(required = false) ResultOptionEnum resultOption,
+                                         @RequestParam(required = false) OrderOptionEnum orderOption,
+                                         @RequestParam(required = false) Integer page,
+                                         @RequestParam(required = false) Integer size) {
         MmsListRequest request = MmsListRequest.builder()
             .searchOption(searchOption)
             .keyword(keyword)
@@ -39,10 +40,49 @@ public class MmsController {
             .page(page)
             .size(size)
             .build();
-        request.setStartDate(startDate);
-        request.setEndDate(endDate);
+        if (StringUtils.isNotEmpty(startDate)) {
+            request.setStartDate(startDate);
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            request.setEndDate(endDate);
+        }
 
         return mmsService.sendHistories(request);
+    }
+
+    @GetMapping(path = "/excel")
+    public ModelAndView downloadHistories(@RequestParam(required = false) String startDate,
+                                          @RequestParam(required = false) String endDate,
+                                          @RequestParam(required = false) SearchOptionEnum searchOption,
+                                          @RequestParam(required = false) String keyword,
+                                          @RequestParam(required = false) ResultOptionEnum resultOption,
+                                          @RequestParam(required = false) OrderOptionEnum orderOption,
+                                          @RequestParam(required = false) Integer page,
+                                          @RequestParam(required = false) Integer size,
+                                          ModelAndView mav) {
+        MmsListRequest request = MmsListRequest.builder()
+            .searchOption(searchOption)
+            .keyword(keyword)
+            .resultOption(resultOption)
+            .orderOption(orderOption)
+            .page(page)
+            .size(size)
+            .build();
+        if (StringUtils.isNotEmpty(startDate)) {
+            request.setStartDate(startDate);
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            request.setEndDate(endDate);
+        }
+
+        List<String> headers = mmsService.excelHeader();
+        List<List<String>> body = mmsService.excelBodies(request);
+
+        mav.addObject(ExcelConfig.HEAD, headers);
+        mav.addObject(ExcelConfig.BODY, body);
+        mav.setViewName("excelXlsxView");
+
+        return mav;
     }
 
     @PostMapping(path = "/send")
@@ -50,7 +90,7 @@ public class MmsController {
         return mmsService.sendMessage(mmsSendRequest);
     }
 
-    @PostMapping(path = "/send/excel", consumes = {"multipart/form-data"})
+    @PostMapping(path = "/send/excel")
     public MmsSendResponse sendMms(@RequestPart String message,
                                    @RequestPart(name = "excel", required = false) MultipartFile file) {
         return mmsService.sendMessage(message, file);

@@ -64,10 +64,10 @@ public class MmsTransferLogRepositoryImpl extends MmsRepositoryQueryDslSupport i
             if (mmsListRequest.getResultOption() != null) {
                 switch (mmsListRequest.getResultOption()) {
                     case SUCCESS:
-                        query.where(mmsTransferLog.resultCode.eq(ResultOptionEnum.SUCCESS.toString()));
+                        query.where(mmsTransferLog.resultCode.eq(ResultOptionEnum.SUCCESS.getValue()));
                         break;
                     default:
-                        query.where(mmsTransferLog.resultCode.ne(ResultOptionEnum.SUCCESS.toString()));
+                        query.where(mmsTransferLog.resultCode.ne(ResultOptionEnum.SUCCESS.getValue()));
                         break;
                 }
             }

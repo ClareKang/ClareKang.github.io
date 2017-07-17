@@ -16,10 +16,6 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class MmsListRequest extends BaseRequest implements PageableRequest {
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private String pattern = "yyyy-MM-dd";
-
     @Getter
     private LocalDateTime startDate;
 
@@ -56,7 +52,7 @@ public class MmsListRequest extends BaseRequest implements PageableRequest {
 
     public void setStartDate(String startDate) {
         if (StringUtils.isNotEmpty(startDate)) {
-            this.startDate = LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern(pattern));
+            this.startDate = LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
 
@@ -66,7 +62,7 @@ public class MmsListRequest extends BaseRequest implements PageableRequest {
 
     public void setEndDate(String endDate) {
         if (StringUtils.isNotEmpty(endDate)) {
-            this.endDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern(pattern));
+            this.endDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
 

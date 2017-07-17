@@ -11,9 +11,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-
-import java.util.Arrays;
 
 @SpringBootApplication(exclude = {
     DataSourceAutoConfiguration.class,
@@ -35,14 +32,6 @@ import java.util.Arrays;
 public class McpApiApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(McpApiApplication.class, args);
-
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }
+        SpringApplication.run(McpApiApplication.class, args);
     }
 }
