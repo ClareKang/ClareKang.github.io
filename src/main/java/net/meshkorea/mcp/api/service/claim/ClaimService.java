@@ -75,7 +75,7 @@ public class ClaimService {
 
     @Transactional
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
-
+        ClaimListResponse returnObj = new ClaimListResponse();
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
                 || "claimNo".equals(claimSearchDto.getSearchType())
                 || "claimOrderNumber".equals(claimSearchDto.getSearchType())
@@ -98,8 +98,45 @@ public class ClaimService {
             claimSearchDto.setOrderIds(orderIds);
         }
         List<ClaimList> list = claimDao.findClaims(claimSearchDto);
+        returnObj.setData(list);
 
-        return new ClaimListResponse(list);
+        ClaimCount claimCount = new ClaimCount();
+
+        claimCount.setAccept(0);
+        claimCount.setInProgress(0);
+        claimCount.setHold(0);
+        claimCount.setResolve(0);
+        claimCount.setRetraction(0);
+        claimCount.setTransfer(0);
+        claimCount.setUnprocessed(0);
+
+        for(ClaimList item: list) {
+            switch (item.getStatusCode()){
+                case "ACCEPT":
+                    claimCount.setAccept(claimCount.getAccept() + 1);
+                    break;
+                case "IN_PROGRESS":
+                    claimCount.setInProgress(claimCount.getInProgress() + 1);
+                    break;
+                case "HOLD":
+                    claimCount.setHold(claimCount.getHold() + 1);
+                    break;
+                case "RESOLVE":
+                    claimCount.setResolve(claimCount.getResolve() + 1);
+                    break;
+                case "RETRACTION":
+                    claimCount.setRetraction(claimCount.getRetraction() + 1);
+                    break;
+                case "TRANSFER":
+                    claimCount.setTransfer(claimCount.getTransfer() + 1);
+                    break;
+                case "UNPROCESSED":
+                    claimCount.setUnprocessed(claimCount.getUnprocessed() + 1);
+                    break;
+            }
+        }
+        returnObj.setClaimCount(claimCount);
+        return returnObj;
     }
 
     @Transactional
