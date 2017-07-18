@@ -5,6 +5,7 @@ import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.service.mms.MmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -78,6 +79,7 @@ public class MmsController {
         List<String> headers = mmsService.excelHeader();
         List<List<String>> body = mmsService.excelBodies(request);
 
+        mav.addObject(ExcelConfig.FILE_NAME, mmsService.excelFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, body);
         mav.setViewName("excelXlsxView");
@@ -90,7 +92,7 @@ public class MmsController {
         return mmsService.sendMessage(mmsSendRequest);
     }
 
-    @PostMapping(path = "/send/excel")
+    @PostMapping(path = "/send/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MmsSendResponse sendMms(@RequestPart String message,
                                    @RequestPart(name = "excel", required = false) MultipartFile file) {
         return mmsService.sendMessage(message, file);
@@ -101,6 +103,7 @@ public class MmsController {
         List<String> headers = new ArrayList<>();
         headers.add("이름");
         headers.add("전화번호");
+        mav.addObject(ExcelConfig.FILE_NAME, "sample");
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, Collections.EMPTY_LIST);
         mav.setViewName("excelXlsxView");

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -227,6 +228,10 @@ public class MmsService {
         result.add("발송결과");
 
         return result;
+    }
+
+    public String excelFileName() {
+        return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
