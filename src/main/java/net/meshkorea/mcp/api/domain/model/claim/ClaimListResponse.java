@@ -19,6 +19,7 @@ import java.util.List;
 public class ClaimListResponse extends BaseResponse {
 
     List<ClaimList> data;
+    ClaimCount claimCount;
 
     public ClaimListResponse(IntraErrorDto intraErrorDto) {
         super(intraErrorDto);
