@@ -3,9 +3,6 @@ package net.meshkorea.mcp.api.domain.model.claim;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import net.meshkorea.mcp.api.domain.model.auth.UserDto;
-
-import java.util.Date;
 
 /**
  * Created by sungjae.hong on 2017. 6. 13..
