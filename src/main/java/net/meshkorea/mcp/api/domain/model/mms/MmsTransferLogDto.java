@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MmsTransferDto {
+public class MmsTransferLogDto {
 
-    private MmsGroupDto mmsGroup;
+    private MmsGroupLogDto mmsGroupLog;
 
     private String transferKey;
 

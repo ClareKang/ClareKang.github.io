@@ -4,16 +4,23 @@ import net.meshkorea.mcp.api.config.mms.MmsConfiguration;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsGroup;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsSummary;
 import net.meshkorea.mcp.api.domain.entity.mms.MmsTransfer;
+import net.meshkorea.mcp.api.domain.entity.mms.MmsTransferLog;
 import net.meshkorea.mcp.api.domain.model.common.IntraErrorDto;
 import net.meshkorea.mcp.api.domain.model.common.IntraException;
+import net.meshkorea.mcp.api.domain.model.common.PageableRequestMapper;
 import net.meshkorea.mcp.api.domain.model.mms.*;
 import net.meshkorea.mcp.api.domain.repository.MmsGroupRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsSummaryRepository;
+import net.meshkorea.mcp.api.domain.repository.MmsTransferLogRepository;
 import net.meshkorea.mcp.api.domain.repository.MmsTransferRepository;
 import net.meshkorea.mcp.api.service.auth.OAuthUserService;
 import net.meshkorea.mcp.api.util.excel.ExcelReadComponent;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yjhan on 2017. 7. 6..
@@ -42,13 +52,16 @@ public class MmsService {
     private MmsTransferRepository mmsTransferRepository;
 
     @Autowired
+    private MmsTransferLogRepository mmsTransferLogRepository;
+
+    @Autowired
     private ExcelReadComponent excelReadComponent;
 
     @Autowired
     private OAuthUserService oAuthUserService;
 
     private String makeTransferKey(String base, int index) {
-        return String.format(base + "%3d", index);
+        return String.format(base + "%03d", index);
     }
 
     private <T> List<T> getSubList(List<T> list, int page, int size) {
@@ -82,8 +95,8 @@ public class MmsService {
             for (ReceiverDto receiver : receivers) {
                 MmsTransfer mmsTransfer = new MmsTransfer();
                 mmsTransfer.setMmsGroup(mmsGroup);
-                mmsTransfer.setTranferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
-                mmsTransfer.setReceiverPhone(receiver.getPhoneNumber());
+                mmsTransfer.setTransferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
+                mmsTransfer.setReceiverPhone(receiver.getPhone());
                 mmsTransfer.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
                 mmsTransfer.setSendRequestDate(mmsGroup.getSendRequestDate());
                 mmsTransfer.setReceiver(receiver.getName());
@@ -101,12 +114,14 @@ public class MmsService {
             mmsGroup.setMessage(message);
             mmsGroup.setMmsSummary(mmsSummary);
             mmsGroup.setReceiverCount(receivers.size());
-            mmsGroup.setSendRequestDate(LocalDateTime.now());
+            mmsGroup.setSendRequestDate(requestDate.plusHours(1)); // 1시간 뒤
             mmsGroup.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
             mmsGroup.setTransferType(TransferTypeEnum.MMS.getValue());
+            mmsGroupRepository.save(mmsGroup);
 
             sendMessage(mmsGroup, receivers);
 
+            mmsGroup.setSendRequestDate(requestDate); // 요청시각 변경
             mmsGroupRepository.save(mmsGroup);
 
             return new MmsSendResponse();
@@ -123,16 +138,23 @@ public class MmsService {
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
-            // 분할 발송
-            if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
-                for (int page = 0; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
-                    return sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
+
+            try {
+                // 분할 발송
+                if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
+                    for (int page = 0; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
+                        return sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
+                    }
+                } else { // 전체 발송
+                    return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
                 }
-            } else { // 전체 발송
-                return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
+            } catch (IntraException ie) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
             }
+        } else if (StringUtils.isEmpty(mmsSendRequest.getMessage())) {
+            return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
         }
-        throw new IntraException("수신번호를 1건 이상 입력하세요.");
+        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
     }
 
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) {
@@ -150,6 +172,66 @@ public class MmsService {
         } catch (IntraException ie) {
             return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
         }
+    }
+
+    public MmsSendResponse sendMessage(String message, MultipartFile multipartFile) {
+        if (StringUtils.isNotEmpty(message)) {
+            MmsSendRequest mmsSendRequest = new MmsSendRequest(message);
+            return sendMessage(mmsSendRequest, multipartFile);
+        }
+        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
+    }
+
+    @Transactional
+    public MmsListResponse sendHistories(MmsListRequest mmsListRequest) {
+        Pageable pageable = PageableRequestMapper.getPageRequest(
+            mmsListRequest,
+            new Sort(Sort.Direction.DESC, "transferKey")
+        );
+
+        Page<MmsTransferLog> mmsTransferLogs = mmsTransferLogRepository.search(mmsListRequest, pageable);
+
+        return new MmsListResponse(
+            mmsTransferLogs.getNumber(),
+            mmsTransferLogs.getSize(),
+            mmsTransferLogs.getTotalPages(),
+            mmsTransferLogs.getTotalElements(),
+            mmsTransferLogs.getContent().stream().map(mmsTransferLog -> {
+                return MmsTransferLogMapper.INSTANCE.mmsTransferLogToMmsTransferLogDto(mmsTransferLog);
+            }).collect(Collectors.toList())
+        );
+    }
+
+    public List<List<String>> excelBodies(MmsListRequest mmsListRequest) {
+        Pageable pageable = PageableRequestMapper.getPageRequest(
+            0,
+            1000,
+            new Sort(Sort.Direction.DESC, "transferKey")
+        );
+
+        Page<MmsTransferLog> mmsTransferLogs = mmsTransferLogRepository.search(mmsListRequest, pageable);
+
+        List<MmsTransferLogDto> rows = mmsTransferLogs.getContent().stream().map(mmsTransferLog -> {
+            return MmsTransferLogMapper.INSTANCE.mmsTransferLogToMmsTransferLogDto(mmsTransferLog);
+        }).collect(Collectors.toList());
+
+        return MmsExcelDtoMapper.convert(rows);
+    }
+
+    public List<String> excelHeader() {
+        List<String> result = new ArrayList<>();
+        result.add("발송회차");
+        result.add("발송일시");
+        result.add("수신자명");
+        result.add("수신번호");
+        result.add("발송자");
+        result.add("발송결과");
+
+        return result;
+    }
+
+    public String excelFileName() {
+        return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {

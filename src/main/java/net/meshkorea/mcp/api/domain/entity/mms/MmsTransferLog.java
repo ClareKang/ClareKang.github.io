@@ -27,12 +27,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "kb_mms_tran")
-public class MmsTransfer implements Serializable {
+@Table(name = "kb_mms_tran_log")
+public class MmsTransferLog implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "TRAN_GRP_KEY")
-    private MmsGroup mmsGroup;
+    private MmsGroupLog mmsGroupLog;
 
     @Id
     @Column(name = "TRAN_MSG_KEY")

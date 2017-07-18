@@ -7,7 +7,7 @@ ext {
 
     gradleWrapperVersion = '3.5'
     springBootVersion = '1.5.4.RELEASE'
-    springfoxVersion = '2.6.1'
+    springfoxVersion = '2.7.0'
     apacheHttpcomponentsVersion = '4.5.3'
     querydslVersion = '4.1.4'
     querydslGradlePluginVersion = '1.0.9'
@@ -16,7 +16,7 @@ ext {
     springSecurityOauth2Version = '2.1.1.RELEASE'
     springSecurityJwtVersion = '1.0.8.RELEASE'
     aptPluginVersion = '0.10'
-    mapstructVersion = '1.2.0.Beta3'
+    mapstructVersion = '1.2.0.CR1'
     poiVersion = '3.16'
     lombokVersion = '1.16.18'
 

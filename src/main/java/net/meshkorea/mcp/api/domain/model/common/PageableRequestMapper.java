@@ -20,16 +20,29 @@ public class PageableRequestMapper {
     }
 
     public static PageRequest getPageRequest(PageableRequest pageableRequest, Sort sort) {
-        if (pageableRequest.getPage() > -1
-            && pageableRequest.getSize() > 0) {
-            return new PageRequest(pageableRequest.getPage(), pageableRequest.getSize(), sort);
+        Integer page = DEFAULT_PAGE;
+        Integer size = DEFAULT_SIZE;
+        if (pageableRequest != null) {
+            if (pageableRequest.getPage() != null && pageableRequest.getPage() > -1) {
+                page = pageableRequest.getPage();
+            }
+            if (pageableRequest.getSize() != null && pageableRequest.getSize() > 0) {
+                size = pageableRequest.getSize();
+            }
         }
-        return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);
+        return new PageRequest(page, size, sort);
     }
 
     public static PageRequest getPageRequest(Integer page, Integer size, Sort sort) {
         if (page > -1 && size > 0) {
             return new PageRequest(page, size, sort);
+        }
+        return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);
+    }
+
+    public static PageRequest getPageRequest(Integer page, Sort sort) {
+        if (page > -1) {
+            return new PageRequest(page, DEFAULT_SIZE, sort);
         }
         return new PageRequest(DEFAULT_PAGE, DEFAULT_SIZE, sort);
     }

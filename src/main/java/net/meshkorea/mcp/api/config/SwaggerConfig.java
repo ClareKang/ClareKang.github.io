@@ -1,5 +1,7 @@
 package net.meshkorea.mcp.api.config;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +22,26 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.any())
+            .paths(Predicates.not(excludePaths()))
             .build()
             .ignoredParameterTypes(PagedResourcesAssembler.class, Pageable.class)
             .apiInfo(new ApiInfoBuilder()
                 .title("Mesh Control Platform API")
                 .version("1")
                 .build());
+    }
+
+    /**
+     * 제외할 URL 패턴
+     *
+     * @return
+     */
+    private Predicate<String> excludePaths() {
+        return Predicates.or(
+            PathSelectors.regex("/v1/mms/send/excel.*"),
+            PathSelectors.regex("/v1/mms/sample.*"),
+            PathSelectors.regex("/v1/cert/mobile/identification.*")
+        );
     }
 
 }

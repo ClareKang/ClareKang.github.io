@@ -15,7 +15,7 @@ public class ReceiverDto {
 
     private String name;
 
-    private String phoneNumber;
+    private String phone;
 
     /**
      * for Excel
@@ -26,7 +26,7 @@ public class ReceiverDto {
     public static ReceiverDto rowOf(Row row) {
         return ReceiverDto.builder()
             .name(row.getCell(0).getStringCellValue())
-            .phoneNumber(row.getCell(1).getStringCellValue())
+            .phone(row.getCell(1).getStringCellValue())
             .build();
     }
 

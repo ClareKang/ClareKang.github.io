@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MmsGroupDto {
+public class MmsGroupLogDto {
 
     private String groupKey;
 

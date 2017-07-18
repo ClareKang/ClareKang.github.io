@@ -7,12 +7,7 @@ import org.mapstruct.factory.Mappers;
 /**
  * Created by yjhan on 2017. 7. 5..
  */
-@Mapper(
-    componentModel = "spring",
-    uses = {
-        MmsGroupMapper.class
-    }
-)
+@Mapper
 public interface MmsSummaryMapper {
 
     MmsSummaryMapper INSTANCE = Mappers.getMapper(MmsSummaryMapper.class);

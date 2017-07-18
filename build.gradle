@@ -98,6 +98,13 @@ dependencies {
     testCompile "org.springframework.security:spring-security-test"
 }
 
+compileJava {
+    options.compilerArgs = [
+        '-Amapstruct.suppressGeneratorTimestamp=true',
+        '-Amapstruct.suppressGeneratorVersionInfoComment=true'
+    ]
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = "${gradleWrapperVersion}"
 }
