@@ -91,6 +91,7 @@ public class MmsService {
      */
     private void sendMessage(MmsGroup mmsGroup, List<ReceiverDto> receivers) {
         if (receivers != null && receivers.size() > 0) {
+            LocalDateTime requestDate = LocalDateTime.now();
             int index = 1;
             for (ReceiverDto receiver : receivers) {
                 MmsTransfer mmsTransfer = new MmsTransfer();
@@ -98,7 +99,7 @@ public class MmsService {
                 mmsTransfer.setTransferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
                 mmsTransfer.setReceiverPhone(receiver.getPhone());
                 mmsTransfer.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
-                mmsTransfer.setSendRequestDate(mmsGroup.getSendRequestDate());
+                mmsTransfer.setSendRequestDate(requestDate);
                 mmsTransfer.setReceiver(receiver.getName());
                 mmsTransferRepository.save(mmsTransfer);
             }
