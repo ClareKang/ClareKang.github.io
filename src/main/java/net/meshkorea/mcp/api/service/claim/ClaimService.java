@@ -76,6 +76,17 @@ public class ClaimService {
     @Transactional
     public ClaimListResponse findClaims(ClaimSearchDto claimSearchDto) throws ApiException {
         ClaimListResponse returnObj = new ClaimListResponse();
+        ClaimCount claimCount = new ClaimCount();
+        List<ClaimList> list = new ArrayList<>();
+
+                claimCount.setAccept(0);
+        claimCount.setInProgress(0);
+        claimCount.setHold(0);
+        claimCount.setResolve(0);
+        claimCount.setRetraction(0);
+        claimCount.setTransfer(0);
+        claimCount.setUnprocessed(0);
+
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
                 || "claimNo".equals(claimSearchDto.getSearchType())
                 || "claimOrderNumber".equals(claimSearchDto.getSearchType())
@@ -92,23 +103,15 @@ public class ClaimService {
                 IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 100건을 초과하여 조회가 불가능합니다. 조회 조건을 좀더 상세히 입력하여 재시도하세요.");
                 return new ClaimListResponse(intraErrorDto);
             } else if (response.getOrders().size() == 0) {
-                IntraErrorDto intraErrorDto = new IntraErrorDto(HttpStatus.NO_CONTENT, "해당 조건의 오더가 없습니다. 조회 조건을 변경해서 재시도하세요.");
-                return new ClaimListResponse(intraErrorDto);
+                returnObj.setData(list);
+                return returnObj;
             }
             claimSearchDto.setOrderIds(orderIds);
         }
-        List<ClaimList> list = claimDao.findClaims(claimSearchDto);
+        list = claimDao.findClaims(claimSearchDto);
         returnObj.setData(list);
 
-        ClaimCount claimCount = new ClaimCount();
 
-        claimCount.setAccept(0);
-        claimCount.setInProgress(0);
-        claimCount.setHold(0);
-        claimCount.setResolve(0);
-        claimCount.setRetraction(0);
-        claimCount.setTransfer(0);
-        claimCount.setUnprocessed(0);
 
         for(ClaimList item: list) {
             switch (item.getStatusCode()){
