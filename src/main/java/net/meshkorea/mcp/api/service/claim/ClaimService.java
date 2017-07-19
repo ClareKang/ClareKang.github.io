@@ -104,6 +104,7 @@ public class ClaimService {
                 return new ClaimListResponse(intraErrorDto);
             } else if (response.getOrders().size() == 0) {
                 returnObj.setData(list);
+                returnObj.setClaimCount(claimCount);
                 return returnObj;
             }
             claimSearchDto.setOrderIds(orderIds);
