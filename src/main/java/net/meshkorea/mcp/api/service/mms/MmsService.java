@@ -91,6 +91,7 @@ public class MmsService {
      */
     private void sendMessage(MmsGroup mmsGroup, List<ReceiverDto> receivers) {
         if (receivers != null && receivers.size() > 0) {
+            LocalDateTime requestDate = LocalDateTime.now();
             int index = 1;
             for (ReceiverDto receiver : receivers) {
                 MmsTransfer mmsTransfer = new MmsTransfer();
@@ -98,7 +99,7 @@ public class MmsService {
                 mmsTransfer.setTransferKey(makeTransferKey(mmsGroup.getGroupKey(), index++));
                 mmsTransfer.setReceiverPhone(receiver.getPhone());
                 mmsTransfer.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
-                mmsTransfer.setSendRequestDate(mmsGroup.getSendRequestDate());
+                mmsTransfer.setSendRequestDate(requestDate);
                 mmsTransfer.setReceiver(receiver.getName());
                 mmsTransferRepository.save(mmsTransfer);
             }
@@ -160,11 +161,23 @@ public class MmsService {
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) {
         if (multipartFile != null) {
             try {
-                mmsSendRequest.setReceivers(excelToReceiverDtos(multipartFile));
+                List<ReceiverDto> receivers = excelToReceiverDtos(multipartFile);
+                List<ReceiverDto> mmsReceivers = new ArrayList<>();
+                for (ReceiverDto receiver : receivers) {
+                    if (StringUtils.isNotEmpty(receiver.getPhone())) {
+                        mmsReceivers.add(receiver);
+                    }
+                }
+                if (mmsReceivers.size() <= 0) {
+                    return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+                }
+                mmsSendRequest.setReceivers(mmsReceivers);
             } catch (InvalidFormatException ife) {
                 return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "파일 형식은 xls, xlsx 만 업로드 가능 합니다."));
             } catch (IOException ioe) {
                 return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "액셀 파일 읽기 오류."));
+            } catch (NullPointerException npe) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
             }
         }
         try {
