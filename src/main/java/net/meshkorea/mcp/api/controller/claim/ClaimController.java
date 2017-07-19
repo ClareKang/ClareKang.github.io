@@ -50,9 +50,6 @@ public class ClaimController {
 
 
 
-
-
-
     @GetMapping("getClaimAdjustmentHistory")
     public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long orderId) {
         return claimService.getClaimAdjustmentHistory(orderId);
@@ -72,12 +69,20 @@ public class ClaimController {
     public UpdateClaimDescriptionResponse updateDescription(@RequestBody UpdateClaimDescriptionRequest request) {
         return claimService.updateDescription(request);
     }
-    @GetMapping("/description")
-    public ClaimDescriptionCountResponse getDescription(Long orderId) {
+    @GetMapping("/descriptionCount")
+    public ClaimDescriptionCountResponse getDescriptionCount(Long orderId) {
+        return claimService.getDescriptionCount(orderId);
+    }
+
+    @GetMapping("/getDescription")
+    public ClaimDescriptionResponse getDescription(Long orderId) {
         return claimService.getDescription(orderId);
     }
 
-
+    @GetMapping("/getAdjustment")
+    public ClaimAdjustmentResponse getAdjustment(Long orderId) {
+        return claimService.getAdjustment(orderId);
+    }
 
     @GetMapping("/getClaimReasonCode")
     public ClaimReasonCodeResponse getClaimReasonCode() {

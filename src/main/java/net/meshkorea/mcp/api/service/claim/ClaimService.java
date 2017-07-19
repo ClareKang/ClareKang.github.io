@@ -209,8 +209,18 @@ public class ClaimService {
     }
 
     @Transactional
-    public ClaimDescriptionCountResponse getDescription(Long orderId) {
+    public ClaimDescriptionCountResponse getDescriptionCount(Long orderId) {
         return new ClaimDescriptionCountResponse(claimDao.getClaimDescription(orderId).size());
+    }
+
+    @Transactional
+    public ClaimDescriptionResponse getDescription(Long orderId) {
+        return new ClaimDescriptionResponse(claimDao.getClaimDescription(orderId));
+    }
+
+    @Transactional
+    public ClaimAdjustmentResponse getAdjustment(Long orderId) {
+        return new ClaimAdjustmentResponse(claimDao.getClaimAdjustment(orderId));
     }
 
     @Transactional
