@@ -18,7 +18,7 @@ public class PartnerController {
     PartnerService partnerService;
 
     @PostMapping("/findPartners")
-    public ManagerFindPartnersRes findPartners(ManagerFindPartnersReq req) throws ApiException {
+    public ManagerFindPartnersRes findPartners(@RequestBody ManagerFindPartnersReq req) throws ApiException {
         return partnerService.findPartners(req);
     }
 
