@@ -79,13 +79,19 @@ public class ClaimService {
         ClaimCount claimCount = new ClaimCount();
         List<ClaimList> list = new ArrayList<>();
 
-                claimCount.setAccept(0);
+        claimCount.setAccept(0);
         claimCount.setInProgress(0);
         claimCount.setHold(0);
         claimCount.setResolve(0);
         claimCount.setRetraction(0);
         claimCount.setTransfer(0);
         claimCount.setUnprocessed(0);
+
+        if(claimSearchDto.getClaimStatusType().size() == 0) {
+            returnObj.setClaimCount(claimCount);
+            returnObj.setData(list);
+            return returnObj;
+        }
 
         if ("originOrderNumber".equals(claimSearchDto.getSearchType())
                 || "claimNo".equals(claimSearchDto.getSearchType())
