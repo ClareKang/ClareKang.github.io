@@ -171,6 +171,9 @@ public class MmsService {
                 if (mmsReceivers.size() <= 0) {
                     return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
                 }
+                if (mmsReceivers.size() > 1000) {
+                    return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "문자는 최대 1000건 까지 발송 가능합니다."));
+                }
                 mmsSendRequest.setReceivers(mmsReceivers);
             } catch (InvalidFormatException ife) {
                 return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "파일 형식은 xls, xlsx 만 업로드 가능 합니다."));
@@ -248,7 +251,7 @@ public class MmsService {
     }
 
     public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
-        return excelReadComponent.readExcelToList(multipartFile, ReceiverDto::rowOf);
+        return excelReadComponent.readExcelToList(multipartFile, XlsToReceiverDtoMapper::rowOf, 1);
     }
 
 }

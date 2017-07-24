@@ -20,16 +20,23 @@ import java.util.stream.IntStream;
 public class ExcelReadComponent {
 
     public <T> List<T> readExcelToList(final MultipartFile multipartFile,
-                                       final Function<Row, T> rowFunc) throws IOException, InvalidFormatException {
+                                       final Function<Row, T> rowFunc,
+                                       final Integer start) throws IOException, InvalidFormatException {
 
         final Workbook workbook = readWorkbook(multipartFile);
         final Sheet sheet = workbook.getSheetAt(0); // first sheet
-        final int rowCount = sheet.getPhysicalNumberOfRows();
+        int rowCount = sheet.getPhysicalNumberOfRows();
 
         return IntStream
-            .range(0, rowCount)
+            .range(start, rowCount)
             .mapToObj(rowIndex -> rowFunc.apply(sheet.getRow(rowIndex)))
             .collect(Collectors.toList());
+    }
+
+    public <T> List<T> readExcelToList(final MultipartFile multipartFile,
+                                       final Function<Row, T> rowFunc) throws IOException, InvalidFormatException {
+
+        return readExcelToList(multipartFile, rowFunc, 0);
     }
 
     private Workbook readWorkbook(MultipartFile multipartFile) throws IOException, InvalidFormatException {
