@@ -1,15 +1,17 @@
 package net.meshkorea.mcp.api.domain.model.mms;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 public class XlsToReceiverDtoMapper {
 
+    public static Integer NAME_COLUMN_INDEX = 0;
+    public static Integer PHONE_COLUMN_INDEX = 1;
+
     public static ReceiverDto rowOf(Row row) {
-        String name = XlsToReceiverDtoMapper.getStringValue(row.getCell(0));
-        String phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(1));
+        String name = XlsToReceiverDtoMapper.getStringValue(row.getCell(NAME_COLUMN_INDEX));
+        String phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX));
         return ReceiverDto.builder()
             .name(name)
             .phone(phone)
