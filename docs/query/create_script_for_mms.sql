@@ -173,7 +173,9 @@ CREATE TABLE IF NOT EXISTS `mms`.`kb_mms_tran_log` (
   INDEX `idx3_kb_mms_tran_log` (`TRAN_DATE` ASC),
   PRIMARY KEY (`TRAN_MSG_KEY`),
   INDEX `fk_kb_mms_tran_log_kb_mms_grp_log1_idx` (`TRAN_GRP_KEY` ASC),
-  INDEX `idx_tran_phone` (`TRAN_PHONE` ASC))
+  INDEX `idx_tran_phone` (`TRAN_PHONE` ASC),
+  INDEX `idx_tran_receiver` (`TRAN_RECEIVER` ASC)
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
