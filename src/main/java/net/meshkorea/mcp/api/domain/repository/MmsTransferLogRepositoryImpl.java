@@ -57,7 +57,7 @@ public class MmsTransferLogRepositoryImpl extends MmsRepositoryQueryDslSupport i
                         query.where(mmsTransferLog.receiver.like("%" + keyword + "%"));
                         break;
                     case SENDER:
-                        query.where(mmsSummary.mmsSender.eq(keyword));
+                        query.where(mmsSummary.mmsSender.like("%" + keyword + "%"));
                         break;
                 }
             }
