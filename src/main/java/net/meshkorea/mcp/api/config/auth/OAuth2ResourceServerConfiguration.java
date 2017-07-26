@@ -47,6 +47,8 @@ public class OAuth2ResourceServerConfiguration implements ResourceServerConfigur
             .antMatchers("/v1/mms/send").permitAll()
             .antMatchers("/v2/api-docs").permitAll()
             .antMatchers("/swagger-ui.html").permitAll()
+            .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
+            .antMatchers("/swagger-resources/**").permitAll()
             .anyRequest().authenticated();
     }
 }
