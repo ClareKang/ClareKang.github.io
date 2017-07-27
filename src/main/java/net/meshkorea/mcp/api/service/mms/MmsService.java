@@ -136,6 +136,11 @@ public class MmsService {
     @Transactional
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest) throws IntraException {
         if (mmsSendRequest != null) {
+            List<ReceiverDto> receivers = mmsSendRequest.getReceivers();
+            if (receivers == null || receivers.isEmpty()) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+            }
+
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
@@ -251,7 +256,7 @@ public class MmsService {
         return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
     }
 
-    public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
+    private List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
         return excelReadComponent.readExcelToList(multipartFile, XlsToReceiverDtoMapper::rowOf, 1);
     }
 

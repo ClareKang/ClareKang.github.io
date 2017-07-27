@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors.any())
-            .paths(Predicates.not(excludePaths()))
+            .paths(excludePaths())
             .build()
             .ignoredParameterTypes(PagedResourcesAssembler.class, Pageable.class)
             .apiInfo(new ApiInfoBuilder()
@@ -57,11 +57,12 @@ public class SwaggerConfig {
      * @return
      */
     private Predicate<String> excludePaths() {
-        return Predicates.or(
+        return Predicates.not(Predicates.or(
             PathSelectors.regex("/v1/mms/send/excel.*"),
+            PathSelectors.regex("/v1/mms/excel.*"),
             PathSelectors.regex("/v1/mms/sample.*"),
             PathSelectors.regex("/v1/cert/mobile/identification.*")
-        );
+        ));
     }
 
     private Predicate<String> internalPaths() {
