@@ -66,12 +66,13 @@ public class MmsService {
 
     private <T> List<T> getSubList(List<T> list, int page, int size) {
 
-        int from = Math.max(0, page * size);
-        int to = Math.min(list.size(), (page + 1) * size);
+        int from = Math.max(0, (page - 1) * size);
+        int to = Math.min(list.size(), page * size);
 
         return list.subList(from, to);
     }
 
+    // 1000, 0, 100
     private Boolean isValidRange(int totalSize, int page, int itemsPerPage) {
         Boolean result = false;
         if (totalSize > 0) {
@@ -79,7 +80,7 @@ public class MmsService {
             if ((totalSize % itemsPerPage) != 0) {
                 totalPage += 1;
             }
-            if (page < totalPage) {
+            if (page <= totalPage) {
                 result = true;
             }
         }
@@ -108,21 +109,20 @@ public class MmsService {
 
     private MmsSendResponse sendMessage(MmsSummary mmsSummary, String message, List<ReceiverDto> receivers) throws IntraException {
         if (mmsSummary != null && receivers != null && receivers.size() > 0) {
-            LocalDateTime requestDate = LocalDateTime.now();
             MmsGroup mmsGroup = new MmsGroup();
             mmsGroup.setGroupKey(String.valueOf(System.currentTimeMillis()));
             mmsGroup.setCallbackNumber(mmsConfiguration.getCallbackNumber());
             mmsGroup.setMessage(message);
             mmsGroup.setMmsSummary(mmsSummary);
             mmsGroup.setReceiverCount(receivers.size());
-            mmsGroup.setSendRequestDate(requestDate.plusHours(1)); // 1시간 뒤
+            mmsGroup.setSendRequestDate(LocalDateTime.now().plusHours(1)); // 1시간 뒤
             mmsGroup.setTransferStatus(TransferStatusEnum.REQUEST.getValue());
             mmsGroup.setTransferType(TransferTypeEnum.MMS.getValue());
             mmsGroupRepository.save(mmsGroup);
 
             sendMessage(mmsGroup, receivers);
 
-            mmsGroup.setSendRequestDate(requestDate); // 요청시각 변경
+            mmsGroup.setSendRequestDate(LocalDateTime.now()); // 요청시각 변경
             mmsGroupRepository.save(mmsGroup);
 
             return new MmsSendResponse();
@@ -136,6 +136,11 @@ public class MmsService {
     @Transactional
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest) throws IntraException {
         if (mmsSendRequest != null) {
+            List<ReceiverDto> receivers = mmsSendRequest.getReceivers();
+            if (receivers == null || receivers.isEmpty()) {
+                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+            }
+
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
             mmsSummaryRepository.save(mmsSummary);
@@ -143,9 +148,10 @@ public class MmsService {
             try {
                 // 분할 발송
                 if (mmsSendRequest.getReceivers().size() > mmsConfiguration.getMaxReceiverAtOnce()) {
-                    for (int page = 0; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
-                        return sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
+                    for (int page = 1; isValidRange(mmsSendRequest.getReceivers().size(), page, mmsConfiguration.getMaxReceiverAtOnce()); ++page) {
+                        sendMessage(mmsSummary, mmsSendRequest.getMessage(), getSubList(mmsSendRequest.getReceivers(), page, mmsConfiguration.getMaxReceiverAtOnce()));
                     }
+                    return new MmsSendResponse();
                 } else { // 전체 발송
                     return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
                 }
@@ -170,6 +176,9 @@ public class MmsService {
                 }
                 if (mmsReceivers.size() <= 0) {
                     return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+                }
+                if (mmsReceivers.size() > 1000) {
+                    return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "문자는 최대 1000건 까지 발송 가능합니다."));
                 }
                 mmsSendRequest.setReceivers(mmsReceivers);
             } catch (InvalidFormatException ife) {
@@ -247,8 +256,8 @@ public class MmsService {
         return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
     }
 
-    public List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
-        return excelReadComponent.readExcelToList(multipartFile, ReceiverDto::rowOf);
+    private List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
+        return excelReadComponent.readExcelToList(multipartFile, XlsToReceiverDtoMapper::rowOf, 1);
     }
 
 }
