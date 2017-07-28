@@ -87,6 +87,26 @@ public class MmsService {
         return result;
     }
 
+    private List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
+        return excelReadComponent.readExcelToList(multipartFile, XlsToReceiverDtoMapper::rowOf, 1);
+    }
+
+    private MmsSendResponse makeErrorResponse(String message) {
+        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, message));
+    }
+
+    private Boolean isEmptyReceivers(List<ReceiverDto> receivers) {
+        boolean hasReceivers = false;
+        if (receivers != null && receivers.size() > 0) {
+            for (ReceiverDto receiver : receivers) {
+                if (StringUtils.isNotEmpty(receiver.getPhone())) {
+                    hasReceivers = true;
+                }
+            }
+        }
+        return !hasReceivers;
+    }
+
     /**
      * 2) kb_mms_tran -> kb_mms_grp
      */
@@ -136,9 +156,12 @@ public class MmsService {
     @Transactional
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest) throws IntraException {
         if (mmsSendRequest != null) {
+            if (StringUtils.isEmpty(mmsSendRequest.getMessage())) {
+                return makeErrorResponse("메세지를 입력해주세요.");
+            }
             List<ReceiverDto> receivers = mmsSendRequest.getReceivers();
-            if (receivers == null || receivers.isEmpty()) {
-                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+            if (receivers == null || receivers.isEmpty() || isEmptyReceivers(receivers)) {
+                return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
             }
 
             MmsSummary mmsSummary = new MmsSummary();
@@ -156,12 +179,10 @@ public class MmsService {
                     return sendMessage(mmsSummary, mmsSendRequest.getMessage(), mmsSendRequest.getReceivers());
                 }
             } catch (IntraException ie) {
-                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
+                return makeErrorResponse(ie.getMessage());
             }
-        } else if (StringUtils.isEmpty(mmsSendRequest.getMessage())) {
-            return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
         }
-        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+        return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
     }
 
     public MmsSendResponse sendMessage(MmsSendRequest mmsSendRequest, MultipartFile multipartFile) {
@@ -175,24 +196,24 @@ public class MmsService {
                     }
                 }
                 if (mmsReceivers.size() <= 0) {
-                    return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+                    return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
                 }
                 if (mmsReceivers.size() > 1000) {
-                    return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "문자는 최대 1000건 까지 발송 가능합니다."));
+                    return makeErrorResponse("문자는 최대 1000건 까지 발송 가능합니다.");
                 }
                 mmsSendRequest.setReceivers(mmsReceivers);
             } catch (InvalidFormatException ife) {
-                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "파일 형식은 xls, xlsx 만 업로드 가능 합니다."));
+                return makeErrorResponse("파일 형식은 xls, xlsx 만 업로드 가능 합니다.");
             } catch (IOException ioe) {
-                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "액셀 파일 읽기 오류."));
+                return makeErrorResponse("액셀 파일 읽기 오류.");
             } catch (NullPointerException npe) {
-                return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "수신번호를 1건 이상 입력하세요."));
+                return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
             }
         }
         try {
             return sendMessage(mmsSendRequest);
         } catch (IntraException ie) {
-            return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ie.getMessage()));
+            return makeErrorResponse(ie.getMessage());
         }
     }
 
@@ -201,7 +222,7 @@ public class MmsService {
             MmsSendRequest mmsSendRequest = new MmsSendRequest(message);
             return sendMessage(mmsSendRequest, multipartFile);
         }
-        return new MmsSendResponse(new IntraErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "메세지를 입력해주세요."));
+        return makeErrorResponse("메세지를 입력해주세요.");
     }
 
     @Transactional
@@ -254,10 +275,6 @@ public class MmsService {
 
     public String excelFileName() {
         return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
-    }
-
-    private List<ReceiverDto> excelToReceiverDtos(MultipartFile multipartFile) throws IOException, InvalidFormatException {
-        return excelReadComponent.readExcelToList(multipartFile, XlsToReceiverDtoMapper::rowOf, 1);
     }
 
 }
