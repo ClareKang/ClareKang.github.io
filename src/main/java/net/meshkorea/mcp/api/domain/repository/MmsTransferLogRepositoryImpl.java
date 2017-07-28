@@ -80,7 +80,7 @@ public class MmsTransferLogRepositoryImpl extends MmsRepositoryQueryDslSupport i
                         query.orderBy(mmsSummary.mmsSummaryNo.desc(), mmsTransferLog.sendRequestDate.desc());
                         break;
                     case RECEIVER_NAME:
-                        query.orderBy(mmsTransferLog.receiver.asc());
+                        query.orderBy(mmsTransferLog.receiver.asc(), mmsTransferLog.sendRequestDate.desc());
                         break;
                     case RECEIVER_PHONE:
                         query.orderBy(mmsTransferLog.receiverPhone.asc());
