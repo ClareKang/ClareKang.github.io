@@ -274,7 +274,7 @@ public class MmsService {
     }
 
     public String excelFileName() {
-        return "history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
+        return "lms_notice_history_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
     }
 
 }
