@@ -30,7 +30,7 @@ azure:
 google:
   openidConnect:
     jwksUri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
-    resourceId: vroong-intra-qa
+    resourceId: vroong-intra-dev
 
 mms:
   callbackNum: '18008255'
