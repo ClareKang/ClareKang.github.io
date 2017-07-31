@@ -4,19 +4,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 
 /**
  * Created by yjhan on 2017. 7. 6..
  */
-@Getter
-@Setter
 @Builder
 public class ReceiverDto {
 
+    @Setter
     private String name;
 
+    @Getter
+    @Setter
     private String phone;
+
+    public String getName() {
+        if (this.name != null) {
+            return this.name;
+        }
+        return StringUtils.EMPTY;
+    }
 
 }
