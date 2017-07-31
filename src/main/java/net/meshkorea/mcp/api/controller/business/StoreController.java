@@ -2,11 +2,13 @@ package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.domain.model.store.CheckStoreName;
 import net.meshkorea.mcp.api.service.business.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -33,6 +35,34 @@ public class StoreController {
         return storeService.listStores(storeType, storeCertificationStatus,
                 storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
                 storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
+    }
+
+    @GetMapping(path = "/store/excel")
+    public ModelAndView downloadStoreListToExcel(@RequestParam(required = false) String storeType,
+                                                 @RequestParam(required = false) String storeCertificationStatus,
+                                                 @RequestParam(required = false) String storeOperatingStatus,
+                                                 @RequestParam(required = false) String storeName,
+                                                 @RequestParam(required = false) String clientName,
+                                                 @RequestParam(required = false) String storePhone,
+                                                 @RequestParam(required = false) String storeAddress,
+                                                 @RequestParam(required = false) String tag,
+                                                 @RequestParam(required = false) Integer storeManagementDepartmentId,
+                                                 @RequestParam(required = false) Integer vroongMonitoringPartnerId,
+                                                 @RequestParam(required = false) Integer size,
+                                                 @RequestParam(required = false) Integer page,
+                                                 ModelAndView mav) throws Exception {
+        List<Store> list = storeService.listStores(storeType, storeCertificationStatus,
+                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
+                storeManagementDepartmentId, vroongMonitoringPartnerId, size, page).getData();
+        List<String> headers = storeService.excelHeader();
+        List<List<String>> body = storeService.excelBodies(list);
+
+        mav.addObject(ExcelConfig.FILE_NAME, storeService.excelFileName());
+        mav.addObject(ExcelConfig.HEAD, headers);
+        mav.addObject(ExcelConfig.BODY, body);
+        mav.setViewName("excelXlsxView");
+
+        return mav;
     }
 
     @RequestMapping(value = "/stores/list", method = RequestMethod.GET)
