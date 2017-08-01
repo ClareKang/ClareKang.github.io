@@ -251,6 +251,10 @@ public class StoreService {
 
     public ResponseEntity updateStore(String id, StoreRequest store) throws Exception {
         try {
+            CancelPricingPolicy cancelPricingPolicy = store.getCancelPricingPolicy();
+            if(cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
+                store.setCancelPricingPolicy(new CancelPricingPolicy());
+            }
             return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
