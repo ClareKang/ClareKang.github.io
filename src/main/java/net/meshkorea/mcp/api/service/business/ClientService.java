@@ -91,8 +91,13 @@ public class ClientService {
         }
     }
 
-    public ApiKey createApiKey(Integer clientId) throws Exception {
-        return intraBusinessClientsApi.createBusinessClientApiKey(intraTokenService.getAuthToken(), clientId);
+    public ResponseEntity createApiKey(Integer clientId) throws Exception {
+        try {
+            return ResponseEntity.ok(intraBusinessClientsApi.createBusinessClientApiKey(intraTokenService.getAuthToken(), clientId));
+        } catch(ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
+
     }
 
     public ResponseEntity<Resource> getFile(String source, String fileName) throws Exception {
