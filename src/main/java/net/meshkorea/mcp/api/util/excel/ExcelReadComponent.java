@@ -25,10 +25,10 @@ public class ExcelReadComponent {
 
         final Workbook workbook = readWorkbook(multipartFile);
         final Sheet sheet = workbook.getSheetAt(0); // first sheet
-        int rowCount = Math.max(sheet.getPhysicalNumberOfRows(), sheet.getLastRowNum());
+        int rowCount = Math.max(sheet.getPhysicalNumberOfRows(), sheet.getLastRowNum() + 1);
 
         return IntStream
-            .rangeClosed(start, rowCount)
+            .range(start, rowCount)
             .mapToObj(rowIndex -> rowFunc.apply(sheet.getRow(rowIndex)))
             .collect(Collectors.toList());
     }
