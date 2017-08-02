@@ -248,7 +248,7 @@ public class MmsService {
     public List<List<String>> excelBodies(MmsListRequest mmsListRequest) {
         Pageable pageable = PageableRequestMapper.getPageRequest(
             0,
-            1000,
+            10000,
             new Sort(Sort.Direction.DESC, "transferKey")
         );
 

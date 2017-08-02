@@ -25,7 +25,7 @@ public class ExcelReadComponent {
 
         final Workbook workbook = readWorkbook(multipartFile);
         final Sheet sheet = workbook.getSheetAt(0); // first sheet
-        int rowCount = sheet.getPhysicalNumberOfRows();
+        int rowCount = Math.max(sheet.getPhysicalNumberOfRows(), sheet.getLastRowNum());
 
         return IntStream
             .rangeClosed(start, rowCount)
