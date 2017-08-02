@@ -93,7 +93,7 @@ public class ClientController {
     }
 
     @PostMapping("/{clientId}/api_key")
-    public ApiKey createApiKey(@PathVariable Integer clientId) throws Exception {
+    public ResponseEntity createApiKey(@PathVariable Integer clientId) throws Exception {
         return clientService.createApiKey(clientId);
     }
 
