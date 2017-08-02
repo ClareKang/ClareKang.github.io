@@ -10,8 +10,12 @@ public class XlsToReceiverDtoMapper {
     public static Integer PHONE_COLUMN_INDEX = 1;
 
     public static ReceiverDto rowOf(Row row) {
-        String name = XlsToReceiverDtoMapper.getStringValue(row.getCell(NAME_COLUMN_INDEX));
-        String phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX));
+        String name = StringUtils.EMPTY;
+        String phone = StringUtils.EMPTY;
+        if (row != null) {
+            name = XlsToReceiverDtoMapper.getStringValue(row.getCell(NAME_COLUMN_INDEX));
+            phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX));
+        }
         return ReceiverDto.builder()
             .name(name)
             .phone(phone)

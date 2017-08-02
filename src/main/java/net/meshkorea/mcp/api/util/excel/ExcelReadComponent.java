@@ -28,7 +28,7 @@ public class ExcelReadComponent {
         int rowCount = sheet.getPhysicalNumberOfRows();
 
         return IntStream
-            .range(start, rowCount)
+            .rangeClosed(start, rowCount)
             .mapToObj(rowIndex -> rowFunc.apply(sheet.getRow(rowIndex)))
             .collect(Collectors.toList());
     }
