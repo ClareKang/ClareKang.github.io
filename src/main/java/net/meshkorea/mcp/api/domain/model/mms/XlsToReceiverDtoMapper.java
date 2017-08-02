@@ -16,8 +16,8 @@ public class XlsToReceiverDtoMapper {
         String phone = StringUtils.EMPTY;
         if (row != null) {
             name = XlsToReceiverDtoMapper.getStringValue(row.getCell(NAME_COLUMN_INDEX));
-            phone = XlsToReceiverDtoMapper.excludeDash(XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX)));
-            if (XlsToReceiverDtoMapper.isExcludePattern(phone)) {
+            phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX));
+            if (XlsToReceiverDtoMapper.isExcludePattern(XlsToReceiverDtoMapper.excludeDash(phone))) {
                 throw new NumberFormatException();
             }
         }
