@@ -253,7 +253,7 @@ public class StoreService {
         try {
             CancelPricingPolicy cancelPricingPolicy = store.getCancelPricingPolicy();
             if(cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
-                store.setCancelPricingPolicy(new CancelPricingPolicy());
+                cancelPricingPolicy.setNullSerialize(true);
             }
             return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
         } catch (ApiException e) {
@@ -293,6 +293,10 @@ public class StoreService {
 
     public BranchCodesResponse getBranchCode(String id) throws ApiException {
         return intraStoresApi.getStoreBranchCode(intraTokenService.getAuthToken(), id);
+    }
+
+    public BranchCodesResponse updateBranchCode(String id, UpdateApiBranchCodeRequest req) throws ApiException {
+        return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
     public ResponseEntity updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {

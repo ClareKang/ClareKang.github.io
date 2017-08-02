@@ -163,6 +163,11 @@ public class StoreController {
         return storeService.getBranchCode(id);
     }
 
+    @PutMapping(value = "/stores/{id}/branch_code")
+    public BranchCodesResponse updateBranchCode(@PathVariable String id, UpdateApiBranchCodeRequest req) throws ApiException {
+        return storeService.updateBranchCode(id, req);
+    }
+
     @PutMapping(value = "/stores/{id}/certification_status")
     public ResponseEntity updateStoreCertificationStatus(@PathVariable String id, @RequestBody ChangeStoreCertificationStatusRequest req) throws ApiException {
         return storeService.updateStoreCertificationStatus(id, req);
