@@ -107,6 +107,21 @@ public class MmsService {
         return !hasReceivers;
     }
 
+    private Boolean isValidPhoneNumbers(List<ReceiverDto> receivers) {
+        boolean valid = false;
+        if (receivers != null && receivers.size() > 0) {
+            for (ReceiverDto receiver : receivers) {
+                if (StringUtils.isNotEmpty(receiver.getPhone())) {
+                    String phone = XlsToReceiverDtoMapper.excludeDash(receiver.getPhone());
+                    if (!XlsToReceiverDtoMapper.isExcludePattern(phone)) {
+                        valid = true;
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
     /**
      * 2) kb_mms_tran -> kb_mms_grp
      */
@@ -163,6 +178,9 @@ public class MmsService {
             if (receivers == null || receivers.isEmpty() || isEmptyReceivers(receivers)) {
                 return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
             }
+            if (!isValidPhoneNumbers(receivers)) {
+                return makeErrorResponse("수신번호에 숫자와 기호(-)만 입력해 주셔야합니다.<br>첨부된 엑셀파일의 수신번호를 다시 한번 확인해주세요.");
+            }
 
             MmsSummary mmsSummary = new MmsSummary();
             mmsSummary.setMmsSender(oAuthUserService.getCurrentUser().getId());
@@ -206,6 +224,8 @@ public class MmsService {
                 return makeErrorResponse("파일 형식은 xls, xlsx 만 업로드 가능 합니다.");
             } catch (IOException ioe) {
                 return makeErrorResponse("액셀 파일 읽기 오류.");
+            } catch (NumberFormatException nfe) {
+                return makeErrorResponse("수신번호에 숫자와 기호(-)만 입력해 주셔야합니다.<br>첨부된 엑셀파일의 수신번호를 다시 한번 확인해주세요.");
             } catch (NullPointerException npe) {
                 return makeErrorResponse("수신번호를 1건 이상 입력하세요.");
             }

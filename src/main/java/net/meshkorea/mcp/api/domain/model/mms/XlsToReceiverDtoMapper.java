@@ -9,17 +9,36 @@ public class XlsToReceiverDtoMapper {
     public static Integer NAME_COLUMN_INDEX = 0;
     public static Integer PHONE_COLUMN_INDEX = 1;
 
+    public static String PHONE_NUMBER_EXCLUDE_PATTERN = "[\\D]+";
+
     public static ReceiverDto rowOf(Row row) {
         String name = StringUtils.EMPTY;
         String phone = StringUtils.EMPTY;
         if (row != null) {
             name = XlsToReceiverDtoMapper.getStringValue(row.getCell(NAME_COLUMN_INDEX));
-            phone = XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX));
+            phone = XlsToReceiverDtoMapper.excludeDash(XlsToReceiverDtoMapper.getStringValue(row.getCell(PHONE_COLUMN_INDEX)));
+            if (XlsToReceiverDtoMapper.isExcludePattern(phone)) {
+                throw new NumberFormatException();
+            }
         }
         return ReceiverDto.builder()
             .name(name)
             .phone(phone)
             .build();
+    }
+
+    public static String excludeDash(String phoneNumber) {
+        if (StringUtils.isNotEmpty(phoneNumber)) {
+            return phoneNumber.replaceAll("-", StringUtils.EMPTY);
+        }
+        return phoneNumber;
+    }
+
+    public static boolean isExcludePattern(String phoneNumber) {
+        if (StringUtils.isNotEmpty(phoneNumber)) {
+            return phoneNumber.matches(PHONE_NUMBER_EXCLUDE_PATTERN);
+        }
+        return false;
     }
 
     private static String getStringValue(Cell cell) {
