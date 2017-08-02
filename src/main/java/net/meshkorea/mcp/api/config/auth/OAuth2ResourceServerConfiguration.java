@@ -26,9 +26,13 @@ public class OAuth2ResourceServerConfiguration implements ResourceServerConfigur
     @Value("${google.openidConnect.resourceId}")
     private String resourceId;
 
+    @Value("${google.openidConnect.hd}")
+    private String hd;
+
     @Bean
     public TokenStore tokenStore() {
-        return new JwkTokenStore(jwksUri);
+        EmailClaimVerifier emailClaimVerifier = new EmailClaimVerifier(".*@" + hd + "$");
+        return new JwkTokenStore(jwksUri, emailClaimVerifier);
     }
 
     @Override

@@ -31,6 +31,7 @@ google:
   openidConnect:
     jwksUri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
     resourceId: vroong-intra-dev
+    hd: meshkorea.net
 
 mms:
   callbackNum: '18008255'

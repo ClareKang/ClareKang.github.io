@@ -13,7 +13,7 @@ ext {
     querydslGradlePluginVersion = '1.0.9'
     javaJwtVersion = '3.1.0'
     springSecurityVersion = '4.2.3.RELEASE'
-    springSecurityOauth2Version = '2.1.1.RELEASE'
+    springSecurityOauth2Version = '2.2.0.RELEASE'
     springSecurityJwtVersion = '1.0.8.RELEASE'
     aptPluginVersion = '0.10'
     mapstructVersion = '1.2.0.CR1'
