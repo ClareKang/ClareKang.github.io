@@ -60,6 +60,8 @@ public class MmsService {
     @Autowired
     private OAuthUserService oAuthUserService;
 
+    private static int EXCEL_DOWNLOAD_LIMIT = 10000;
+
     private String makeTransferKey(String base, int index) {
         return String.format(base + "%03d", index);
     }
@@ -268,7 +270,7 @@ public class MmsService {
     public List<List<String>> excelBodies(MmsListRequest mmsListRequest) {
         Pageable pageable = PageableRequestMapper.getPageRequest(
             0,
-            10000,
+            EXCEL_DOWNLOAD_LIMIT,
             new Sort(Sort.Direction.DESC, "transferKey")
         );
 
