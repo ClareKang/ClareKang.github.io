@@ -18,7 +18,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
             .allowedMethods("OPTIONS", "GET", "HEAD", "POST", "PUT")
-            .allowedHeaders("x-requested-with", "authorization", "content-type")
+            .allowedHeaders("Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With", "requestId", "Correlation-Id")
+            .exposedHeaders("Content-Disposition")
             .maxAge(3600);
     }
 

@@ -1,10 +1,12 @@
 package net.meshkorea.mcp.api.config.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +20,16 @@ public class JsonConfig {
 
     @Bean
     @Primary
-    public ObjectMapper serializingObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public Jackson2ObjectMapperBuilderCustomizer addCustomFeatures() {
+
+        return (Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) -> {
+            jackson2ObjectMapperBuilder
+                .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .modules(getJavaTimeModule());
+        };
+    }
+
+    private JavaTimeModule getJavaTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
@@ -27,15 +37,8 @@ public class JsonConfig {
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
         javaTimeModule.addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer());
         javaTimeModule.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
-        objectMapper.registerModule(javaTimeModule);
-        return objectMapper;
+
+        return javaTimeModule;
     }
 
-//    @Bean
-//    public ObjectMapper objectMapper() {
-//        return Jackson2ObjectMapperBuilder.json()
-//            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-//            .modules(new JavaTimeModule())
-//            .build();
-//    }
 }

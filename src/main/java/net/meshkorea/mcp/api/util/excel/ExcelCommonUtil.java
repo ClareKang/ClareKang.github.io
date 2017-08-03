@@ -58,7 +58,6 @@ public class ExcelCommonUtil {
     }
 
     private void setFileName(HttpServletResponse response, String fileName) {
-        response.addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Content-Disposition");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + setFileExtension(fileName) + "\"");
     }
 
