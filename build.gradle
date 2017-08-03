@@ -17,29 +17,29 @@ buildscript { scriptHandler ->
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-def queryDslOutput = file("${projectDir}/src/main/generated")
+def generatedOutput = file("${projectDir}/src/main/generated")
 
 sourceSets {
     generated
     main {
         java {
-            srcDirs += queryDslOutput
+            srcDirs += generatedOutput
         }
     }
     generated {
         java {
-            srcDirs += queryDslOutput
+            srcDirs += generatedOutput
         }
     }
     test {
         java {
-            srcDirs += queryDslOutput
+            srcDirs += generatedOutput
         }
     }
 }
 
 querydsl {
-    querydslSourcesDir = queryDslOutput
+    querydslSourcesDir = generatedOutput
     jpa = true
 }
 

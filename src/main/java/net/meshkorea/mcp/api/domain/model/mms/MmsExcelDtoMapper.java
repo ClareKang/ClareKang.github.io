@@ -17,7 +17,7 @@ public class MmsExcelDtoMapper {
         mmsTransferLogDtos.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(getSendingNumber(item.getMmsGroupLog().getMmsSummary().getMmsSummaryNo()));
-            row.add(getTransferStartDate(item.getTransferStartDate()));
+            row.add(getSendRequestDate(item.getSendRequestDate()));
             row.add(getOrEmpty(item.getReceiver()));
             row.add(getOrEmpty(item.getReceiverPhone()));
             row.add(getOrEmpty(item.getMmsGroupLog().getMmsSummary().getMmsSender()));
@@ -34,11 +34,11 @@ public class MmsExcelDtoMapper {
         return String.valueOf(mmsSummaryNo);
     }
 
-    private static String getTransferStartDate(LocalDateTime transferStartDate) {
-        if (transferStartDate == null) {
+    private static String getSendRequestDate(LocalDateTime sendRequestDate) {
+        if (sendRequestDate == null) {
             return StringUtils.EMPTY;
         }
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(transferStartDate);
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(sendRequestDate);
     }
 
     private static String getResult(String result) {

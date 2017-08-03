@@ -50,8 +50,11 @@ public class MmsTransfer implements Serializable {
     @Column(name = "TRAN_SENDDATE")
     private LocalDateTime transferStartDate;
 
-    @Column(name = "TRAN_RSLTDATE")
+    @Column(name = "TRAN_REPORTDATE")
     private LocalDateTime resultReceptionDate;
+
+    @Column(name = "TRAN_RSLTDATE")
+    private LocalDateTime phoneReceptionDate;
 
     @Column(name = "TRAN_RSLT")
     private String resultCode;

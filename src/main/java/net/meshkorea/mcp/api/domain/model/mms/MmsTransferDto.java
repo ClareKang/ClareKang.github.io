@@ -28,6 +28,8 @@ public class MmsTransferDto {
 
     private LocalDateTime resultReceptionDate;
 
+    private LocalDateTime phoneReceptionDate;
+
     private String resultCode;
 
     private String telecommunicationCompany;
