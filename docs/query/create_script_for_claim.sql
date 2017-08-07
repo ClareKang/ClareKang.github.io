@@ -65,28 +65,25 @@ COMMENT = '클레임 이력 테이블';
 -- -----------------------------------------------------
 -- Table `mcp`.`codes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`codes` (
-  `code_no` INT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `parent_code_no` INT NOT NULL COMMENT 'FK',
-  `code` VARCHAR(20) NOT NULL COMMENT '읽기 가능한 문자로 된 코드',
-  `code_name` VARCHAR(100) NOT NULL COMMENT '코드명',
-  `display_order` INT NOT NULL COMMENT '같은 부모를 가지는 코드일 경우 정렬 순서',
-  `description` VARCHAR(200) NULL COMMENT '코드에 대한 설명',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
-  `updater` VARCHAR(50) NULL COMMENT '수정자',
-  `update_dt` DATETIME NULL COMMENT '수정일시',
+CREATE TABLE `mcp`.`codes` (
+  `code_no` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `parent_code_no` int(11) DEFAULT NULL COMMENT 'FK',
+  `code` varchar(20) NOT NULL COMMENT '읽기 가능한 문자로 된 코드',
+  `code_name` varchar(100) NOT NULL COMMENT '코드명',
+  `display_order` int(11) NOT NULL COMMENT '같은 부모를 가지는 코드일 경우 정렬 순서',
+  `description` varchar(200) DEFAULT NULL COMMENT '코드에 대한 설명',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
+  `updater` varchar(50) DEFAULT NULL COMMENT '수정자',
+  `update_dt` datetime DEFAULT NULL COMMENT '수정일시',
   PRIMARY KEY (`code_no`),
-  UNIQUE INDEX `idx_code_parent` (`code` ASC, `parent_code_no` ASC),
-  INDEX `fk_parent_code_no` (`parent_code_no` ASC),
-  UNIQUE INDEX `idx_parent_code` (`parent_code_no` ASC, `code` ASC),
-  CONSTRAINT `fk_codes_codes1`
-    FOREIGN KEY (`parent_code_no`)
-    REFERENCES `mcp`.`codes` (`code_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '코드성 데이터를 관리하는 테이블 - 코드간 hierarchy 를 표현 할 수 있음';
+  KEY `idx_code_parent` (`code`,`parent_code_no`),
+  KEY `fk_parent_code_no` (`parent_code_no`),
+  KEY `idx_code` (`code`),
+  KEY `idx_parent_display_order` (`parent_code_no`,`display_order`)
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COMMENT='코드성 데이터를 관리하는 테이블 - 코드간 hierarchy 를 표현 할 수 있음';
 
 
 -- -----------------------------------------------------
