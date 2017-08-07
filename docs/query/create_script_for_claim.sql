@@ -20,46 +20,39 @@ USE `mcp` ;
 -- -----------------------------------------------------
 -- Table `mcp`.`claim`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`claim` (
-  `claim_no` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `status_code` VARCHAR(20) NOT NULL COMMENT '처리 상태',
-  `type_code` VARCHAR(20) NOT NULL COMMENT '클레임 유형',
-  `request_code` VARCHAR(20) NOT NULL COMMENT '요청 주체',
-  `cause_code` VARCHAR(20) NOT NULL COMMENT '클레임 사유',
-  `customer_blame` FLOAT NULL COMMENT '고객 귀책 ratio',
-  `store_blame` FLOAT NULL COMMENT '상점 귀책 ratio',
-  `partner_blame` FLOAT NULL COMMENT '파트너 귀책 ratio',
-  `mesh_blame` FLOAT NULL COMMENT '메쉬코리아 귀책 ratio',
-  `none_blame` FLOAT NULL COMMENT '귀책 없음 ratio',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
-  `updater` VARCHAR(50) NULL COMMENT '수정자',
-  `update_dt` DATETIME NULL COMMENT '수정일시',
+CREATE TABLE `claim` (
+  `claim_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `status_code` varchar(20) NOT NULL COMMENT '처리 상태',
+  `type_code` varchar(20) NOT NULL COMMENT '클레임 유형',
+  `request_code` varchar(20) NOT NULL COMMENT '요청 주체',
+  `cause_code` varchar(20) NOT NULL COMMENT '클레임 사유',
+  `customer_blame` float DEFAULT NULL COMMENT '고객 귀책 ratio',
+  `store_blame` float DEFAULT NULL COMMENT '상점 귀책 ratio',
+  `partner_blame` float DEFAULT NULL COMMENT '파트너 귀책 ratio',
+  `mesh_blame` float DEFAULT NULL COMMENT '메쉬코리아 귀책 ratio',
+  `none_blame` float DEFAULT NULL COMMENT '귀책 없음 ratio',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
+  `updater` varchar(50) DEFAULT NULL COMMENT '수정자',
+  `update_dt` datetime DEFAULT NULL COMMENT '수정일시',
   PRIMARY KEY (`claim_no`),
-  INDEX `idx_create_dt_status` (`create_dt` ASC, `status_code` ASC),
-  INDEX `idx_create_dt_type` (`create_dt` ASC, `type_code` ASC))
-ENGINE = InnoDB
-COMMENT = '클레임 테이블';
+  KEY `idx_create_dt_status` (`create_dt`,`status_code`),
+  KEY `idx_create_dt_type` (`create_dt`,`type_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=200000000001 DEFAULT CHARSET=utf8 COMMENT='클레임 테이블';
 
 
 -- -----------------------------------------------------
 -- Table `mcp`.`claim_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`claim_history` (
-  `claim_history_no` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `claim_no` BIGINT NOT NULL COMMENT 'FK',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
-  `json_string` TEXT NULL COMMENT 'claim 테이블 전체 데이터 - json',
+CREATE TABLE `claim_history` (
+  `claim_history_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `claim_no` bigint(20) NOT NULL COMMENT 'FK',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
+  `json_string` text COMMENT 'claim 테이블 전체 데이터 - json',
   PRIMARY KEY (`claim_history_no`),
-  INDEX `fk_claim_no` (`claim_no` ASC),
-  CONSTRAINT `fk_claim_history_claim1`
-    FOREIGN KEY (`claim_no`)
-    REFERENCES `mcp`.`claim` (`claim_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '클레임 이력 테이블';
+  KEY `fk_claim_no` (`claim_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='클레임 이력 테이블';
 
 
 -- -----------------------------------------------------
@@ -89,103 +82,69 @@ COMMENT='코드성 데이터를 관리하는 테이블 - 코드간 hierarchy 를
 -- -----------------------------------------------------
 -- Table `mcp`.`order_claim_relation`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`order_claim_relation` (
-  `order_id` BIGINT(20) NOT NULL COMMENT 'PK',
-  `claim_no` BIGINT NOT NULL COMMENT 'PK',
-  `claim_order_id` BIGINT(20) NULL COMMENT 'FK',
-  `orderNumber` VARCHAR(255) NULL,
-  `claimOrderNumber` VARCHAR(255) NULL,
-  PRIMARY KEY (`order_id`, `claim_no`),
-  INDEX `fk_order_claim_relation_order` (`order_id` ASC),
-  INDEX `fk_order_claim_relation_claim` (`claim_no` ASC),
-  INDEX `fk_order_claim_relation_claim_order` (`claim_order_id` ASC),
-  INDEX `idx_claim_relation_order` (`claim_no` ASC, `claim_order_id` ASC),
-  CONSTRAINT `fk_order_claim_relation_orders1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `mcp`.`orders` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_claim_relation_claim1`
-    FOREIGN KEY (`claim_no`)
-    REFERENCES `mcp`.`claim` (`claim_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_claim_relation_orders2`
-    FOREIGN KEY (`claim_order_id`)
-    REFERENCES `mcp`.`orders` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'orders 테이블과 claim 테이블의 연관관계 매핑을 위한 테이블';
+CREATE TABLE `order_claim_relation` (
+  `order_id` bigint(20) NOT NULL COMMENT 'PK',
+  `claim_no` bigint(20) NOT NULL COMMENT 'PK',
+  `claim_order_id` bigint(20) DEFAULT NULL COMMENT 'FK',
+  `order_number` varchar(255) DEFAULT NULL,
+  `claim_order_number` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`order_id`,`claim_no`),
+  KEY `fk_order_claim_relation_order` (`order_id`),
+  KEY `fk_order_claim_relation_claim` (`claim_no`),
+  KEY `fk_order_claim_relation_claim_order` (`claim_order_id`),
+  KEY `idx_claim_relation_order` (`claim_no`,`claim_order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='orders 테이블과 claim 테이블의 연관관계 매핑을 위한 테이블';
 
 
 -- -----------------------------------------------------
 -- Table `mcp`.`claim_description`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`claim_description` (
-  `claim_description_no` INT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `order_id` BIGINT(20) NOT NULL COMMENT 'FK',
-  `claim_no` BIGINT NOT NULL COMMENT 'FK',
-  `description` VARCHAR(255) NOT NULL COMMENT '비고 - 정산 참고용 description',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
+CREATE TABLE `claim_description` (
+  `claim_description_no` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `order_id` bigint(20) NOT NULL COMMENT 'FK',
+  `claim_no` bigint(20) NOT NULL COMMENT 'FK',
+  `description` varchar(255) NOT NULL COMMENT '비고 - 정산 참고용 description',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
   PRIMARY KEY (`claim_description_no`),
-  INDEX `fk_order_relation_claim` (`order_id` ASC, `claim_no` ASC),
-  CONSTRAINT `fk_claim_description_order_claim_relation1`
-    FOREIGN KEY (`order_id` , `claim_no`)
-    REFERENCES `mcp`.`order_claim_relation` (`order_id` , `claim_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '클레임 비고사항 기록을 위한 테이블';
+  KEY `fk_order_relation_claim` (`order_id`,`claim_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='클레임 비고사항 기록을 위한 테이블';
 
 
 -- -----------------------------------------------------
 -- Table `mcp`.`claim_adjustment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`claim_adjustment` (
-  `claim_adjustment_no` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `order_id` BIGINT(20) NOT NULL COMMENT 'FK',
-  `claim_no` BIGINT NOT NULL COMMENT 'FK',
-  `adjustment_value` INT NULL COMMENT '정산 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
-  `adjustment_type_code` VARCHAR(20) NULL COMMENT '정산 비율/타입 구분 코드',
-  `delivery_fee_value` INT NULL COMMENT '배송 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
-  `delivery_fee_type_code` VARCHAR(20) NULL COMMENT '배송 비율/금액 구분 코드',
-  `cancel_fee_value` INT NULL COMMENT '취소 수수료 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
-  `cancel_fee_type_code` VARCHAR(20) NULL COMMENT '취소 수수료 비율/금액 구분 코드',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
-  `updater` VARCHAR(50) NULL COMMENT '수정자',
-  `update_dt` DATETIME NULL COMMENT '수정일시',
+CREATE TABLE `claim_adjustment` (
+  `claim_adjustment_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `order_id` bigint(20) NOT NULL COMMENT 'FK',
+  `claim_no` bigint(20) NOT NULL COMMENT 'FK',
+  `adjustment_value` int(11) DEFAULT NULL COMMENT '정산 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
+  `adjustment_type_code` varchar(20) DEFAULT NULL COMMENT '정산 비율/타입 구분 코드',
+  `delivery_fee_value` int(11) DEFAULT NULL COMMENT '배송 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
+  `delivery_fee_type_code` varchar(20) DEFAULT NULL COMMENT '배송 비율/금액 구분 코드',
+  `cancel_fee_value` int(11) DEFAULT NULL COMMENT '취소 수수료 - 타입에 따라 퍼센트와 금액이 들어갈 수 있다',
+  `cancel_fee_type_code` varchar(20) DEFAULT NULL COMMENT '취소 수수료 비율/금액 구분 코드',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
+  `updater` varchar(50) DEFAULT NULL COMMENT '수정자',
+  `update_dt` datetime DEFAULT NULL COMMENT '수정일시',
   PRIMARY KEY (`claim_adjustment_no`),
-  INDEX `fk_order_relation_claim` (`order_id` ASC, `claim_no` ASC),
-  CONSTRAINT `fk_claim_adjustment_order_claim_relation1`
-    FOREIGN KEY (`order_id` , `claim_no`)
-    REFERENCES `mcp`.`order_claim_relation` (`order_id` , `claim_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '클레임에 의한 정산금 분배를 위한 금액 데이터 테이블';
+  KEY `fk_order_relation_claim` (`order_id`,`claim_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='클레임에 의한 정산금 분배를 위한 금액 데이터 테이블';
 
 
 -- -----------------------------------------------------
 -- Table `mcp`.`claim_adjustment_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mcp`.`claim_adjustment_history` (
-  `claim_adjustment_history_no` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `claim_adjustment_no` BIGINT NOT NULL COMMENT 'FK',
-  `creator` VARCHAR(50) NOT NULL COMMENT '생성자',
-  `create_dt` DATETIME NOT NULL COMMENT '생성일시',
-  `json_string` TEXT NULL COMMENT '클레임 정산 금액 테이블 전체 데이터 - json',
+CREATE TABLE `claim_adjustment_history` (
+  `claim_adjustment_history_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `claim_adjustment_no` bigint(20) NOT NULL COMMENT 'FK',
+  `creator` varchar(50) NOT NULL COMMENT '생성자',
+  `create_dt` datetime NOT NULL COMMENT '생성일시',
+  `json_string` text COMMENT '클레임 정산 금액 테이블 전체 데이터 - json',
   PRIMARY KEY (`claim_adjustment_history_no`),
-  INDEX `fk_claim_adjustment_no` (`claim_adjustment_no` ASC),
-  CONSTRAINT `fk_claim_adjustment_history_claim_adjustment1`
-    FOREIGN KEY (`claim_adjustment_no`)
-    REFERENCES `mcp`.`claim_adjustment` (`claim_adjustment_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '클레임 정산금 분배 관련 변경 이력';
+  KEY `fk_claim_adjustment_no` (`claim_adjustment_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='클레임 정산금 분배 관련 변경 이력';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
