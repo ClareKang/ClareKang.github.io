@@ -322,5 +322,8 @@ public class StoreService {
         return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 
-
+    // 상점 첫 달 가맹비 미리보기
+    public StoreSubscriptionPlanPreview getStoreSubscriptionPlanPreview(String id, String startAt, Integer baseFee) throws ApiException {
+        return intraStoresApi.getStoreSubscriptionPlanPreview(intraTokenService.getAuthToken(), id, startAt, baseFee);
+    }
 }

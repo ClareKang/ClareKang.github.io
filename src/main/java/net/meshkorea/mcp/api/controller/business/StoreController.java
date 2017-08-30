@@ -183,4 +183,9 @@ public class StoreController {
         return storeService.addSubscriptionAdminMemo(id, req);
     }
 
+    // 상점 첫 달 가맹비 미리보기
+    @GetMapping(value = "/stores/{id}/subscription/plan/preview")
+    public StoreSubscriptionPlanPreview getStoreSubscriptionPlanPreview(@PathVariable String id, @RequestParam(required = false) String startAt, @RequestParam(required = false) Integer baseFee) throws ApiException {
+        return storeService.getStoreSubscriptionPlanPreview(id, startAt, baseFee);
+    }
 }
