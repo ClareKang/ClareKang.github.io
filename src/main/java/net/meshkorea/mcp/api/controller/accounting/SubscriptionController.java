@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.accounting;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.service.accounting.SubscriptionService;
@@ -60,7 +61,7 @@ public class SubscriptionController {
 
     // 상점의 월별 가맹비 목록
     @GetMapping(value = "/subscriptions/by_month")
-    public SubscriptionList getSubscriptionListByMonth(
+    public ResponseEntity getSubscriptionListByMonth(
             String from,
             String to,
             String all,
@@ -72,7 +73,7 @@ public class SubscriptionController {
             String fulfilled,
             Integer page,
             Integer size
-    ) throws Exception {
+    ) throws ApiException {
         return subscriptionService.getSubscriptionListByMonth(
                 from,
                 to,
@@ -149,7 +150,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByMonth(
+        SubscriptionList list = subscriptionService.getSubscriptionListByMonthForExcel(
                 from,
                 to,
                 all,
@@ -162,6 +163,7 @@ public class SubscriptionController {
                 page,
                 size
         );
+
         List<String> headers = subscriptionService.excelStoreSubscriptionHeader();
         List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(list);
 

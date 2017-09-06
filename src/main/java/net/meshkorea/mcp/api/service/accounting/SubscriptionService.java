@@ -50,7 +50,7 @@ public class SubscriptionService {
             String fulfilled,
             Integer page,
             Integer size
-    ) throws Exception {
+    ) throws ApiException {
         return intraSubscriptionApi.getSubscriptionListByStore(
                 intraTokenService.getAuthToken(),
                 term,
@@ -71,7 +71,40 @@ public class SubscriptionService {
         );
     }
 
-    public SubscriptionList getSubscriptionListByMonth(
+    public ResponseEntity getSubscriptionListByMonth(
+            String from,
+            String to,
+            String all,
+            String storeName,
+            String storeId,
+            String enterpriseRegistrationNumber,
+            String storePhone,
+            String ceoName,
+            String fulfilled,
+            Integer page,
+            Integer size
+    ) throws ApiException {
+        try {
+            return ResponseEntity.ok(intraSubscriptionApi.getSubscriptionListByMonth(
+                    intraTokenService.getAuthToken(),
+                    from,
+                    to,
+                    all,
+                    storeName,
+                    storeId,
+                    enterpriseRegistrationNumber,
+                    storePhone,
+                    ceoName,
+                    fulfilled,
+                    page,
+                    size
+            ));
+        } catch (ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
+    }
+
+    public SubscriptionList getSubscriptionListByMonthForExcel(
             String from,
             String to,
             String all,
