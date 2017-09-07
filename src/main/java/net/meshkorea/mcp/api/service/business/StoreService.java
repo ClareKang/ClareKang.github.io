@@ -2,10 +2,7 @@ package net.meshkorea.mcp.api.service.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
-import com.meshprime.intra.api.IntraBusinessClientsApi;
-import com.meshprime.intra.api.IntraDeliveriesApi;
-import com.meshprime.intra.api.IntraRegionsApi;
-import com.meshprime.intra.api.IntraStoresApi;
+import com.meshprime.intra.api.*;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +33,9 @@ public class StoreService {
 
     @Autowired
     IntraDeliveriesApi intraDeliveriesApi;
+
+    @Autowired
+    IntraVirtualBankAccount intraVirtualBankAccount;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -90,6 +90,9 @@ public class StoreService {
         result.add("본사 예금주");
         result.add("본사 은행명");
         result.add("본사 계좌번호");
+        result.add("상점 가상계좌 예금주");
+        result.add("상점 가상계좌 은행명");
+        result.add("상점 가상계좌 계좌번호");
         return result;
     }
 
@@ -97,6 +100,16 @@ public class StoreService {
         List<List<String>> result = new ArrayList<>();
         List<VroongServicePricingType> pricingTypes = listVroongServicePricingTypes();
         List<VroongPartner> partners = listVroongPartners();
+
+        // get virtual bank accounts
+        List<Integer> storeIds = new ArrayList<>();
+        storeList.forEach(item -> {
+            storeIds.add(item.getId());
+        });
+        GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
+        req.setStoreIds(storeIds);
+        List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
+
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getId().toString());
@@ -146,6 +159,12 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getAccountOwner());
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
+
+            VirtualBankAccount virtualBankAccount = getVirtualBankAccount(virtualBankAccounts, item.getMeshAccountNumber());
+            row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
+
             result.add(row);
         });
         return result;
@@ -169,6 +188,15 @@ public class StoreService {
             }
         }
         return returnName;
+    }
+
+    public VirtualBankAccount getVirtualBankAccount(List<VirtualBankAccount> list, Integer value) {
+        for (VirtualBankAccount virtualBankAccount : list) {
+            if (virtualBankAccount.getMeshAccountNumber().equals(value)) {
+                return virtualBankAccount;
+            }
+        }
+        return null;
     }
 
     public String getOperationStatus(Store item) {
@@ -223,6 +251,10 @@ public class StoreService {
 
     public List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
         return intraStoresApi.listVroongServicePricingTypes(intraTokenService.getAuthToken());
+    }
+
+    public List<VirtualBankAccount> listVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws Exception {
+        return intraVirtualBankAccount.getStoreVirtualBankAccounts(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
@@ -297,6 +329,10 @@ public class StoreService {
 
     public BranchCodesResponse updateBranchCode(String id, UpdateApiBranchCodeRequest req) throws ApiException {
         return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
+    }
+
+    public VirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
+        return intraStoresApi.getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
     }
 
     public ResponseEntity updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {

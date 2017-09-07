@@ -168,6 +168,11 @@ public class StoreController {
         return storeService.updateBranchCode(id, req);
     }
 
+    @GetMapping(value = "/stores/{id}/virtual_bank_accounts")
+    public VirtualBankAccount getStoreVirtualBankAccount(@PathVariable String id) throws ApiException {
+        return storeService.getStoreVirtualBankAccount(id);
+    }
+
     @PutMapping(value = "/stores/{id}/certification_status")
     public ResponseEntity updateStoreCertificationStatus(@PathVariable String id, @RequestBody ChangeStoreCertificationStatusRequest req) throws ApiException {
         return storeService.updateStoreCertificationStatus(id, req);
