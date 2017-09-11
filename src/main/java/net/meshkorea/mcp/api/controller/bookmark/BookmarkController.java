@@ -4,6 +4,7 @@ import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkRequest;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkResponse;
 import net.meshkorea.mcp.api.error.exception.CustomBindingException;
 import net.meshkorea.mcp.api.service.bookmark.BookmarkService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -90,6 +91,25 @@ public class BookmarkController {
         result.setDone(bookmarkService.removeBookmarkAll(req));
 
         return result;
+    }
+
+    @PostMapping("/findBookmarks/count")
+    public BookmarkResponse.CountBookmark findBookmarkList(@Valid @RequestBody BookmarkRequest.FindBookmark req, BindingResult bindingResult) throws CustomBindingException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CustomBindingException(bindingResult);
+        }
+
+        BookmarkResponse.CountBookmark countBookmark = new BookmarkResponse.CountBookmark();
+        countBookmark.setCount(bookmarkService.getBookmarkCount(req));
+
+        if (StringUtils.isNotEmpty(req.getBmkType())) {
+            countBookmark.setBmkType(req.getBmkType());
+        } else {
+            countBookmark.setBmkType("all");
+        }
+
+        return countBookmark;
     }
 
 }

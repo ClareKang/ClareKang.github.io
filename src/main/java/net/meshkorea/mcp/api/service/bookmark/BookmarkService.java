@@ -64,4 +64,14 @@ public class BookmarkService {
 
         return true;
     }
+
+    public Long getBookmarkCount(BookmarkRequest.FindBookmark req) {
+        // query hint : uid + bmkType
+        if (StringUtils.isEmpty(req.getBmkType()) == false) {
+            return bookmarkRepository.countByUidAndBmkTypeAndDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'N');
+        }
+
+        // query hint : uid
+        return bookmarkRepository.countByUidAndDelYn(req.getUid(), 'N');
+    }
 }

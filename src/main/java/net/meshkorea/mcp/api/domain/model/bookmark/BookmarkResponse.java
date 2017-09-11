@@ -33,4 +33,10 @@ public class BookmarkResponse {
         private boolean isDone;
     }
 
+    @Data
+    public static class CountBookmark extends BaseResponse {
+        private Long count;
+        private String bmkType;
+    }
+
 }
