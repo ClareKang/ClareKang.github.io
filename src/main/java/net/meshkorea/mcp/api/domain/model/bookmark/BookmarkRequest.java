@@ -31,7 +31,7 @@ public class BookmarkRequest {
         @NotEmpty(message = "uid is required.")
         private String uid;
 
-        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE")
+        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
         private String bmkType;
     }
 
