@@ -37,6 +37,7 @@ public class BookmarkController {
     @PostMapping("/findBookmarks")
     public BookmarkResponse.FindBookmark findBookmarkList(
             @SortDefault.SortDefaults({
+                    @SortDefault(sort = "bmkType", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "bmkNo", direction = Sort.Direction.DESC)
             })
             @PageableDefault(value = 100) final Pageable pageable,
@@ -76,6 +77,19 @@ public class BookmarkController {
         removeBookmark.setBookmark(bookmarkService.removeBookmark(req));
 
         return removeBookmark;
+    }
+
+    @DeleteMapping("/removeBookmark/all")
+    public BookmarkResponse.Result removeBookmarkAll(@Valid @RequestBody BookmarkRequest.RemoveBookmarkAll req, BindingResult bindingResult) throws CustomBindingException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CustomBindingException(bindingResult);
+        }
+
+        BookmarkResponse.Result result = new BookmarkResponse.Result();
+        result.setDone(bookmarkService.removeBookmarkAll(req));
+
+        return result;
     }
 
 }

@@ -4,6 +4,7 @@ import net.meshkorea.mcp.api.domain.entity.bookmark.Bookmark;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkRequest;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkType;
 import net.meshkorea.mcp.api.domain.repository.BookmarkRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,14 @@ public class BookmarkService {
     }
 
     public List<Bookmark> findBookmarkList(BookmarkRequest.FindBookmark req, Pageable pageable) {
-        return bookmarkRepository.findAllByUidAndBmkTypeAndDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'N', pageable.getSort());
+        // query hint : uid + bmkType
+        if (StringUtils.isEmpty(req.getBmkType()) == false) {
+            return bookmarkRepository.findAllByUidAndBmkTypeAndDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'N', pageable.getSort());
+        }
+
+        // query hint : uid
+        return bookmarkRepository.findAllByUidAndDelYn(req.getUid(), 'N', pageable.getSort());
+
     }
 
     public Bookmark updateBookmark(BookmarkRequest.UpdateBookmark req) {
@@ -49,5 +57,11 @@ public class BookmarkService {
         bookmark.setIssueDt(new Date());
 
         return bookmarkRepository.save(bookmark);
+    }
+
+    public boolean removeBookmarkAll(BookmarkRequest.RemoveBookmarkAll req) {
+        bookmarkRepository.updateBulkDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'Y', new Date());
+
+        return true;
     }
 }

@@ -28,4 +28,9 @@ public class BookmarkResponse {
         private Bookmark bookmark;
     }
 
+    @Data
+    public static class Result extends BaseResponse {
+        private boolean isDone;
+    }
+
 }
