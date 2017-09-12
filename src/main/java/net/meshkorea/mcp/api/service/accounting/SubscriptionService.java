@@ -34,7 +34,48 @@ public class SubscriptionService {
         return intraDeliveriesApi.getVroongPartners(intraTokenService.getAuthToken());
     }
 
-    public SubscriptionList getSubscriptionListByStore(
+    public ResponseEntity getSubscriptionListByStore(
+            String term,
+            String all,
+            String storeName,
+            String storeId,
+            String enterpriseRegistrationNumber,
+            String storePhone,
+            String ceoName,
+            Integer storeSalesDepartmentId,
+            String storeOperatingStatus,
+            Integer vroongMonitoringPartnerId,
+            Integer storeManagementDepartmentId,
+            String managerName,
+            String fulfilled,
+            Integer page,
+            Integer size
+    ) throws ApiException {
+        try {
+            return ResponseEntity.ok(intraSubscriptionApi.getSubscriptionListByStore(
+                    intraTokenService.getAuthToken(),
+                    term,
+                    all,
+                    storeName,
+                    storeId,
+                    enterpriseRegistrationNumber,
+                    storePhone,
+                    ceoName,
+                    storeSalesDepartmentId,
+                    storeOperatingStatus,
+                    vroongMonitoringPartnerId,
+                    storeManagementDepartmentId,
+                    managerName,
+                    fulfilled,
+                    page,
+                    size
+            ));
+        } catch (ApiException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBody());
+        }
+    }
+
+    public SubscriptionList getSubscriptionListByStoreForExcel(
             String term,
             String all,
             String storeName,
