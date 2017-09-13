@@ -23,7 +23,7 @@ public class SubscriptionController {
 
     // 상점별 가맹비 목록 조회
     @GetMapping(value = "/subscriptions/by_store")
-    public SubscriptionList getSubscriptionListByStore(
+    public ResponseEntity<SubscriptionList> getSubscriptionListByStore(
             String term,
             String all,
             String storeName,
@@ -61,7 +61,7 @@ public class SubscriptionController {
 
     // 상점의 월별 가맹비 목록
     @GetMapping(value = "/subscriptions/by_month")
-    public ResponseEntity getSubscriptionListByMonth(
+    public ResponseEntity<SubscriptionList> getSubscriptionListByMonth(
             String from,
             String to,
             String all,
@@ -108,7 +108,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByStore(
+        SubscriptionList list = subscriptionService.getSubscriptionListByStoreForExcel(
                 term,
                 all,
                 storeName,
