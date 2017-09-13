@@ -157,4 +157,10 @@ public class ClientService {
         return result;
     }
 
+    // 본사(business owner)에 속한 상점 목록
+    public StoreListByBusinessClientId getStoreListByBusinessClientId(Integer clientId) throws ApiException {
+        return intraBusinessClientsApi.getStoreListByBusinessClientId(intraTokenService.getAuthToken(), clientId);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.business;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,12 @@ public class ClientController {
             enterpriseRegistrationCopy,
             bankAccountCopy,
             ceoIdCardCopy);
+    }
+
+    // 본사(business owner)에 속한 상점 목록
+    @GetMapping("/{clientId}/stores")
+    public StoreListByBusinessClientId getStoreListByBusinessClientId(@PathVariable Integer clientId) throws ApiException {
+        return clientService.getStoreListByBusinessClientId(clientId);
     }
 
 }
