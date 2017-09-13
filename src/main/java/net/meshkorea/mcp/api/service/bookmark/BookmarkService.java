@@ -76,6 +76,6 @@ public class BookmarkService {
     }
 
     public Bookmark getBookmarkDetail(BookmarkRequest.GetBookmarkDetail req) {
-        return bookmarkRepository.findOne(req.getBmkNo());
+        return bookmarkRepository.findByUidAndBmkTypeAndBmkId(req.getUid(), BookmarkType.valueOf(req.getBmkType()), req.getBmkId());
     }
 }

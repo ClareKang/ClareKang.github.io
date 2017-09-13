@@ -32,4 +32,6 @@ public interface BookmarkRepository extends JpaSpecificationRepository<Bookmark,
     Long countByUidAndBmkTypeAndDelYn(String uid, BookmarkType bookmarkType, char delYn);
 
     Long countByUidAndDelYn(String uid, char delYn);
+
+    Bookmark findByUidAndBmkTypeAndBmkId(String uid, BookmarkType bookmarkType, String bmkId);
 }
