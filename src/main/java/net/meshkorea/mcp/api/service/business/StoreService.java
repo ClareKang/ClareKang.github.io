@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -101,6 +102,16 @@ public class StoreService {
         List<VroongServicePricingType> pricingTypes = listVroongServicePricingTypes();
         List<VroongPartner> partners = listVroongPartners();
 
+        HashMap<String, String> pricingTypeMap = new HashMap<>();
+        HashMap<Integer, String> partnerMap = new HashMap<>();
+        for( VroongServicePricingType pricingType : pricingTypes ) {
+            pricingTypeMap.put(pricingType.getDeliveryClass(), pricingType.getName());
+        }
+
+        for( VroongPartner partner : partners ) {
+            partnerMap.put(partner.getId(), partner.getName());
+        }
+
         // get virtual bank accounts
         List<Integer> storeIds = new ArrayList<>();
         storeList.forEach(item -> {
@@ -126,18 +137,18 @@ public class StoreService {
             row.add(item.getStoreAddress().getBeonjiAddress().getDetailAddress());
             row.add(item.getBranchCode());
             if (item.getVroongMonitoringPartnerId() != null) {
-                row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
+                row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
                 row.add("");
             }
             row.add(item.getStoreSalesDepartment().getName());
             row.add(item.getStoreManagementDepartment().getDepartmentName());
-            row.add(getVroongServicePricingName(pricingTypes, item.getVroongServicePricingType()));
+            row.add(pricingTypeMap.get(item.getVroongServicePricingType()));
             row.add(item.getDestPhoneRequired() ? "필수" : "비필수");
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode().toString());
+            row.add(item.getDuzonCode());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -228,6 +239,8 @@ public class StoreService {
                 break;
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
+                break;
+            default:
                 break;
         }
         return returnStatus;
