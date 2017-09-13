@@ -74,4 +74,8 @@ public class BookmarkService {
         // query hint : uid
         return bookmarkRepository.countByUidAndDelYn(req.getUid(), 'N');
     }
+
+    public Bookmark getBookmarkDetail(BookmarkRequest.GetBookmarkDetail req) {
+        return bookmarkRepository.findOne(req.getBmkNo());
+    }
 }

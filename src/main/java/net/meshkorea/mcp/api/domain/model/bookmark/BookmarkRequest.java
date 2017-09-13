@@ -14,7 +14,7 @@ public class BookmarkRequest {
         private String uid;
 
         @NotEmpty(message = "bmkType is required.")
-        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE")
+        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
         private String bmkType;
 
         @NotEmpty(message = "bmkId is required.")
@@ -60,8 +60,17 @@ public class BookmarkRequest {
         private String uid;
 
         @NotEmpty(message = "bmkType is required.")
-        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE")
+        @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
         private String bmkType;
+    }
+
+    @Data
+    public static class GetBookmarkDetail {
+        @NotEmpty(message = "uid is required.")
+        private String uid;
+
+        @NotNull(message = "bmkNo is required.")
+        private Long bmkNo;
     }
 
 }

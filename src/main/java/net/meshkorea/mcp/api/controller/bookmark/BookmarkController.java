@@ -54,7 +54,7 @@ public class BookmarkController {
         return findBookmark;
     }
 
-    @PutMapping("/updateBookmark")
+    @PostMapping("/updateBookmark")
     public BookmarkResponse.UpdateBookmark updateBookmark(@Valid @RequestBody BookmarkRequest.UpdateBookmark req, BindingResult bindingResult) throws CustomBindingException {
 
         if (bindingResult.hasErrors()) {
@@ -67,7 +67,7 @@ public class BookmarkController {
         return updateBookmark;
     }
 
-    @DeleteMapping("/removeBookmark")
+    @PostMapping("/removeBookmark")
     public BookmarkResponse.RemoveBookmark removeBookmark(@Valid @RequestBody BookmarkRequest.RemoveBookmark req, BindingResult bindingResult) throws CustomBindingException {
 
         if (bindingResult.hasErrors()) {
@@ -80,7 +80,7 @@ public class BookmarkController {
         return removeBookmark;
     }
 
-    @DeleteMapping("/removeBookmark/all")
+    @PostMapping("/removeBookmark/all")
     public BookmarkResponse.Result removeBookmarkAll(@Valid @RequestBody BookmarkRequest.RemoveBookmarkAll req, BindingResult bindingResult) throws CustomBindingException {
 
         if (bindingResult.hasErrors()) {
@@ -94,7 +94,7 @@ public class BookmarkController {
     }
 
     @PostMapping("/findBookmarks/count")
-    public BookmarkResponse.CountBookmark findBookmarkList(@Valid @RequestBody BookmarkRequest.FindBookmark req, BindingResult bindingResult) throws CustomBindingException {
+    public BookmarkResponse.CountBookmark findBookmarkListCount(@Valid @RequestBody BookmarkRequest.FindBookmark req, BindingResult bindingResult) throws CustomBindingException {
 
         if (bindingResult.hasErrors()) {
             throw new CustomBindingException(bindingResult);
@@ -110,6 +110,19 @@ public class BookmarkController {
         }
 
         return countBookmark;
+    }
+
+    @PostMapping("/getBookmarkDetail")
+    public BookmarkResponse.GetBookmarkDetail getBookmarkDetail(@Valid @RequestBody BookmarkRequest.GetBookmarkDetail req, BindingResult bindingResult) throws CustomBindingException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CustomBindingException(bindingResult);
+        }
+
+        BookmarkResponse.GetBookmarkDetail getBookmarkDetail = new BookmarkResponse.GetBookmarkDetail();
+        getBookmarkDetail.setBookmark(bookmarkService.getBookmarkDetail(req));
+
+        return getBookmarkDetail;
     }
 
 }

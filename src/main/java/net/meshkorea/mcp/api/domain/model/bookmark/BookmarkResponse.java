@@ -39,4 +39,9 @@ public class BookmarkResponse {
         private String bmkType;
     }
 
+    @Data
+    public static class GetBookmarkDetail extends BaseResponse {
+        private Bookmark bookmark;
+    }
+
 }
