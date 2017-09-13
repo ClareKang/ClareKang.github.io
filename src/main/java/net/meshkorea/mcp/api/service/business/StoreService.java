@@ -181,26 +181,6 @@ public class StoreService {
         return result;
     }
 
-    public String getPartnerName(List<VroongPartner> list, int value) {
-        String partnerName = "-";
-        for (VroongPartner partner : list) {
-            if (partner.getId() == value) {
-                return partner.getName();
-            }
-        }
-        return partnerName;
-    }
-
-    public String getVroongServicePricingName(List<VroongServicePricingType> list, String value) {
-        String returnName = "";
-        for (VroongServicePricingType pricingType : list) {
-            if (pricingType.getDeliveryClass().equals(value)) {
-                return pricingType.getName();
-            }
-        }
-        return returnName;
-    }
-
     public VirtualBankAccount getVirtualBankAccount(List<VirtualBankAccount> list, Integer value) {
         for (VirtualBankAccount virtualBankAccount : list) {
             if (virtualBankAccount.getMeshAccountNumber().equals(value)) {
