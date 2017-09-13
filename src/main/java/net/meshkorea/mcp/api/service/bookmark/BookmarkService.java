@@ -47,6 +47,7 @@ public class BookmarkService {
         Bookmark bookmark = bookmarkRepository.findByUidAndBmkNo(req.getUid(), req.getBmkNo());
         bookmark.setMemo(req.getMemo());
         bookmark.setIssueDt(new Date());
+        bookmark.setDelYn('N');
 
         return bookmarkRepository.save(bookmark);
     }
