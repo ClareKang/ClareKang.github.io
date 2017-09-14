@@ -23,7 +23,7 @@ public class SubscriptionController {
 
     // 상점별 가맹비 목록 조회
     @GetMapping(value = "/subscriptions/by_store")
-    public ResponseEntity<SubscriptionList> getSubscriptionListByStore(
+    public ResponseEntity getSubscriptionListByStore(
             String term,
             String all,
             String storeName,
@@ -61,7 +61,7 @@ public class SubscriptionController {
 
     // 상점의 월별 가맹비 목록
     @GetMapping(value = "/subscriptions/by_month")
-    public ResponseEntity<SubscriptionList> getSubscriptionListByMonth(
+    public ResponseEntity getSubscriptionListByMonth(
             String from,
             String to,
             String all,
@@ -108,7 +108,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByStoreForExcel(
+        ResponseEntity list = subscriptionService.getSubscriptionListByStore(
                 term,
                 all,
                 storeName,
@@ -125,8 +125,11 @@ public class SubscriptionController {
                 page,
                 size
         );
+
+        SubscriptionList subscriptionList = (SubscriptionList) list.getBody();
+
         List<String> headers = subscriptionService.excelSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelSubscriptionBodies(list);
+        List<List<String>> body = subscriptionService.excelSubscriptionBodies(subscriptionList);
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, body);
@@ -150,7 +153,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByMonthForExcel(
+        ResponseEntity list = subscriptionService.getSubscriptionListByMonth(
                 from,
                 to,
                 all,
@@ -164,8 +167,10 @@ public class SubscriptionController {
                 size
         );
 
+        SubscriptionList subscriptionList = (SubscriptionList) list.getBody();
+
         List<String> headers = subscriptionService.excelStoreSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(list);
+        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(subscriptionList);
 
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelStoreSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
