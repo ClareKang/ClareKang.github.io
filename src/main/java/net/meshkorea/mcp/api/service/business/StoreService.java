@@ -121,6 +121,11 @@ public class StoreService {
         req.setStoreIds(storeIds);
         List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
 
+        HashMap<Integer, VirtualBankAccount> virtualBankAccountMap = new HashMap<>();
+        for( VirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
+            virtualBankAccountMap.put(virtualBankAccount.getMeshAccountNumber(), virtualBankAccount);
+        }
+
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getId().toString());
@@ -171,7 +176,7 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
-            VirtualBankAccount virtualBankAccount = getVirtualBankAccount(virtualBankAccounts, item.getMeshAccountNumber());
+            VirtualBankAccount virtualBankAccount = virtualBankAccountMap.get(item.getMeshAccountNumber());
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
@@ -179,15 +184,6 @@ public class StoreService {
             result.add(row);
         });
         return result;
-    }
-
-    public VirtualBankAccount getVirtualBankAccount(List<VirtualBankAccount> list, Integer value) {
-        for (VirtualBankAccount virtualBankAccount : list) {
-            if (virtualBankAccount.getMeshAccountNumber().equals(value)) {
-                return virtualBankAccount;
-            }
-        }
-        return null;
     }
 
     public String getOperationStatus(Store item) {
