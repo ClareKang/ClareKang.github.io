@@ -240,7 +240,7 @@ public class SubscriptionService {
             row.add(item.getStoreName());
             row.add(item.getEnterpriseRegistrationNumber());
             row.add(item.getCeoName());
-            row.add(item.getStoreManagementDepartment());
+            row.add(item.getStoreSalesDepartment());
             if (item.getVroongMonitoringPartnerId() != null) {
                 row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
             } else {
@@ -254,6 +254,7 @@ public class SubscriptionService {
             row.add(item.getManagerName());
             row.add(item.getTotalUncollectedByStore().toString());
             row.add(item.getAccountOwner());
+            row.add(item.getFulfilled() == "true" ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(item.getFulfilledAt()) : "미입금");
             row.add(item.getConfirmedBy());
             row.add(item.getEnterpriseName());
             row.add(item.getClientContactName());
