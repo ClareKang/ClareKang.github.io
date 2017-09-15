@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -75,43 +76,6 @@ public class SubscriptionService {
         }
     }
 
-    public SubscriptionList getSubscriptionListByStoreForExcel(
-            String term,
-            String all,
-            String storeName,
-            String storeId,
-            String enterpriseRegistrationNumber,
-            String storePhone,
-            String ceoName,
-            Integer storeSalesDepartmentId,
-            String storeOperatingStatus,
-            Integer vroongMonitoringPartnerId,
-            Integer storeManagementDepartmentId,
-            String managerName,
-            String fulfilled,
-            Integer page,
-            Integer size
-    ) throws ApiException {
-        return intraSubscriptionApi.getSubscriptionListByStore(
-                intraTokenService.getAuthToken(),
-                term,
-                all,
-                storeName,
-                storeId,
-                enterpriseRegistrationNumber,
-                storePhone,
-                ceoName,
-                storeSalesDepartmentId,
-                storeOperatingStatus,
-                vroongMonitoringPartnerId,
-                storeManagementDepartmentId,
-                managerName,
-                fulfilled,
-                page,
-                size
-        );
-    }
-
     public ResponseEntity getSubscriptionListByMonth(
             String from,
             String to,
@@ -143,35 +107,6 @@ public class SubscriptionService {
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
-    }
-
-    public SubscriptionList getSubscriptionListByMonthForExcel(
-            String from,
-            String to,
-            String all,
-            String storeName,
-            String storeId,
-            String enterpriseRegistrationNumber,
-            String storePhone,
-            String ceoName,
-            String fulfilled,
-            Integer page,
-            Integer size
-    ) throws ApiException {
-        return intraSubscriptionApi.getSubscriptionListByMonth(
-                intraTokenService.getAuthToken(),
-                from,
-                to,
-                all,
-                storeName,
-                storeId,
-                enterpriseRegistrationNumber,
-                storePhone,
-                ceoName,
-                fulfilled,
-                page,
-                size
-        );
     }
 
     // 상점 월가맹비 입금 처리
@@ -235,6 +170,13 @@ public class SubscriptionService {
     public List<List<String>> excelSubscriptionBodies(SubscriptionList list) throws Exception {
         List<List<String>> result = new ArrayList<>();
         List<VroongPartner> partners = listVroongPartners();
+
+        HashMap<Integer, String> partnerMap = new HashMap<>();
+
+        for( VroongPartner partner : partners ) {
+            partnerMap.put(partner.getId(), partner.getName());
+        }
+
         list.getData().forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getStoreName());
@@ -242,7 +184,7 @@ public class SubscriptionService {
             row.add(item.getCeoName());
             row.add(item.getStoreSalesDepartment());
             if (item.getVroongMonitoringPartnerId() != null) {
-                row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
+                row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
                 row.add("");
             }
@@ -329,15 +271,4 @@ public class SubscriptionService {
         }
         return returnType;
     }
-
-    public String getPartnerName(List<VroongPartner> list, int value) {
-        String partnerName = "-";
-        for (VroongPartner partner : list) {
-            if (partner.getId() == value) {
-                return partner.getName();
-            }
-        }
-        return partnerName;
-    }
-
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -101,6 +102,16 @@ public class StoreService {
         List<VroongServicePricingType> pricingTypes = listVroongServicePricingTypes();
         List<VroongPartner> partners = listVroongPartners();
 
+        HashMap<String, String> pricingTypeMap = new HashMap<>();
+        HashMap<Integer, String> partnerMap = new HashMap<>();
+        for( VroongServicePricingType pricingType : pricingTypes ) {
+            pricingTypeMap.put(pricingType.getDeliveryClass(), pricingType.getName());
+        }
+
+        for( VroongPartner partner : partners ) {
+            partnerMap.put(partner.getId(), partner.getName());
+        }
+
         // get virtual bank accounts
         List<Integer> storeIds = new ArrayList<>();
         storeList.forEach(item -> {
@@ -109,6 +120,11 @@ public class StoreService {
         GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
         req.setStoreIds(storeIds);
         List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
+
+        HashMap<Integer, VirtualBankAccount> virtualBankAccountMap = new HashMap<>();
+        for( VirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
+            virtualBankAccountMap.put(virtualBankAccount.getMeshAccountNumber(), virtualBankAccount);
+        }
 
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
@@ -126,18 +142,18 @@ public class StoreService {
             row.add(item.getStoreAddress().getBeonjiAddress().getDetailAddress());
             row.add(item.getBranchCode());
             if (item.getVroongMonitoringPartnerId() != null) {
-                row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
+                row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
                 row.add("");
             }
             row.add(item.getStoreSalesDepartment().getName());
             row.add(item.getStoreManagementDepartment().getDepartmentName());
-            row.add(getVroongServicePricingName(pricingTypes, item.getVroongServicePricingType()));
+            row.add(pricingTypeMap.get(item.getVroongServicePricingType()));
             row.add(item.getDestPhoneRequired() ? "필수" : "비필수");
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode().toString());
+            row.add(item.getDuzonCode());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -160,7 +176,7 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
-            VirtualBankAccount virtualBankAccount = getVirtualBankAccount(virtualBankAccounts, item.getMeshAccountNumber());
+            VirtualBankAccount virtualBankAccount = virtualBankAccountMap.get(item.getMeshAccountNumber());
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
@@ -168,35 +184,6 @@ public class StoreService {
             result.add(row);
         });
         return result;
-    }
-
-    public String getPartnerName(List<VroongPartner> list, int value) {
-        String partnerName = "-";
-        for (VroongPartner partner : list) {
-            if (partner.getId() == value) {
-                return partner.getName();
-            }
-        }
-        return partnerName;
-    }
-
-    public String getVroongServicePricingName(List<VroongServicePricingType> list, String value) {
-        String returnName = "";
-        for (VroongServicePricingType pricingType : list) {
-            if (pricingType.getDeliveryClass().equals(value)) {
-                return pricingType.getName();
-            }
-        }
-        return returnName;
-    }
-
-    public VirtualBankAccount getVirtualBankAccount(List<VirtualBankAccount> list, Integer value) {
-        for (VirtualBankAccount virtualBankAccount : list) {
-            if (virtualBankAccount.getMeshAccountNumber().equals(value)) {
-                return virtualBankAccount;
-            }
-        }
-        return null;
     }
 
     public String getOperationStatus(Store item) {
@@ -228,6 +215,8 @@ public class StoreService {
                 break;
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
+                break;
+            default:
                 break;
         }
         return returnStatus;
