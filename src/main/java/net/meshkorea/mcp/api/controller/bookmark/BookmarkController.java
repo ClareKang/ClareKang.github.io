@@ -38,6 +38,7 @@ public class BookmarkController {
     @PostMapping("/findBookmarks")
     public BookmarkResponse.FindBookmark findBookmarkList(
             @SortDefault.SortDefaults({
+                    @SortDefault(sort = "issueDt", direction = Sort.Direction.DESC),
                     @SortDefault(sort = "bmkType", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "bmkNo", direction = Sort.Direction.DESC)
             })
