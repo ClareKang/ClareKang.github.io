@@ -2,10 +2,7 @@ package net.meshkorea.mcp.api.service.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
-import com.meshprime.intra.api.IntraBusinessClientsApi;
-import com.meshprime.intra.api.IntraDeliveriesApi;
-import com.meshprime.intra.api.IntraRegionsApi;
-import com.meshprime.intra.api.IntraStoresApi;
+import com.meshprime.intra.api.*;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,6 +34,9 @@ public class StoreService {
 
     @Autowired
     IntraDeliveriesApi intraDeliveriesApi;
+
+    @Autowired
+    IntraVirtualBankAccount intraVirtualBankAccount;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -90,6 +91,9 @@ public class StoreService {
         result.add("본사 예금주");
         result.add("본사 은행명");
         result.add("본사 계좌번호");
+        result.add("상점 가상계좌 예금주");
+        result.add("상점 가상계좌 은행명");
+        result.add("상점 가상계좌 계좌번호");
         return result;
     }
 
@@ -97,6 +101,31 @@ public class StoreService {
         List<List<String>> result = new ArrayList<>();
         List<VroongServicePricingType> pricingTypes = listVroongServicePricingTypes();
         List<VroongPartner> partners = listVroongPartners();
+
+        HashMap<String, String> pricingTypeMap = new HashMap<>();
+        HashMap<Integer, String> partnerMap = new HashMap<>();
+        for( VroongServicePricingType pricingType : pricingTypes ) {
+            pricingTypeMap.put(pricingType.getDeliveryClass(), pricingType.getName());
+        }
+
+        for( VroongPartner partner : partners ) {
+            partnerMap.put(partner.getId(), partner.getName());
+        }
+
+        // get virtual bank accounts
+        List<Integer> storeIds = new ArrayList<>();
+        storeList.forEach(item -> {
+            storeIds.add(item.getId());
+        });
+        GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
+        req.setStoreIds(storeIds);
+        List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
+
+        HashMap<Integer, VirtualBankAccount> virtualBankAccountMap = new HashMap<>();
+        for( VirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
+            virtualBankAccountMap.put(virtualBankAccount.getMeshAccountNumber(), virtualBankAccount);
+        }
+
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getId().toString());
@@ -113,18 +142,18 @@ public class StoreService {
             row.add(item.getStoreAddress().getBeonjiAddress().getDetailAddress());
             row.add(item.getBranchCode());
             if (item.getVroongMonitoringPartnerId() != null) {
-                row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
+                row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
                 row.add("");
             }
             row.add(item.getStoreSalesDepartment().getName());
             row.add(item.getStoreManagementDepartment().getDepartmentName());
-            row.add(getVroongServicePricingName(pricingTypes, item.getVroongServicePricingType()));
+            row.add(pricingTypeMap.get(item.getVroongServicePricingType()));
             row.add(item.getDestPhoneRequired() ? "필수" : "비필수");
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode().toString());
+            row.add(item.getDuzonCode());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -146,29 +175,15 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getAccountOwner());
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
+
+            VirtualBankAccount virtualBankAccount = virtualBankAccountMap.get(item.getMeshAccountNumber());
+            row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
+
             result.add(row);
         });
         return result;
-    }
-
-    public String getPartnerName(List<VroongPartner> list, int value) {
-        String partnerName = "-";
-        for (VroongPartner partner : list) {
-            if (partner.getId() == value) {
-                return partner.getName();
-            }
-        }
-        return partnerName;
-    }
-
-    public String getVroongServicePricingName(List<VroongServicePricingType> list, String value) {
-        String returnName = "";
-        for (VroongServicePricingType pricingType : list) {
-            if (pricingType.getDeliveryClass().equals(value)) {
-                return pricingType.getName();
-            }
-        }
-        return returnName;
     }
 
     public String getOperationStatus(Store item) {
@@ -201,6 +216,8 @@ public class StoreService {
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
                 break;
+            default:
+                break;
         }
         return returnStatus;
     }
@@ -223,6 +240,10 @@ public class StoreService {
 
     public List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
         return intraStoresApi.listVroongServicePricingTypes(intraTokenService.getAuthToken());
+    }
+
+    public List<VirtualBankAccount> listVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws Exception {
+        return intraVirtualBankAccount.getStoreVirtualBankAccounts(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
@@ -299,6 +320,10 @@ public class StoreService {
         return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
+    public VirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
+        return intraStoresApi.getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
+    }
+
     public ResponseEntity updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {
         try {
             return ResponseEntity.ok(intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req));
@@ -322,5 +347,8 @@ public class StoreService {
         return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 
-
+    // 상점 첫 달 가맹비 미리보기
+    public StoreSubscriptionPlanPreview getStoreSubscriptionPlanPreview(String id, String startAt, Integer baseFee) throws ApiException {
+        return intraStoresApi.getStoreSubscriptionPlanPreview(intraTokenService.getAuthToken(), id, startAt, baseFee);
+    }
 }

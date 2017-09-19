@@ -168,6 +168,11 @@ public class StoreController {
         return storeService.updateBranchCode(id, req);
     }
 
+    @GetMapping(value = "/stores/{id}/virtual_bank_accounts")
+    public VirtualBankAccount getStoreVirtualBankAccount(@PathVariable String id) throws ApiException {
+        return storeService.getStoreVirtualBankAccount(id);
+    }
+
     @PutMapping(value = "/stores/{id}/certification_status")
     public ResponseEntity updateStoreCertificationStatus(@PathVariable String id, @RequestBody ChangeStoreCertificationStatusRequest req) throws ApiException {
         return storeService.updateStoreCertificationStatus(id, req);
@@ -183,4 +188,9 @@ public class StoreController {
         return storeService.addSubscriptionAdminMemo(id, req);
     }
 
+    // 상점 첫 달 가맹비 미리보기
+    @GetMapping(value = "/stores/{id}/subscription/plan/preview")
+    public StoreSubscriptionPlanPreview getStoreSubscriptionPlanPreview(@PathVariable String id, @RequestParam(required = false) String startAt, @RequestParam(required = false) Integer baseFee) throws ApiException {
+        return storeService.getStoreSubscriptionPlanPreview(id, startAt, baseFee);
+    }
 }
