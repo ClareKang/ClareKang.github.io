@@ -16,9 +16,8 @@ public class Bookmark {
     @Column(name = "bmk_no")
     private Long bmkNo;
 
-    // firebase auth 의 사용자 식별자 (1~128자인 문자열)
-    @Column(name = "uid")
-    private String uid;
+    @Column(name = "email")
+    private String email;
 
     // 배송오더 이외에 추가 예정
     @Column(name = "bmk_type")

@@ -15,23 +15,23 @@ import java.util.List;
 
 @MasterDbConfig.MasterData
 public interface BookmarkRepository extends JpaSpecificationRepository<Bookmark, Long> {
-    List<Bookmark> findAllByUidAndBmkTypeAndDelYn(String uid, BookmarkType bookmarkType, char delYn, Sort sort);
+    List<Bookmark> findAllByEmailAndBmkTypeAndDelYn(String email, BookmarkType bookmarkType, char delYn, Sort sort);
 
-    Bookmark findByUidAndBmkNo(String uid, Long bmkNo);
+    Bookmark findByEmailAndBmkNo(String email, Long bmkNo);
 
-    List<Bookmark> findAllByUidAndDelYn(String uid, char delYn, Sort sort);
+    List<Bookmark> findAllByEmailAndDelYn(String email, char delYn, Sort sort);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Bookmark SET delYn = :delYn, issueDt = :issueDt WHERE uid = :uid AND bmkType = :bookmarkType")
-    void updateBulkDelYn(@Param("uid") String uid,
+    @Query("UPDATE Bookmark SET delYn = :delYn, issueDt = :issueDt WHERE email = :email AND bmkType = :bookmarkType")
+    void updateBulkDelYn(@Param("email") String email,
                          @Param("bookmarkType") BookmarkType bookmarkType,
                          @Param("delYn") char delYn,
                          @Param("issueDt") Date issueDt);
 
-    Long countByUidAndBmkTypeAndDelYn(String uid, BookmarkType bookmarkType, char delYn);
+    Long countByEmailAndBmkTypeAndDelYn(String email, BookmarkType bookmarkType, char delYn);
 
-    Long countByUidAndDelYn(String uid, char delYn);
+    Long countByEmailAndDelYn(String email, char delYn);
 
-    Bookmark findByUidAndBmkTypeAndBmkId(String uid, BookmarkType bookmarkType, String bmkId);
+    Bookmark findByEmailAndBmkTypeAndBmkId(String email, BookmarkType bookmarkType, String bmkId);
 }

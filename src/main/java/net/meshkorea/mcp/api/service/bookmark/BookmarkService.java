@@ -20,7 +20,7 @@ public class BookmarkService {
 
     public Bookmark addBookmark(BookmarkRequest.AddBookmark req) {
         Bookmark bookmark = new Bookmark();
-        bookmark.setUid(req.getUid());
+        bookmark.setEmail(req.getEmail());
         bookmark.setBmkId(req.getBmkId());
         bookmark.setBmkType(BookmarkType.valueOf(req.getBmkType()));
         bookmark.setTitle(req.getTitle());
@@ -33,19 +33,23 @@ public class BookmarkService {
     }
 
     public List<Bookmark> findBookmarkList(BookmarkRequest.FindBookmark req, Pageable pageable) {
-        // query hint : uid + bmkType
+        // query hint : email + bmkType
         if (StringUtils.isEmpty(req.getBmkType()) == false) {
-            return bookmarkRepository.findAllByUidAndBmkTypeAndDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'N', pageable.getSort());
+            return bookmarkRepository.findAllByEmailAndBmkTypeAndDelYn(req.getEmail(), BookmarkType.valueOf(req.getBmkType()), 'N', pageable.getSort());
         }
 
-        // query hint : uid
-        return bookmarkRepository.findAllByUidAndDelYn(req.getUid(), 'N', pageable.getSort());
+        // query hint : email
+        return bookmarkRepository.findAllByEmailAndDelYn(req.getEmail(), 'N', pageable.getSort());
 
     }
 
     public Bookmark updateBookmark(BookmarkRequest.UpdateBookmark req) {
-        Bookmark bookmark = bookmarkRepository.findByUidAndBmkNo(req.getUid(), req.getBmkNo());
-        bookmark.setMemo(req.getMemo());
+        Bookmark bookmark = bookmarkRepository.findByEmailAndBmkNo(req.getEmail(), req.getBmkNo());
+
+        if (req.getMemo() != null) {
+            bookmark.setMemo(req.getMemo());
+        }
+
         bookmark.setIssueDt(new Date());
         bookmark.setDelYn('N');
 
@@ -53,7 +57,7 @@ public class BookmarkService {
     }
 
     public Bookmark removeBookmark(BookmarkRequest.RemoveBookmark req) {
-        Bookmark bookmark = bookmarkRepository.findByUidAndBmkNo(req.getUid(), req.getBmkNo());
+        Bookmark bookmark = bookmarkRepository.findByEmailAndBmkNo(req.getEmail(), req.getBmkNo());
         bookmark.setDelYn('Y');
         bookmark.setIssueDt(new Date());
 
@@ -61,22 +65,22 @@ public class BookmarkService {
     }
 
     public boolean removeBookmarkAll(BookmarkRequest.RemoveBookmarkAll req) {
-        bookmarkRepository.updateBulkDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'Y', new Date());
+        bookmarkRepository.updateBulkDelYn(req.getEmail(), BookmarkType.valueOf(req.getBmkType()), 'Y', new Date());
 
         return true;
     }
 
     public Long getBookmarkCount(BookmarkRequest.FindBookmark req) {
-        // query hint : uid + bmkType
+        // query hint : email + bmkType
         if (StringUtils.isEmpty(req.getBmkType()) == false) {
-            return bookmarkRepository.countByUidAndBmkTypeAndDelYn(req.getUid(), BookmarkType.valueOf(req.getBmkType()), 'N');
+            return bookmarkRepository.countByEmailAndBmkTypeAndDelYn(req.getEmail(), BookmarkType.valueOf(req.getBmkType()), 'N');
         }
 
-        // query hint : uid
-        return bookmarkRepository.countByUidAndDelYn(req.getUid(), 'N');
+        // query hint : email
+        return bookmarkRepository.countByEmailAndDelYn(req.getEmail(), 'N');
     }
 
     public Bookmark getBookmarkDetail(BookmarkRequest.GetBookmarkDetail req) {
-        return bookmarkRepository.findByUidAndBmkTypeAndBmkId(req.getUid(), BookmarkType.valueOf(req.getBmkType()), req.getBmkId());
+        return bookmarkRepository.findByEmailAndBmkTypeAndBmkId(req.getEmail(), BookmarkType.valueOf(req.getBmkType()), req.getBmkId());
     }
 }

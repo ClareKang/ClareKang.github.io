@@ -10,8 +10,8 @@ public class BookmarkRequest {
 
     @Data
     public static class AddBookmark {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         @NotEmpty(message = "bmkType is required.")
         @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
@@ -28,8 +28,8 @@ public class BookmarkRequest {
 
     @Data
     public static class FindBookmark {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
         private String bmkType;
@@ -37,27 +37,27 @@ public class BookmarkRequest {
 
     @Data
     public static class UpdateBookmark {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         @NotNull(message = "bmkNo is required.")
         private Long bmkNo;
 
-        private String memo = "";
+        private String memo;
     }
 
     @Data
     public static class RemoveBookmark {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         private Long bmkNo;
     }
 
     @Data
     public static class RemoveBookmarkAll {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         @NotEmpty(message = "bmkType is required.")
         @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
@@ -66,8 +66,8 @@ public class BookmarkRequest {
 
     @Data
     public static class GetBookmarkDetail {
-        @NotEmpty(message = "uid is required.")
-        private String uid;
+        @NotEmpty(message = "email is required.")
+        private String email;
 
         @NotEmpty(message = "bmkType is required.")
         @Pattern(regexp = "DELIVERY_ORDER|ADD_ESTIMATE1|ADD_ESTIMATE2")
