@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
+import com.meshprime.intra.api.IntraVirtualBankAccount;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import net.meshkorea.mcp.api.util.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Service
 @DependsOn({
-    "fileSystemStorageService"
+        "fileSystemStorageService"
 })
 public class ClientService {
 
@@ -38,24 +39,29 @@ public class ClientService {
     @Autowired
     private StorageService storageService;
 
-    public ListBusinessClientResponse listBusinessClients(String clientType,
-                                                          String clientName,
-                                                          String clientAddress,
-                                                          String enterpriseName,
-                                                          String enterpriseNumber,
-                                                          String enterprisePhone,
-                                                          Integer page,
-                                                          Integer size) throws Exception {
+    @Autowired
+    IntraVirtualBankAccount intraVirtualBankAccount;
+
+    public ListBusinessClientResponse listBusinessClients(
+            String clientType,
+            String clientName,
+            String clientAddress,
+            String enterpriseName,
+            String enterpriseNumber,
+            String enterprisePhone,
+            Integer page,
+            Integer size
+    ) throws Exception {
         return intraBusinessClientsApi.listBusinessClients(
-            intraTokenService.getAuthToken(),
-            clientType,
-            clientName,
-            clientAddress,
-            enterpriseName,
-            enterpriseNumber,
-            enterprisePhone,
-            page,
-            size
+                intraTokenService.getAuthToken(),
+                clientType,
+                clientName,
+                clientAddress,
+                enterpriseName,
+                enterpriseNumber,
+                enterprisePhone,
+                page,
+                size
         );
     }
 
@@ -94,7 +100,7 @@ public class ClientService {
     public ResponseEntity createApiKey(Integer clientId) throws Exception {
         try {
             return ResponseEntity.ok(intraBusinessClientsApi.createBusinessClientApiKey(intraTokenService.getAuthToken(), clientId));
-        } catch(ApiException e) {
+        } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
 
@@ -110,16 +116,18 @@ public class ClientService {
         httpHeaders.add("Content-Description", "attachment; filename=" + fileName);
 
         return ResponseEntity.ok()
-            .headers(httpHeaders)
-            .contentLength(file.length())
-            .contentType(MediaType.parseMediaType("application/octet-stream"))
-            .body(resource);
+                .headers(httpHeaders)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
-    public BusinessClient updateBusinessClientFiles(Integer clientId,
-                                                    MultipartFile enterpriseRegistrationCopy,
-                                                    MultipartFile bankAccountCopy,
-                                                    MultipartFile ceoIdCardCopy) throws Exception {
+    public BusinessClient updateBusinessClientFiles(
+            Integer clientId,
+            MultipartFile enterpriseRegistrationCopy,
+            MultipartFile bankAccountCopy,
+            MultipartFile ceoIdCardCopy
+    ) throws Exception {
 
         File enterpriseRegistrationCopyFile = null;
         File bankAccountCopyFile = null;
@@ -139,7 +147,7 @@ public class ClientService {
             }
 
             result = intraBusinessClientsApi.updateBusinessClientFiles(intraTokenService.getAuthToken(),
-                clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
+                    clientId, enterpriseRegistrationCopyFile, bankAccountCopyFile, ceoIdCardCopyFile);
         } catch (Exception e) {
 
         } finally {
@@ -162,5 +170,8 @@ public class ClientService {
         return intraBusinessClientsApi.getStoreListByBusinessClientId(intraTokenService.getAuthToken(), clientId);
     }
 
-
+    // 본사 가상계좌 조회
+    public BusinessClientVirtualBankAccount getBusinessClientVirtualBankAccount(Integer clientId) throws ApiException {
+        return intraBusinessClientsApi.getBusinessClientVirtualBankAccount(intraTokenService.getAuthToken(), clientId.toString());
+    }
 }

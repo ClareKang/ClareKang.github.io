@@ -169,7 +169,7 @@ public class StoreController {
     }
 
     @GetMapping(value = "/stores/{id}/virtual_bank_accounts")
-    public VirtualBankAccount getStoreVirtualBankAccount(@PathVariable String id) throws ApiException {
+    public StoreVirtualBankAccount getStoreVirtualBankAccount(@PathVariable String id) throws ApiException {
         return storeService.getStoreVirtualBankAccount(id);
     }
 

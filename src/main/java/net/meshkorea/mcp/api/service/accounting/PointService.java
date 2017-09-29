@@ -4,6 +4,7 @@ import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.*;
 import com.meshprime.intra.service.auth.IntraTokenService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class PointService {
     }
 
     // 예치금 소분류 목록
-    public List<PointSubcategory> getPointSubategory() throws ApiException {
+    public List<PointSubcategory> getPointSubcategory() throws ApiException {
         return intraPointApi.getPointSubcategory(intraTokenService.getAuthToken());
     }
 
@@ -95,9 +96,14 @@ public class PointService {
         return "예치금_내역_" + DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDateTime.now());
     }
 
-    // 예치금 단일 내역 조회
+    // 예치금 내역 조회
+    public PointTransactionAmount getPointTransactionAmount(GetPointTransactionAmountRequest req) throws ApiException {
+        return intraPointApi.getPointTransactionAmount(intraTokenService.getAuthToken(), req);
+    }
+
+    // 예치금 충전 내역 조회
     public PointDeposit getPointDeposit(
-            String pointTransactionId
+            Integer pointTransactionId
     ) throws ApiException {
         return intraPointApi.getPointDeposit(intraTokenService.getAuthToken(), pointTransactionId);
     }
@@ -153,6 +159,11 @@ public class PointService {
 
     public String excelPointAccountFileName() {
         return "예치금_계좌_" + DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDateTime.now());
+    }
+
+    // 예치금 잔액 조회
+    public PointBalance getPointBalance(GetPointBalanceRequest req) throws ApiException {
+        return intraPointApi.getPointBalance(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 조정 내역 목록
@@ -213,10 +224,13 @@ public class PointService {
     }
 
     // 예치금 조정 내역 생성
-    public SuccessResult createPointAdjustment(
-            CreatePointAdjustmentRequest req
-    ) throws ApiException {
+    public SuccessResult createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
         return intraPointApi.createPointAdjustment(intraTokenService.getAuthToken(), req);
+    }
+
+    // 예치금 조정 내역 상세
+    public PointAdjustmentDetail getPointAdjustmentDetail(Integer id) throws ApiException {
+        return intraPointApi.getPointAdjustmentDetail(intraTokenService.getAuthToken(), id);
     }
 
     // 예치금 조정 오더번호 Look Up

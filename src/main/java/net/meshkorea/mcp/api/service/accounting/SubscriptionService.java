@@ -48,6 +48,7 @@ public class SubscriptionService {
             Integer storeManagementDepartmentId,
             String managerName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -67,6 +68,7 @@ public class SubscriptionService {
                     storeManagementDepartmentId,
                     managerName,
                     fulfilled,
+                    pointAccountIsUsed,
                     page,
                     size
             ));
@@ -89,6 +91,7 @@ public class SubscriptionService {
             Integer storeManagementDepartmentId,
             String managerName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -107,6 +110,7 @@ public class SubscriptionService {
                 storeManagementDepartmentId,
                 managerName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -122,6 +126,7 @@ public class SubscriptionService {
             String storePhone,
             String ceoName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -137,6 +142,7 @@ public class SubscriptionService {
                     storePhone,
                     ceoName,
                     fulfilled,
+                    pointAccountIsUsed,
                     page,
                     size
             ));
@@ -155,6 +161,7 @@ public class SubscriptionService {
             String storePhone,
             String ceoName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -169,6 +176,7 @@ public class SubscriptionService {
                 storePhone,
                 ceoName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );

@@ -31,8 +31,8 @@ public class PointController {
 
     // 예치금 소분류 목록
     @GetMapping(path = "/points/subcategories")
-    public List<PointSubcategory> getPointSubategory() throws ApiException {
-        return pointService.getPointSubategory();
+    public List<PointSubcategory> getPointSubcategory() throws ApiException {
+        return pointService.getPointSubcategory();
     }
 
     // 예치금 상태 목록
@@ -81,11 +81,15 @@ public class PointController {
         return mav;
     }
 
+    // 예치금 내역 조회
+    @PostMapping(path = "/points/transaction_amounts")
+    public PointTransactionAmount getPointTransactionAmount(GetPointTransactionAmountRequest req) throws ApiException {
+        return pointService.getPointTransactionAmount(req);
+    }
+
     // 예치금 츙전 내역 조회
     @GetMapping(path = "/points/deposits")
-    public PointDeposit getPointDeposit(
-            String pointTransactionId
-    ) throws ApiException {
+    public PointDeposit getPointDeposit(Integer pointTransactionId) throws ApiException {
         return pointService.getPointDeposit(pointTransactionId);
     }
 
@@ -127,6 +131,12 @@ public class PointController {
         mav.setViewName("excelXlsxView");
 
         return mav;
+    }
+
+    // 예치금 잔액 조회
+    @PostMapping(path = "/points/balances")
+    public PointBalance getPointBalance(GetPointBalanceRequest req) throws ApiException {
+        return pointService.getPointBalance(req);
     }
 
     // 예치금 조정 내역 목록
@@ -171,10 +181,14 @@ public class PointController {
 
     // 예치금 조정 내역 생성
     @PostMapping(path = "/points/adjustments")
-    public SuccessResult createPointAdjustment(
-            CreatePointAdjustmentRequest req
-    ) throws ApiException {
+    public SuccessResult createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
         return pointService.createPointAdjustment(req);
+    }
+
+    // 예치금 조정 내역 상세
+    @GetMapping(path = "/points/adjustments/id")
+    public PointAdjustmentDetail getPointAdjustmentDetail(@PathVariable Integer id) throws ApiException {
+        return pointService.getPointAdjustmentDetail(id);
     }
 
     // 예치금 조정 오더번호 Look Up

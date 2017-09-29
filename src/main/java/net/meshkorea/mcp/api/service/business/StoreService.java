@@ -108,7 +108,7 @@ public class StoreService {
         });
         GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
         req.setStoreIds(storeIds);
-        List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
+        List<StoreVirtualBankAccount> virtualBankAccounts = listVirtualBankAccountByStoreIds(req);
 
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
@@ -160,9 +160,9 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
-            VirtualBankAccount virtualBankAccount = getVirtualBankAccount(virtualBankAccounts, item.getMeshAccountNumber());
+            StoreVirtualBankAccount virtualBankAccount = getVirtualBankAccount(virtualBankAccounts, item.getId());
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
-            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
 
             result.add(row);
@@ -190,9 +190,9 @@ public class StoreService {
         return returnName;
     }
 
-    public VirtualBankAccount getVirtualBankAccount(List<VirtualBankAccount> list, Integer value) {
-        for (VirtualBankAccount virtualBankAccount : list) {
-            if (virtualBankAccount.getMeshAccountNumber().equals(value)) {
+    public StoreVirtualBankAccount getVirtualBankAccount(List<StoreVirtualBankAccount> list, Integer value) {
+        for (StoreVirtualBankAccount virtualBankAccount : list) {
+            if (virtualBankAccount.getStoreId().equals(value)) {
                 return virtualBankAccount;
             }
         }
@@ -253,8 +253,8 @@ public class StoreService {
         return intraStoresApi.listVroongServicePricingTypes(intraTokenService.getAuthToken());
     }
 
-    public List<VirtualBankAccount> listVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws Exception {
-        return intraVirtualBankAccount.getStoreVirtualBankAccounts(intraTokenService.getAuthToken(), req);
+    public List<StoreVirtualBankAccount> listVirtualBankAccountByStoreIds(GetStoreVirtualBankAccountsRequest req) throws Exception {
+        return intraVirtualBankAccount.getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
@@ -284,7 +284,7 @@ public class StoreService {
     public ResponseEntity updateStore(String id, StoreRequest store) throws Exception {
         try {
             CancelPricingPolicy cancelPricingPolicy = store.getCancelPricingPolicy();
-            if(cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
+            if (cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
                 cancelPricingPolicy.setNullSerialize(true);
             }
             return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
@@ -331,7 +331,7 @@ public class StoreService {
         return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
-    public VirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
+    public StoreVirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
         return intraStoresApi.getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
     }
 

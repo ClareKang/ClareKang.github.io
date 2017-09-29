@@ -37,6 +37,7 @@ public class SubscriptionController {
             Integer storeManagementDepartmentId,
             String managerName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws Exception {
@@ -54,6 +55,7 @@ public class SubscriptionController {
                 storeManagementDepartmentId,
                 managerName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -71,6 +73,7 @@ public class SubscriptionController {
             String storePhone,
             String ceoName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -84,6 +87,7 @@ public class SubscriptionController {
                 storePhone,
                 ceoName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -104,6 +108,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer storeManagementDepartmentId,
             @RequestParam(required = false) String managerName,
             @RequestParam(required = false) String fulfilled,
+            @RequestParam(required = false) String pointAccountIsUsed,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             ModelAndView mav
@@ -122,6 +127,7 @@ public class SubscriptionController {
                 storeManagementDepartmentId,
                 managerName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -146,6 +152,7 @@ public class SubscriptionController {
             @RequestParam(required = false) String storePhone,
             @RequestParam(required = false) String ceoName,
             @RequestParam(required = false) String fulfilled,
+            @RequestParam(required = false) String pointAccountIsUsed,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             ModelAndView mav
@@ -160,6 +167,7 @@ public class SubscriptionController {
                 storePhone,
                 ceoName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
