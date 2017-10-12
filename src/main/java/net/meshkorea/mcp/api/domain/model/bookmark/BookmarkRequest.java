@@ -24,6 +24,10 @@ public class BookmarkRequest {
         private String title;
 
         private String memo = "";
+
+        @NotEmpty(message = "delYn is required.")
+        @Pattern(regexp = "Y|N")
+        private String delYn;
     }
 
     @Data
