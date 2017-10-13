@@ -51,6 +51,7 @@ public class BookmarkService {
         }
 
         bookmark.setIssueDt(new Date());
+        bookmark.setDelYn(req.getDelYn().charAt(0));
 
         return bookmarkRepository.save(bookmark);
     }

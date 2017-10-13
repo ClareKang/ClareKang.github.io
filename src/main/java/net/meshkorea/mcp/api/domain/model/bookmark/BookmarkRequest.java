@@ -48,6 +48,10 @@ public class BookmarkRequest {
         private Long bmkNo;
 
         private String memo;
+
+        @NotEmpty(message = "delYn is required.")
+        @Pattern(regexp = "Y|N")
+        private String delYn;
     }
 
     @Data
