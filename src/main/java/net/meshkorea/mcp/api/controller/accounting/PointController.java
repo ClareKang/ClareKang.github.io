@@ -5,13 +5,14 @@ import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.domain.model.store.CheckStoreName;
 import net.meshkorea.mcp.api.service.accounting.PointService;
-import net.meshkorea.mcp.api.service.business.StoreService;
+import net.meshkorea.mcp.api.service.business.VirtualBankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by clare on 9/13/17.
@@ -22,6 +23,9 @@ public class PointController {
 
     @Autowired
     PointService pointService;
+
+    @Autowired
+    VirtualBankAccountService virtualBankAccountService;
 
     // 예치금 대분류 목록
     @GetMapping(path = "/points/categories")
@@ -101,11 +105,14 @@ public class PointController {
             String sortDirection,
             String sortColumn,
             Boolean pointAccountIsUsed,
-            String balanceStatusId,
+            String balanceStatusIds,
             Integer size,
             Integer page
     ) throws ApiException {
-        return pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusId, size, page);
+        PointAccountList list = pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+        setExternalInformationInPointAccount(list.getData());
+
+        return list;
     }
 
     // 예치금 계좌 조회 엑셀 다운로드
@@ -116,12 +123,13 @@ public class PointController {
             @RequestParam(required = false) String sortDirection,
             @RequestParam(required = false) String sortColumn,
             @RequestParam(required = false) Boolean pointAccountIsUsed,
-            @RequestParam(required = false) String balanceStatusId,
+            @RequestParam(required = false) String balanceStatusIds,
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAccountList list = pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusId, size, page);
+        PointAccountList list = pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+        setExternalInformationInPointAccount(list.getData());
         List<String> headers = pointService.excelPointAccountHeader();
         List<List<String>> body = pointService.excelPointAccountBodies(list);
 
@@ -135,7 +143,7 @@ public class PointController {
 
     // 예치금 잔액 조회
     @PostMapping(path = "/points/balances")
-    public PointBalance getPointBalance(GetPointBalanceRequest req) throws ApiException {
+    public List<PointBalance> getPointBalance(GetPointBalanceRequest req) throws ApiException {
         return pointService.getPointBalance(req);
     }
 
@@ -203,4 +211,33 @@ public class PointController {
         return pointService.getPointAdjustmentSubscriptionLookUp(storeId);
     }
 
+    public void setExternalInformationInPointAccount(List<PointAccount> list) throws ApiException {
+        if(!list.isEmpty()) {
+            List<Integer> businessOwnerIds = list.stream().map(d -> d.getBusinessOwnerId()).collect(Collectors.toList());
+
+            // get VirtualBankAccount list
+            List<BusinessClientVirtualBankAccount> virtualBankAccountList = virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(
+                    new GetBusinessClientVirtualBankAccountsRequest().businessOwnerIds(businessOwnerIds));
+
+            // get PointBalance list
+            List<PointBalance> balanceList = pointService.getPointBalance(
+                    new GetPointBalanceRequest().businessOwnerIds(businessOwnerIds));
+
+            // combine two list in PointAccount list
+            for(PointAccount account : list) {
+                BusinessClientVirtualBankAccount virtualBankAccount = virtualBankAccountList.stream()
+                        .filter(v -> v.getBusinessOwnerId() == account.getBusinessOwnerId()).findFirst().orElse(null);
+                PointBalance balance = balanceList.stream()
+                        .filter(b -> b.getBusinessOwnerId() == account.getBusinessOwnerId()).findFirst().orElse(null);
+
+                if(virtualBankAccount != null) {
+                    account.setVirtualBankAccountNumber(virtualBankAccount.getVirtualBankAccountNumber());
+                    account.setBankName(virtualBankAccount.getBankName());
+                }
+                if(balance != null) {
+                    account.setBalance(balance.getBalance());
+                }
+            }
+        }
+    }
 }

@@ -115,11 +115,11 @@ public class PointService {
             String sortDirection,
             String sortColumn,
             Boolean pointAccountIsUsed,
-            String balanceStatusId,
+            String balanceStatusIds,
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusId, page, size);
+        return intraPointApi.getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
     }
 
     // 예치금 계좌 엑셀다운로드 ------------------------------------------
@@ -146,12 +146,20 @@ public class PointService {
             row.add(item.getBusinessOwnerId().toString());
             row.add(item.getBankName());
             row.add(item.getVirtualBankAccountNumber());
-            row.add(item.getBalance().toString());
+            if(item.getBalance() != null) {
+                row.add(item.getBalance().toString());
+            } else {
+                row.add("");
+            }
             row.add(item.getStoresCount().toString());
             row.add(item.getLatestTransactionCreatedAt());
             row.add(item.getBelowThresholdAt());
             row.add(item.getPointAccountIsUsed() ? "사용" : "미사용");
-            row.add(item.getBalanceStatus());
+            if(item.getPointAccountIsUsed()) {
+                row.add(item.getBalanceStatus());
+            } else {
+                row.add("");
+            }
             result.add(row);
         });
         return result;
@@ -162,7 +170,7 @@ public class PointService {
     }
 
     // 예치금 잔액 조회
-    public PointBalance getPointBalance(GetPointBalanceRequest req) throws ApiException {
+    public List<PointBalance> getPointBalance(GetPointBalanceRequest req) throws ApiException {
         return intraPointApi.getPointBalance(intraTokenService.getAuthToken(), req);
     }
 
