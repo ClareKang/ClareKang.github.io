@@ -65,7 +65,8 @@ public class SwaggerConfig {
             PathSelectors.regex("/v1/intra/subscription/excel.*"),
             PathSelectors.regex("/v1/intra/subscription/store/excel.*"),
             PathSelectors.regex("/v1/intra/point/history/excel.*"),
-            PathSelectors.regex("/v1/intra/point/account/excel.*"),
+            PathSelectors.regex("/v1/intra/point/accounts/excel.*"),
+            PathSelectors.regex("/v1/intra/point/adjustments/excel.*"),
             PathSelectors.regex("/v1/cert/mobile/identification.*")
         ));
     }
