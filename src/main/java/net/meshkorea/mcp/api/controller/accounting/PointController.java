@@ -153,13 +153,13 @@ public class PointController {
             String from,
             String to,
             String subcategories,
-            String adjustingSearchKey,
-            String adjustingSearchValue,
+            String adjustmentSearchKey,
+            String adjustmentSearchValue,
             String isDebit,
             Integer size,
             Integer page
     ) throws ApiException {
-        return pointService.getPointAdjustment(from, to, subcategories, adjustingSearchKey, adjustingSearchValue, isDebit, size, page);
+        return pointService.getPointAdjustment(from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
 
     // 예치금 조정 내역 엑셀 다운로드
@@ -168,14 +168,14 @@ public class PointController {
             @RequestParam(required = false) String from,
             @RequestParam(required = false) String to,
             @RequestParam(required = false) String subcategories,
-            @RequestParam(required = false) String adjustingSearchKey,
-            @RequestParam(required = false) String adjustingSearchValue,
+            @RequestParam(required = false) String adjustmentSearchKey,
+            @RequestParam(required = false) String adjustmentSearchValue,
             @RequestParam(required = false) String isDebit,
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAdjustmentList list = pointService.getPointAdjustment(from, to, subcategories, adjustingSearchKey, adjustingSearchValue, isDebit, size, page);
+        PointAdjustmentList list = pointService.getPointAdjustment(from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
         List<String> headers = pointService.excelPointAdjustmentHeader();
         List<List<String>> body = pointService.excelPointAdjustmentBodies(list);
 

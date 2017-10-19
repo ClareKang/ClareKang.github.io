@@ -179,13 +179,13 @@ public class PointService {
             String from,
             String to,
             String subcategories,
-            String adjustingSearchKey,
-            String adjustingSearchValue,
+            String adjustmentSearchKey,
+            String adjustmentSearchValue,
             String isDebit,
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategories, adjustingSearchKey, adjustingSearchValue, isDebit, size, page);
+        return intraPointApi.getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
 
     // 예치금 조정 내역 엑셀다운로드 ------------------------------------------
