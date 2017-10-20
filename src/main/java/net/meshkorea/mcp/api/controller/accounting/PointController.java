@@ -57,7 +57,10 @@ public class PointController {
             Integer size,
             Integer page
     ) throws ApiException {
-        return pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, page, size);
+        PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
+        setExternalInformationInPointHistory(list.getData());
+
+        return list;
     }
 
     // 예치금 내역 엑셀 다운로드
@@ -73,7 +76,8 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, page, size);
+        PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
+        setExternalInformationInPointHistory(list.getData());
         List<String> headers = pointService.excelPointHistoryHeader();
         List<List<String>> body = pointService.excelPointHistoryBodies(list);
 
@@ -87,8 +91,8 @@ public class PointController {
 
     // 예치금 내역 조회
     @PostMapping(path = "/points/transaction_amounts")
-    public PointTransactionAmount getPointTransactionAmount(GetPointTransactionAmountRequest req) throws ApiException {
-        return pointService.getPointTransactionAmount(req);
+    public List<PointTransactionAmount> getPointTransactionAmount(GetPointTransactionAmountsRequest req) throws ApiException {
+        return pointService.getPointTransactionAmounts(req);
     }
 
     // 예치금 츙전 내역 조회
@@ -211,7 +215,27 @@ public class PointController {
         return pointService.getPointAdjustmentSubscriptionLookUp(storeId);
     }
 
-    public void setExternalInformationInPointAccount(List<PointAccount> list) throws ApiException {
+    private void setExternalInformationInPointHistory(List<PointHistory> list) throws ApiException {
+        if(!list.isEmpty()) {
+            List<Integer> pointTransactionIds = list.stream().map(d -> d.getPointTransactionId()).collect(Collectors.toList());
+
+            // get PointTransactionAmount list
+            List<PointTransactionAmount> pointTransactionAmountList = pointService.getPointTransactionAmounts(
+                    new GetPointTransactionAmountsRequest().pointTransactionIds(pointTransactionIds));
+
+            for(PointHistory history : list) {
+                PointTransactionAmount pointTransactionAmount = pointTransactionAmountList.stream()
+                        .filter(p -> p.getPointTransactionId() == history.getPointTransactionId()).findFirst().orElse(null);
+
+                if(pointTransactionAmount != null) {
+                    history.setAmount(pointTransactionAmount.getAmount());
+                    history.setAfterBalance(pointTransactionAmount.getAfterBalance());
+                }
+            }
+        }
+    }
+
+    private void setExternalInformationInPointAccount(List<PointAccount> list) throws ApiException {
         if(!list.isEmpty()) {
             List<Integer> businessOwnerIds = list.stream().map(d -> d.getBusinessOwnerId()).collect(Collectors.toList());
 
