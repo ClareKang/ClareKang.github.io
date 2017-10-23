@@ -44,4 +44,8 @@ public class Bookmark {
     @Column(name = "del_yn")
     private Character delYn;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "share_memo_no")
+    private ShareMemo shareMemo;
+
 }
