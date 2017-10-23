@@ -83,7 +83,8 @@ public class PointService {
             row.add(item.getStoreId().toString());
             row.add(item.getCreatedAt());
             row.add(item.getCategory());
-            row.add(item.getSubCategory());
+            row.add(item.getSubcategory());
+            row.add(item.getIsDebit() ? "차감" : "적립");
             if(item.getAmount() != null) {
                 row.add(item.getAmount().toString());
             } else {
