@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.domain.repository;
 
 import net.meshkorea.mcp.api.domain.entity.bookmark.Bookmark;
+import net.meshkorea.mcp.api.domain.entity.bookmark.ShareMemo;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkType;
 import net.meshkorea.platform.core.web.config.data.MasterDbConfig;
 import net.meshkorea.platform.core.web.repository.JpaSpecificationRepository;
@@ -34,4 +35,12 @@ public interface BookmarkRepository extends JpaSpecificationRepository<Bookmark,
     Long countByEmailAndDelYn(String email, char delYn);
 
     Bookmark findByEmailAndBmkTypeAndBmkId(String email, BookmarkType bookmarkType, String bmkId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Bookmark SET shareMemo = :shareMemoNo WHERE bmkType = :bmkType AND bmkId = :bmkId")
+    void updateBulkShareMemoNo(@Param("shareMemoNo") ShareMemo shareMemo,
+                         @Param("bmkType") BookmarkType bookmarkType,
+                         @Param("bmkId") String bookmarkId);
+
 }

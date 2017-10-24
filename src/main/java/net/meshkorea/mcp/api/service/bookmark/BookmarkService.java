@@ -1,9 +1,11 @@
 package net.meshkorea.mcp.api.service.bookmark;
 
 import net.meshkorea.mcp.api.domain.entity.bookmark.Bookmark;
+import net.meshkorea.mcp.api.domain.entity.bookmark.ShareMemo;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkRequest;
 import net.meshkorea.mcp.api.domain.model.bookmark.BookmarkType;
 import net.meshkorea.mcp.api.domain.repository.BookmarkRepository;
+import net.meshkorea.mcp.api.domain.repository.ShareMemoRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,9 @@ public class BookmarkService {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
+    @Autowired
+    private ShareMemoRepository shareMemoRepository;
+
     public Bookmark addBookmark(BookmarkRequest.AddBookmark req) {
         Bookmark bookmark = new Bookmark();
         bookmark.setEmail(req.getEmail());
@@ -28,6 +33,11 @@ public class BookmarkService {
         bookmark.setCreateDt(new Date());
         bookmark.setIssueDt(new Date());
         bookmark.setDelYn(req.getDelYn().charAt(0));
+
+        if (req.getShareMemoNo() != null) {
+            ShareMemo shareMemo = shareMemoRepository.findOne(req.getShareMemoNo());
+            bookmark.setShareMemo(shareMemo);
+        }
 
         return bookmarkRepository.save(bookmark);
     }
