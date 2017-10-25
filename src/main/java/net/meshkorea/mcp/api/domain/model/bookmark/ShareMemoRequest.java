@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.domain.model.bookmark;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class ShareMemoRequest {
@@ -16,7 +17,7 @@ public class ShareMemoRequest {
         @NotEmpty(message = "shareMemoId is required.")
         private String shareMemoId;
 
-        @NotEmpty(message = "shareMemo is required.")
+        @NotNull
         private String shareMemo;
 
         @NotEmpty(message = "email is required.")
