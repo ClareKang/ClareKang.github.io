@@ -232,8 +232,8 @@ public class PointService {
     }
 
     // 예치금 조정 내역 생성
-    public SuccessResult createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
-        return intraPointApi.createPointAdjustment(intraTokenService.getAuthToken(), req);
+    public void createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
+        intraPointApi.createPointAdjustment(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 조정 내역 상세

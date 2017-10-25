@@ -189,8 +189,8 @@ public class PointController {
 
     // 예치금 조정 내역 생성
     @PostMapping(path = "/points/adjustments")
-    public SuccessResult createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
-        return pointService.createPointAdjustment(req);
+    public void createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
+        pointService.createPointAdjustment(req);
     }
 
     // 예치금 조정 내역 상세

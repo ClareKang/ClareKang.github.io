@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -243,6 +244,13 @@ public class SubscriptionService {
     public List<List<String>> excelSubscriptionBodies(SubscriptionList list) throws Exception {
         List<List<String>> result = new ArrayList<>();
         List<VroongPartner> partners = listVroongPartners();
+
+        HashMap<Integer, String> partnerMap = new HashMap<>();
+
+        for( VroongPartner partner : partners ) {
+            partnerMap.put(partner.getId(), partner.getName());
+        }
+
         list.getData().forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getStoreName());
@@ -250,7 +258,7 @@ public class SubscriptionService {
             row.add(item.getCeoName());
             row.add(item.getStoreManagementDepartment());
             if (item.getVroongMonitoringPartnerId() != null) {
-                row.add(getPartnerName(partners, item.getVroongMonitoringPartnerId()));
+                row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
                 row.add("");
             }
@@ -336,15 +344,4 @@ public class SubscriptionService {
         }
         return returnType;
     }
-
-    public String getPartnerName(List<VroongPartner> list, int value) {
-        String partnerName = "-";
-        for (VroongPartner partner : list) {
-            if (partner.getId() == value) {
-                return partner.getName();
-            }
-        }
-        return partnerName;
-    }
-
 }

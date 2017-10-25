@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -113,7 +114,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByStoreForExcel(
+        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByStore(
                 term,
                 all,
                 storeName,
@@ -131,8 +132,15 @@ public class SubscriptionController {
                 page,
                 size
         );
+
+        SubscriptionList subcriptionList = new SubscriptionList();
+
+        for( Subscription subscription : list.getBody().getData() ) {
+            subcriptionList.addDataItem(subscription);
+        }
+
         List<String> headers = subscriptionService.excelSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelSubscriptionBodies(list);
+        List<List<String>> body = subscriptionService.excelSubscriptionBodies(subcriptionList);
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, body);
@@ -157,7 +165,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        SubscriptionList list = subscriptionService.getSubscriptionListByMonthForExcel(
+        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByMonth(
                 from,
                 to,
                 all,
@@ -172,8 +180,14 @@ public class SubscriptionController {
                 size
         );
 
+        SubscriptionList subcriptionList = new SubscriptionList();
+
+        for( Subscription subscription : list.getBody().getData() ) {
+            subcriptionList.addDataItem(subscription);
+        }
+
         List<String> headers = subscriptionService.excelStoreSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(list);
+        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(subcriptionList);
 
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelStoreSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
