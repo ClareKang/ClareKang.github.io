@@ -51,7 +51,7 @@ public class PointService {
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, page, size);
+        return intraPointApi.getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, size, page);
     }
 
     // 예치금 내역 엑셀다운로드 ------------------------------------------
@@ -83,9 +83,18 @@ public class PointService {
             row.add(item.getStoreId().toString());
             row.add(item.getCreatedAt());
             row.add(item.getCategory());
-            row.add(item.getSubCategory());
-            row.add(item.getAmount().toString());
-            row.add(item.getAfterBalance().toString());
+            row.add(item.getSubcategory());
+            row.add(item.getIsDebit() ? "차감" : "적립");
+            if(item.getAmount() != null) {
+                row.add(item.getAmount().toString());
+            } else {
+                row.add("");
+            }
+            if(item.getAfterBalance() != null) {
+                row.add(item.getAfterBalance().toString());
+            } else {
+                row.add("");
+            }
             row.add(item.getReference());
             result.add(row);
         });
@@ -97,8 +106,8 @@ public class PointService {
     }
 
     // 예치금 내역 조회
-    public PointTransactionAmount getPointTransactionAmount(GetPointTransactionAmountRequest req) throws ApiException {
-        return intraPointApi.getPointTransactionAmount(intraTokenService.getAuthToken(), req);
+    public List<PointTransactionAmount> getPointTransactionAmounts(GetPointTransactionAmountsRequest req) throws ApiException {
+        return intraPointApi.getPointTransactionAmounts(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 충전 내역 조회

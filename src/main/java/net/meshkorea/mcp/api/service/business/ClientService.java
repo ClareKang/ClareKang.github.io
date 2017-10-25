@@ -49,6 +49,7 @@ public class ClientService {
             String enterpriseName,
             String enterpriseNumber,
             String enterprisePhone,
+            String virtualBankAccount,
             Integer page,
             Integer size
     ) throws Exception {
@@ -60,6 +61,7 @@ public class ClientService {
                 enterpriseName,
                 enterpriseNumber,
                 enterprisePhone,
+                virtualBankAccount,
                 page,
                 size
         );

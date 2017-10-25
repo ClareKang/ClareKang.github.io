@@ -30,6 +30,7 @@ public class ClientController {
      * @param enterpriseName
      * @param enterpriseNumber
      * @param enterprisePhone
+     * @param virtualBankAccount
      * @param page
      * @param size
      * @return
@@ -42,6 +43,7 @@ public class ClientController {
                                                           String enterpriseName,
                                                           String enterpriseNumber,
                                                           String enterprisePhone,
+                                                          String virtualBankAccount,
                                                           Integer page,
                                                           Integer size) throws Exception {
         return clientService.listBusinessClients(
@@ -51,6 +53,7 @@ public class ClientController {
                 enterpriseName,
                 enterpriseNumber,
                 enterprisePhone,
+                virtualBankAccount,
                 page,
                 size
         );

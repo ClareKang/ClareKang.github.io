@@ -2,12 +2,12 @@ publishing {
     repositories {
         maven {
             if ('SNAPSHOT'.equals(deployRepo)) {
-                url "http:///10.167.6.130:8081/repository/maven-snapshots"
-            } else if ('RELAESES'.equals(deployRepo)) {
-                url "http:///10.167.6.130:8081/repository/maven-releases"
+                url "http://nexus.mm.meshkorea.net/repository/maven-snapshots"
+            } else if ('RELEASES'.equals(deployRepo)) {
+                url "http://nexus.mm.meshkorea.net/repository/maven-releases"
             }
             credentials {
-                username 'deploy'
+                username repoUser
                 password repoPass
             }
         }
