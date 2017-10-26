@@ -225,7 +225,7 @@ public class PointController {
 
             for(PointHistory history : list) {
                 PointTransactionAmount pointTransactionAmount = pointTransactionAmountList.stream()
-                        .filter(p -> p.getPointTransactionId() == history.getPointTransactionId()).findFirst().orElse(null);
+                        .filter(p -> p.getPointTransactionId().equals(history.getPointTransactionId())).findFirst().orElse(null);
 
                 if(pointTransactionAmount != null) {
                     history.setAmount(pointTransactionAmount.getAmount());
@@ -250,9 +250,9 @@ public class PointController {
             // combine two list in PointAccount list
             for(PointAccount account : list) {
                 BusinessClientVirtualBankAccount virtualBankAccount = virtualBankAccountList.stream()
-                        .filter(v -> v.getBusinessOwnerId() == account.getBusinessOwnerId()).findFirst().orElse(null);
+                        .filter(v -> v.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
                 PointBalance balance = balanceList.stream()
-                        .filter(b -> b.getBusinessOwnerId() == account.getBusinessOwnerId()).findFirst().orElse(null);
+                        .filter(b -> b.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
 
                 if(virtualBankAccount != null) {
                     account.setVirtualBankAccountNumber(virtualBankAccount.getVirtualBankAccountNumber());
