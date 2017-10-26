@@ -50,6 +50,7 @@ public class ClientService {
             String enterpriseNumber,
             String enterprisePhone,
             String virtualBankAccount,
+            Boolean pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws Exception {
@@ -62,6 +63,7 @@ public class ClientService {
                 enterpriseNumber,
                 enterprisePhone,
                 virtualBankAccount,
+                pointAccountIsUsed,
                 page,
                 size
         );

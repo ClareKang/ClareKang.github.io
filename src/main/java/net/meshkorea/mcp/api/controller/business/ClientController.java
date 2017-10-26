@@ -44,6 +44,7 @@ public class ClientController {
                                                           String enterpriseNumber,
                                                           String enterprisePhone,
                                                           String virtualBankAccount,
+                                                          Boolean pointAccountIsUsed,
                                                           Integer page,
                                                           Integer size) throws Exception {
         return clientService.listBusinessClients(
@@ -54,6 +55,7 @@ public class ClientController {
                 enterpriseNumber,
                 enterprisePhone,
                 virtualBankAccount,
+                pointAccountIsUsed,
                 page,
                 size
         );
