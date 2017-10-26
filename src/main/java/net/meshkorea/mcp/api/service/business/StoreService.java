@@ -178,7 +178,6 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
             StoreVirtualBankAccount virtualBankAccount = virtualBankMap.get(item.getId());
-
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getBankName() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
