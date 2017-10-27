@@ -58,7 +58,6 @@ public class PointController {
             Integer page
     ) throws ApiException {
         PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
-        setExternalInformationInPointHistory(list.getData());
 
         return list;
     }
@@ -77,7 +76,6 @@ public class PointController {
             ModelAndView mav
     ) throws Exception {
         PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
-        setExternalInformationInPointHistory(list.getData());
         List<String> headers = pointService.excelPointHistoryHeader();
         List<List<String>> body = pointService.excelPointHistoryBodies(list);
 
@@ -213,26 +211,6 @@ public class PointController {
     @GetMapping(path = "/points/adjustments/subscription_lookup")
     public PointAdjustmentSubscriptionLookUp getPointAdjustmentSubscriptionLookUp(String storeId) throws ApiException {
         return pointService.getPointAdjustmentSubscriptionLookUp(storeId);
-    }
-
-    private void setExternalInformationInPointHistory(List<PointHistory> list) throws ApiException {
-        if(!list.isEmpty()) {
-            List<Integer> pointTransactionIds = list.stream().map(d -> d.getPointTransactionId()).collect(Collectors.toList());
-
-            // get PointTransactionAmount list
-            List<PointTransactionAmount> pointTransactionAmountList = pointService.getPointTransactionAmounts(
-                    new GetPointTransactionAmountsRequest().pointTransactionIds(pointTransactionIds));
-
-            for(PointHistory history : list) {
-                PointTransactionAmount pointTransactionAmount = pointTransactionAmountList.stream()
-                        .filter(p -> p.getPointTransactionId().equals(history.getPointTransactionId())).findFirst().orElse(null);
-
-                if(pointTransactionAmount != null) {
-                    history.setAmount(pointTransactionAmount.getAmount());
-                    history.setAfterBalance(pointTransactionAmount.getAfterBalance());
-                }
-            }
-        }
     }
 
     private void setExternalInformationInPointAccount(List<PointAccount> list) throws ApiException {
