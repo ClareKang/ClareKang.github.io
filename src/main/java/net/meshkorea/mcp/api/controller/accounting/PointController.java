@@ -221,23 +221,14 @@ public class PointController {
             List<BusinessClientVirtualBankAccount> virtualBankAccountList = virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(
                     new GetBusinessClientVirtualBankAccountsRequest().businessOwnerIds(businessOwnerIds));
 
-            // get PointBalance list
-            List<PointBalance> balanceList = pointService.getPointBalance(
-                    new GetPointBalanceRequest().businessOwnerIds(businessOwnerIds));
-
             // combine two list in PointAccount list
             for(PointAccount account : list) {
                 BusinessClientVirtualBankAccount virtualBankAccount = virtualBankAccountList.stream()
                         .filter(v -> v.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
-                PointBalance balance = balanceList.stream()
-                        .filter(b -> b.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
 
                 if(virtualBankAccount != null) {
                     account.setVirtualBankAccountNumber(virtualBankAccount.getVirtualBankAccountNumber());
                     account.setBankName(virtualBankAccount.getBankName());
-                }
-                if(balance != null) {
-                    account.setBalance(balance.getBalance());
                 }
             }
         }
