@@ -154,14 +154,14 @@ public class PointController {
     public PointAdjustmentList getPointAdjustment(
             String from,
             String to,
-            String subcategories,
+            String subcategory,
             String adjustmentSearchKey,
             String adjustmentSearchValue,
             String isDebit,
             Integer size,
             Integer page
     ) throws ApiException {
-        return pointService.getPointAdjustment(from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+        return pointService.getPointAdjustment(from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
 
     // 예치금 조정 내역 엑셀 다운로드
@@ -169,7 +169,7 @@ public class PointController {
     public ModelAndView downloadPointAdjustmentToExcel(
             @RequestParam(required = false) String from,
             @RequestParam(required = false) String to,
-            @RequestParam(required = false) String subcategories,
+            @RequestParam(required = false) String subcategory,
             @RequestParam(required = false) String adjustmentSearchKey,
             @RequestParam(required = false) String adjustmentSearchValue,
             @RequestParam(required = false) String isDebit,
@@ -177,7 +177,7 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAdjustmentList list = pointService.getPointAdjustment(from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+        PointAdjustmentList list = pointService.getPointAdjustment(from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
         List<String> headers = pointService.excelPointAdjustmentHeader();
         List<List<String>> body = pointService.excelPointAdjustmentBodies(list);
 
@@ -196,9 +196,9 @@ public class PointController {
     }
 
     // 예치금 조정 내역 상세
-    @GetMapping(path = "/points/adjustments/id")
-    public PointAdjustmentDetail getPointAdjustmentDetail(@PathVariable Integer id) throws ApiException {
-        return pointService.getPointAdjustmentDetail(id);
+    @GetMapping(path = "/points/adjustments/{adjustmentId}")
+    public PointAdjustmentDetail getPointAdjustmentDetail(@PathVariable Integer adjustmentId) throws ApiException {
+        return pointService.getPointAdjustmentDetail(adjustmentId);
     }
 
     // 예치금 조정 오더번호 Look Up

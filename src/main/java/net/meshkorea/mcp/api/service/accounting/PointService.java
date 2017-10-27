@@ -187,14 +187,14 @@ public class PointService {
     public PointAdjustmentList getPointAdjustment(
             String from,
             String to,
-            String subcategories,
+            String subcategory,
             String adjustmentSearchKey,
             String adjustmentSearchValue,
             String isDebit,
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategories, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+        return intraPointApi.getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
 
     // 예치금 조정 내역 엑셀다운로드 ------------------------------------------
@@ -222,7 +222,7 @@ public class PointService {
             row.add(item.getPointTransactionId().toString());
             row.add(item.getClientName());
             row.add(item.getStoreName());
-            row.add(item.getCreatedAt());
+            row.add(item.getIssuedAt());
             row.add(item.getCategory());
             row.add(item.getSubcategory());
             row.add(item.getIsDebit() ? "차감" : "적립");
@@ -246,8 +246,8 @@ public class PointService {
     }
 
     // 예치금 조정 내역 상세
-    public PointAdjustmentDetail getPointAdjustmentDetail(Integer id) throws ApiException {
-        return intraPointApi.getPointAdjustmentDetail(intraTokenService.getAuthToken(), id);
+    public PointAdjustmentDetail getPointAdjustmentDetail(Integer adjustmentId) throws ApiException {
+        return intraPointApi.getPointAdjustmentDetail(intraTokenService.getAuthToken(), adjustmentId);
     }
 
     // 예치금 조정 오더번호 Look Up
