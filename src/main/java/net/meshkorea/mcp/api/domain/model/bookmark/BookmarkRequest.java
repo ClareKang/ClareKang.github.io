@@ -28,6 +28,9 @@ public class BookmarkRequest {
         @NotEmpty(message = "delYn is required.")
         @Pattern(regexp = "Y|N")
         private String delYn;
+
+        //@NotNull(message = "shareMemoNo is required.")
+        private Long shareMemoNo;
     }
 
     @Data
@@ -48,6 +51,10 @@ public class BookmarkRequest {
         private Long bmkNo;
 
         private String memo;
+
+        @NotEmpty(message = "delYn is required.")
+        @Pattern(regexp = "Y|N")
+        private String delYn;
     }
 
     @Data
