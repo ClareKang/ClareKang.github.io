@@ -36,8 +36,8 @@ public class AddressService {
         return intraAddressesApi.listLegalRi(intraTokenService.getAuthToken(), sido, sigungu, legalDong, keyword);
     }
 
-    public ExtraFeeAddressList getAddressList(String sido, String sigungu, String legalDong, String legalRi, String addressType, String keyword, String page, String size) throws ApiException {
-        return intraAddressesApi.listAddress(intraTokenService.getAuthToken(), sido, sigungu, legalDong, legalRi, addressType, keyword, page, size);
+    public ExtraFeeAddressList getSearchList(String sido, String sigungu, String legalDong, String legalRi, String addressType, String keyword, String page, String size) throws ApiException {
+        return intraAddressesApi.listSearch(intraTokenService.getAuthToken(), sido, sigungu, legalDong, legalRi, addressType, keyword, Integer.valueOf(page), Integer.valueOf(size));
     }
 
 }

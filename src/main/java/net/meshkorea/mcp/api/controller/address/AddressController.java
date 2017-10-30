@@ -63,7 +63,7 @@ public class AddressController {
                                             @RequestParam(value = "size", required = false) String size
     ) throws ApiException {
         logger.info("page : {}, size : {}", page, size);
-        return addressService.getAddressList(si_do, si_gun_gu, legal_dong, legal_ri, address_type, keyword, page, size);
+                    return addressService.getSearchList(si_do, si_gun_gu, legal_dong, legal_ri, address_type, keyword, page, size);
     }
 
 }
