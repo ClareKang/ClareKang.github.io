@@ -6,7 +6,10 @@ apply from: rootProject.file('gradle/publish.gradle')
 
 buildscript { scriptHandler ->
     apply from: rootProject.file('gradle/dependencies.gradle')
-    apply from: rootProject.file('gradle/repositories.gradle'), to: scriptHandler
+    apply from: rootProject.file('gradle/repositories.gradle')
+
+    repositories.addAll(extRepo)
+
     dependencies {
         classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
