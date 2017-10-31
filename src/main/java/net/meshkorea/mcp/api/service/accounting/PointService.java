@@ -161,7 +161,7 @@ public class PointService {
                 row.add("");
             }
             row.add(item.getStoresCount().toString());
-            row.add(item.getLatestTransactionCreatedAt());
+            row.add(item.getLastTransactionOccurredAt());
             row.add(item.getBelowThresholdAt());
             row.add(item.getPointAccountIsUsed() ? "사용" : "미사용");
             if(item.getPointAccountIsUsed()) {
