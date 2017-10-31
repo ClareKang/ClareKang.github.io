@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.delivery;
 
+import com.meshprime.api.client.model.DeliveryList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,16 @@ public class DeliveryController {
     DeliveryService deliveryService;
 
     @RequestMapping(value = "/deliveries", method = RequestMethod.GET)
-    public void findDeliveies(@RequestParam(value = "search_param", required = false, defaultValue = "") String search_param,
-    						  @RequestParam(value = "search_query", required = false, defaultValue = "") String search_query,
-    						  @RequestParam(value = "order_by", required = false, defaultValue = "") String order_by,
-    						  @RequestParam(value = "preset", required = false, defaultValue = "") String preset,
-    						  @RequestParam(value = "start_date", required = false, defaultValue = "") String start_date,
-    						  @RequestParam(value = "end_date", required = false, defaultValue = "") String end_date,
-    						  @RequestParam(value = "statuses", required = false, defaultValue = "") String statuses,
-    						  @RequestParam(value = "size", required = false, defaultValue = "1") Integer size,
-                              @RequestParam(value = "page", required = false, defaultValue = "1") Integer page) throws ApiException {
+    public DeliveryList findDeliveies(@RequestParam(value = "search_param", required = false, defaultValue = "") String search_param,
+									  @RequestParam(value = "search_query", required = false, defaultValue = "") String search_query,
+									  @RequestParam(value = "order_by", required = false, defaultValue = "") String order_by,
+									  @RequestParam(value = "preset", required = false, defaultValue = "") String preset,
+									  @RequestParam(value = "start_date", required = false, defaultValue = "") String start_date,
+									  @RequestParam(value = "end_date", required = false, defaultValue = "") String end_date,
+									  @RequestParam(value = "statuses", required = false, defaultValue = "") String statuses,
+									  @RequestParam(value = "size", required = false, defaultValue = "1") Integer size,
+									  @RequestParam(value = "page", required = false, defaultValue = "1") Integer page) throws ApiException {
     	
-        deliveryService.findDeliveies(search_param, search_query, order_by, preset, start_date, end_date, statuses, size, page);
+        return deliveryService.findDeliveies(search_param, search_query, order_by, preset, start_date, end_date, statuses, size, page);
     }
 }
