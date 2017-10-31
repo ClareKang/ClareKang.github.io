@@ -1,6 +1,7 @@
 package net.meshkorea.mcp.api.controller.address;
 
 import com.meshprime.api.client.ApiException;
+import com.meshprime.api.client.model.AddressSearchList;
 import com.meshprime.api.client.model.ExtraFeeAddressList;
 
 import net.meshkorea.mcp.api.service.address.AddressService;
@@ -44,16 +45,16 @@ public class AddressController {
     }
     
     @RequestMapping(value = "/legal_ris", method = RequestMethod.GET)
-    public ExtraFeeAddressList getLegaRis(@RequestParam(value = "si_do", required = true) String si_do,
-                                             @RequestParam(value = "si_gun_gu", required = true) String si_gun_gu,
-                                             @RequestParam(value = "legal_dong", required = true) String legal_dong,
-                                             @RequestParam(value = "keyword", required = false) String keyword) throws ApiException {
+    public AddressSearchList getLegaRis(@RequestParam(value = "si_do", required = true) String si_do,
+                                        @RequestParam(value = "si_gun_gu", required = true) String si_gun_gu,
+                                        @RequestParam(value = "legal_dong", required = true) String legal_dong,
+                                        @RequestParam(value = "keyword", required = false) String keyword) throws ApiException {
         logger.info("si_do : {}, si_gun_gu : {}, legal_dong : {}, keyword: {}", si_do, si_gun_gu, legal_dong, keyword);
         return addressService.getLegalRiList(si_do, si_gun_gu, legal_dong, keyword);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ExtraFeeAddressList getAddresses(@RequestParam(value = "si_do", required = true) String si_do,
+    public AddressSearchList getAddresses(@RequestParam(value = "si_do", required = true) String si_do,
                                             @RequestParam(value = "si_gun_gu", required = true) String si_gun_gu,
                                             @RequestParam(value = "legal_dong", required = true) String legal_dong,
                                             @RequestParam(value = "legal_ri", required = false) String legal_ri,
