@@ -76,25 +76,17 @@ public class PointService {
         List<List<String>> result = new ArrayList<>();
         pointHistoryList.getData().forEach(item -> {
             List<String> row = new ArrayList<>();
-            row.add(item.getPointTransactionId().toString());
+            row.add(item.getPointTransactionId() != null ? item.getPointTransactionId().toString() : "");
             row.add(item.getClientName());
-            row.add(item.getBusinessOwnerId().toString());
+            row.add(item.getBusinessOwnerId() != null ? item.getBusinessOwnerId().toString() : "");
             row.add(item.getStoreName());
-            row.add(item.getStoreId().toString());
+            row.add(item.getStoreId() != null ? item.getStoreId().toString() : "");
             row.add(item.getCreatedAt());
             row.add(item.getCategory());
             row.add(item.getSubcategory());
             row.add(item.getIsDebit() ? "차감" : "적립");
-            if(item.getAmount() != null) {
-                row.add(item.getAmount().toString());
-            } else {
-                row.add("");
-            }
-            if(item.getAfterBalance() != null) {
-                row.add(item.getAfterBalance().toString());
-            } else {
-                row.add("");
-            }
+            row.add(item.getAmount() != null ? item.getAmount().toString() : "");
+            row.add(item.getAfterBalance() != null ? item.getAfterBalance().toString() : "");
             row.add(item.getReference());
             result.add(row);
         });
@@ -152,23 +144,15 @@ public class PointService {
         pointAccountList.getData().forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getClientName());
-            row.add(item.getBusinessOwnerId().toString());
+            row.add(item.getBusinessOwnerId() != null ? item.getBusinessOwnerId().toString() : "");
             row.add(item.getBankName());
             row.add(item.getVirtualBankAccountNumber());
-            if(item.getBalance() != null) {
-                row.add(item.getBalance().toString());
-            } else {
-                row.add("");
-            }
-            row.add(item.getStoresCount().toString());
+            row.add(item.getBalance() != null ? item.getBalance().toString() : "");
+            row.add(item.getStoresCount() != null ? item.getStoresCount().toString() : "");
             row.add(item.getLastTransactionOccurredAt());
             row.add(item.getBelowThresholdAt());
             row.add(item.getPointAccountIsUsed() ? "사용" : "미사용");
-            if(item.getPointAccountIsUsed()) {
-                row.add(item.getBalanceStatus());
-            } else {
-                row.add("");
-            }
+            row.add(item.getPointAccountIsUsed() ? item.getBalanceStatus() : "");
             result.add(row);
         });
         return result;
@@ -219,15 +203,15 @@ public class PointService {
         List<List<String>> result = new ArrayList<>();
         pointAdjustmentList.getData().forEach(item -> {
             List<String> row = new ArrayList<>();
-            row.add(item.getPointTransactionId().toString());
+            row.add(item.getPointTransactionId() != null ? item.getPointTransactionId().toString() : "");
             row.add(item.getClientName());
             row.add(item.getStoreName());
             row.add(item.getIssuedAt());
             row.add(item.getCategory());
             row.add(item.getSubcategory());
             row.add(item.getIsDebit() ? "차감" : "적립");
-            row.add(item.getAmount().toString());
-            row.add(item.getAfterBalance().toString());
+            row.add(item.getAmount() != null ? item.getAmount().toString() : "");
+            row.add(item.getAfterBalance() != null ? item.getAfterBalance().toString() : "");
             row.add(item.getReference());
             row.add(item.getConfirmedBy());
             row.add(item.getIssuedBy());
