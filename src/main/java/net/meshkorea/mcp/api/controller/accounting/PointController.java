@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -218,10 +219,15 @@ public class PointController {
             List<Integer> businessOwnerIds = list.stream().map(d -> d.getBusinessOwnerId()).collect(Collectors.toList());
 
             // get VirtualBankAccount list
-            List<BusinessClientVirtualBankAccount> virtualBankAccountList = virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(
-                    new GetBusinessClientVirtualBankAccountsRequest().businessOwnerIds(businessOwnerIds));
+            List<BusinessClientVirtualBankAccount> virtualBankAccountList = new ArrayList();
+            int sliceSize = 20;
+            for(int i = 0 ; i < businessOwnerIds.size() ; i += sliceSize) {
+                List<Integer> sublist = businessOwnerIds.subList(i, i + sliceSize > businessOwnerIds.size() ? businessOwnerIds.size() : i + sliceSize);
+                virtualBankAccountList.addAll(virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(
+                        new GetBusinessClientVirtualBankAccountsRequest().businessOwnerIds(sublist)));
+            }
 
-            // combine two list in PointAccount list
+            // combine list in PointAccount list
             for(PointAccount account : list) {
                 BusinessClientVirtualBankAccount virtualBankAccount = virtualBankAccountList.stream()
                         .filter(v -> v.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
