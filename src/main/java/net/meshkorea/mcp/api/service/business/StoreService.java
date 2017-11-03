@@ -55,7 +55,10 @@ public class StoreService {
         List<String> result = new ArrayList<>();
         result.add("상점 id(#)");
         result.add("상점명");
-        result.add("본사명");
+        result.add("본사(정산대상) id(#)");
+        result.add("본사(정산대상)");
+        result.add("본사(프랜차이즈) id(#)");
+        result.add("본사(프랜차이즈)");
         result.add("기업/개별상점");
         result.add("운영상태");
         result.add("상점전화번호");
@@ -131,6 +134,9 @@ public class StoreService {
             List<String> row = new ArrayList<>();
             row.add(item.getId().toString());
             row.add(item.getStoreName());
+            row.add(item.getBusinessOwnerId().toString());
+            row.add(item.getBusinessOwner().getClientName());
+            row.add(item.getFranchiseId().toString());
             row.add(item.getFranchise().getClientName());
             row.add(item.getStoreType());
             row.add(getOperationStatus(item));
