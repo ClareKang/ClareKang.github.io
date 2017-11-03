@@ -49,6 +49,7 @@ public class SubscriptionService {
             Integer storeManagementDepartmentId,
             String managerName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -68,12 +69,52 @@ public class SubscriptionService {
                     storeManagementDepartmentId,
                     managerName,
                     fulfilled,
+                    pointAccountIsUsed,
                     page,
                     size
             ));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
+    }
+
+    public SubscriptionList getSubscriptionListByStoreForExcel(
+            String term,
+            String all,
+            String storeName,
+            String storeId,
+            String enterpriseRegistrationNumber,
+            String storePhone,
+            String ceoName,
+            Integer storeSalesDepartmentId,
+            String storeOperatingStatus,
+            Integer vroongMonitoringPartnerId,
+            Integer storeManagementDepartmentId,
+            String managerName,
+            String fulfilled,
+            String pointAccountIsUsed,
+            Integer page,
+            Integer size
+    ) throws ApiException {
+        return intraSubscriptionApi.getSubscriptionListByStore(
+                intraTokenService.getAuthToken(),
+                term,
+                all,
+                storeName,
+                storeId,
+                enterpriseRegistrationNumber,
+                storePhone,
+                ceoName,
+                storeSalesDepartmentId,
+                storeOperatingStatus,
+                vroongMonitoringPartnerId,
+                storeManagementDepartmentId,
+                managerName,
+                fulfilled,
+                pointAccountIsUsed,
+                page,
+                size
+        );
     }
 
     public ResponseEntity getSubscriptionListByMonth(
@@ -86,6 +127,7 @@ public class SubscriptionService {
             String storePhone,
             String ceoName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -101,12 +143,44 @@ public class SubscriptionService {
                     storePhone,
                     ceoName,
                     fulfilled,
+                    pointAccountIsUsed,
                     page,
                     size
             ));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
+    }
+
+    public SubscriptionList getSubscriptionListByMonthForExcel(
+            String from,
+            String to,
+            String all,
+            String storeName,
+            String storeId,
+            String enterpriseRegistrationNumber,
+            String storePhone,
+            String ceoName,
+            String fulfilled,
+            String pointAccountIsUsed,
+            Integer page,
+            Integer size
+    ) throws ApiException {
+        return intraSubscriptionApi.getSubscriptionListByMonth(
+                intraTokenService.getAuthToken(),
+                from,
+                to,
+                all,
+                storeName,
+                storeId,
+                enterpriseRegistrationNumber,
+                storePhone,
+                ceoName,
+                fulfilled,
+                pointAccountIsUsed,
+                page,
+                size
+        );
     }
 
     // 상점 월가맹비 입금 처리
@@ -182,7 +256,7 @@ public class SubscriptionService {
             row.add(item.getStoreName());
             row.add(item.getEnterpriseRegistrationNumber());
             row.add(item.getCeoName());
-            row.add(item.getStoreSalesDepartment());
+            row.add(item.getStoreManagementDepartment());
             if (item.getVroongMonitoringPartnerId() != null) {
                 row.add(partnerMap.get(item.getVroongMonitoringPartnerId()));
             } else {
@@ -196,7 +270,6 @@ public class SubscriptionService {
             row.add(item.getManagerName());
             row.add(item.getTotalUncollectedByStore().toString());
             row.add(item.getAccountOwner());
-            row.add(item.getFulfilled() == "true" ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(item.getFulfilledAt()) : "미입금");
             row.add(item.getConfirmedBy());
             row.add(item.getEnterpriseName());
             row.add(item.getClientContactName());
