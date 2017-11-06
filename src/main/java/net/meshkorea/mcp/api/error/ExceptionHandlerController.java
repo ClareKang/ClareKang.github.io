@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.error;
 
+import com.meshprime.api.client.ApiException;
 import net.meshkorea.mcp.api.error.exception.CustomBindingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,10 @@ public class ExceptionHandlerController {
         if (exception instanceof CustomBindingException) {
             CustomBindingException e = (CustomBindingException) exception;
             return new ResponseEntity(e.getErrorResponse(), HttpStatus.BAD_REQUEST);
+
+        } else if (exception instanceof ApiException) {
+            ApiException e = (ApiException) exception;
+            return new ResponseEntity(e.getResponseBody(), HttpStatus.valueOf(e.getCode()));
         }
 
         throw exception;
