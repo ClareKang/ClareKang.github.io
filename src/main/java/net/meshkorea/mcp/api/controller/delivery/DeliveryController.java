@@ -1,8 +1,5 @@
 package net.meshkorea.mcp.api.controller.delivery;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.delivery.DeliveryService;
@@ -10,7 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * Created by jinho.kim on 2017. 10. 23..
@@ -38,49 +39,36 @@ public class DeliveryController {
     }
 
     @RequestMapping(value = "/v1/intra/delivery_quotes", method = RequestMethod.POST)
-    public EstimatedShippingInfoResponse getEstimatedShippingInfo(@RequestBody String parameter) throws ApiException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        Gson gson = gsonBuilder.create();
-
-        EstimatedShippingInfoRequest estimatedShippingInfoRequest =
-                gson.fromJson(parameter, EstimatedShippingInfoRequest.class);
-
+    public EstimatedShippingInfoResponse getEstimatedShippingInfo(@RequestBody EstimatedShippingInfoRequest req) throws ApiException {
         // "DEST_ADDRESS" | "ORIGIN_ADDRESS"
-        if (StringUtils.equals(estimatedShippingInfoRequest.getAddressContext(), "DEST_ADDRESS")
-                && estimatedShippingInfoRequest.getDestAddress() == null) {
+        if (StringUtils.equals(req.getAddressContext(), "DEST_ADDRESS")
+                && req.getDestAddress() == null) {
             throw new ApiException("dest_address is required.");
 
-        } else if (StringUtils.equals(estimatedShippingInfoRequest.getAddressContext(), "ORIGIN_ADDRESS")
-                && estimatedShippingInfoRequest.getOriginAddress() == null) {
+        } else if (StringUtils.equals(req.getAddressContext(), "ORIGIN_ADDRESS")
+                && req.getOriginAddress() == null) {
             throw new ApiException("origin_address is required.");
         }
 
-        return deliveryService.getEstimatedShippingInfo(estimatedShippingInfoRequest);
+        return deliveryService.getEstimatedShippingInfo(req);
     }
 
     @RequestMapping(value = "/v1/intra/deliveries/origin_address", method = RequestMethod.PUT)
-    public void changeOriginAddress(@RequestBody String parameter) throws ApiException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        Gson gson = gsonBuilder.create();
+    public ResponseEntity changeOriginAddress(@RequestBody ChangeOriginAddressRequest req) throws ApiException {
+        deliveryService.changeOriginAddress(req);
 
-        ChangeOriginAddressRequest changeOriginAddressRequest =
-                gson.fromJson(parameter, ChangeOriginAddressRequest.class);
-
-        deliveryService.changeOriginAddress(changeOriginAddressRequest);
+        HashMap result = new HashMap();
+        result.put("success", true);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/intra/deliveries/dest_address", method = RequestMethod.PUT)
-    public void changeDestAddress(@RequestBody String parameter) throws ApiException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        Gson gson = gsonBuilder.create();
+    public ResponseEntity changeDestAddress(@RequestBody ChangeDestAddressRequest req) throws ApiException {
+        deliveryService.changeDestAddress(req);
 
-        ChangeDestAddressRequest changeDestAddressRequest =
-                gson.fromJson(parameter, ChangeDestAddressRequest.class);
-
-        deliveryService.changeDestAddress(changeDestAddressRequest);
+        HashMap result = new HashMap();
+        result.put("success", true);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
 }

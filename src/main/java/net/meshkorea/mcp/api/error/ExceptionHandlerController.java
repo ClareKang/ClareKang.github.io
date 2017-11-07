@@ -26,9 +26,21 @@ public class ExceptionHandlerController {
             CustomBindingException e = (CustomBindingException) exception;
             return new ResponseEntity(e.getErrorResponse(), HttpStatus.BAD_REQUEST);
 
-        } else if (exception instanceof ApiException) {
+        }
+        // prime-api-client
+        else if (exception instanceof ApiException) {
             ApiException e = (ApiException) exception;
-            return new ResponseEntity(e.getResponseBody(), HttpStatus.valueOf(e.getCode()));
+            logger.info("prime-api-client \n [code]:{} | [body]:{} | [message]:{}", e.getCode(), e.getResponseBody(), e.getMessage());
+        }
+        // vroong-api-client
+        else if (exception instanceof com.vroong.lastmile.api.client.ApiException) {
+            com.vroong.lastmile.api.client.ApiException e = (com.vroong.lastmile.api.client.ApiException) exception;
+            logger.info("vroong-api-client \n [code]:{} | [body]:{} | [message]:{}", e.getCode(), e.getResponseBody(), e.getMessage());
+        }
+        // vroong:vroong-admin-api-client
+        else if (exception instanceof com.vroong.admin.api.client.ApiException) {
+            com.vroong.admin.api.client.ApiException e = (com.vroong.admin.api.client.ApiException) exception;
+            logger.info("vroong-admin-api-client \n [code]:{} | [body]:{} | [message]:{}", e.getCode(), e.getResponseBody(), e.getMessage());
         }
 
         throw exception;
