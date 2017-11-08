@@ -152,7 +152,7 @@ public class PointService {
             row.add(item.getLastTransactionOccurredAt());
             row.add(item.getBelowThresholdAt());
             row.add(item.getPointAccountIsUsed() ? "사용" : "미사용");
-            row.add(item.getPointAccountIsUsed() ? item.getBalanceStatus() : "");
+            row.add(item.getBalanceStatus());
             result.add(row);
         });
         return result;
