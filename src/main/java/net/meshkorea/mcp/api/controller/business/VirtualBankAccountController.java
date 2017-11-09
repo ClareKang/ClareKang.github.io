@@ -18,13 +18,28 @@ public class VirtualBankAccountController {
     @Autowired
     VirtualBankAccountService virtualBankAccountService;
 
-    @GetMapping(path = "/virtual_bank_accounts/all")
-    public List<VirtualBankAccount> getVirtualBankAccounts() throws ApiException {
-        return virtualBankAccountService.getVirtualBankAccounts();
+    // 모든 상점의 가상계좌 조회 (폐점 제외)
+    @GetMapping(path = "/virtual_bank_accounts/by_store/all")
+    public List<StoreVirtualBankAccount> getVirtualBankAccounts() throws ApiException {
+        return virtualBankAccountService.getAllStoreVirtualBankAccounts();
     }
 
-    @PostMapping(path = "/virtual_bank_accounts")
-    public List<VirtualBankAccount> getStoreVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws ApiException {
-        return virtualBankAccountService.getStoreVirtualBankAccounts(req);
+    // 특정 상점의 가상계좌 조회 (폐점 제외)
+    @PostMapping(path = "/virtual_bank_accounts/by_store")
+    public List<StoreVirtualBankAccount> getVirtualBankAccountsByStoreIds(GetStoreVirtualBankAccountsRequest req) throws ApiException {
+        return virtualBankAccountService.getVirtualBankAccountsByStoreIds(req);
     }
+
+    // 모든 본사의 가상계좌 조회
+    @GetMapping(path = "/virtual_bank_accounts/by_business_client/all")
+    public List<BusinessClientVirtualBankAccount> getAllBusinessClientVirtualBankAccounts() throws ApiException {
+        return virtualBankAccountService.getAllBusinessClientVirtualBankAccounts();
+    }
+
+    // 특정 본사의 가상계좌 조회
+    @PostMapping(path = "/virtual_bank_accounts/by_business_client")
+    public List<BusinessClientVirtualBankAccount> getVirtualBankAccountsByBusinessClientIds(GetBusinessClientVirtualBankAccountsRequest req) throws ApiException {
+        return virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(req);
+    }
+
 }

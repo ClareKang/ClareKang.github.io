@@ -21,11 +21,24 @@ public class VirtualBankAccountService {
     @Autowired
     IntraVirtualBankAccount intraVirtualBankAccount;
 
-    public List<VirtualBankAccount> getVirtualBankAccounts() throws ApiException {
-        return intraVirtualBankAccount.getVirtualBankAccounts(intraTokenService.getAuthToken());
+    // 모든 상점의 가상계좌 조회 (폐점 제외)
+    public List<StoreVirtualBankAccount> getAllStoreVirtualBankAccounts() throws ApiException {
+        return intraVirtualBankAccount.getAllStoreVirtualBankAccounts(intraTokenService.getAuthToken());
     }
 
-    public List<VirtualBankAccount> getStoreVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws ApiException {
-        return intraVirtualBankAccount.getStoreVirtualBankAccounts(intraTokenService.getAuthToken(), req);
+    // 특정 상점의 가상계좌 조회 (폐점 제외)
+    public List<StoreVirtualBankAccount> getVirtualBankAccountsByStoreIds(GetStoreVirtualBankAccountsRequest req) throws ApiException {
+        return intraVirtualBankAccount.getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
     }
+
+    // 모든 본사의 가상계좌 조회
+    public List<BusinessClientVirtualBankAccount> getAllBusinessClientVirtualBankAccounts() throws ApiException {
+        return intraVirtualBankAccount.getAllBusinessClientVirtualBankAccounts(intraTokenService.getAuthToken());
+    }
+
+    // 특정 본사의 가상계좌 조회
+    public List<BusinessClientVirtualBankAccount> getVirtualBankAccountsByBusinessClientIds(GetBusinessClientVirtualBankAccountsRequest req) throws ApiException {
+        return intraVirtualBankAccount.getVirtualBankAccountsByBusinessClientIds(intraTokenService.getAuthToken(), req);
+    }
+
 }

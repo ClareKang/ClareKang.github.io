@@ -1,5 +1,6 @@
 package net.meshkorea.mcp.api.controller.business;
 
+import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.service.business.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class ClientController {
      * @param enterpriseName
      * @param enterpriseNumber
      * @param enterprisePhone
+     * @param virtualBankAccount
      * @param page
      * @param size
      * @return
@@ -41,17 +43,21 @@ public class ClientController {
                                                           String enterpriseName,
                                                           String enterpriseNumber,
                                                           String enterprisePhone,
+                                                          String virtualBankAccount,
+                                                          Boolean pointAccountIsUsed,
                                                           Integer page,
                                                           Integer size) throws Exception {
         return clientService.listBusinessClients(
-            clientType,
-            clientName,
-            clientAddress,
-            enterpriseName,
-            enterpriseNumber,
-            enterprisePhone,
-            page,
-            size
+                clientType,
+                clientName,
+                clientAddress,
+                enterpriseName,
+                enterpriseNumber,
+                enterprisePhone,
+                virtualBankAccount,
+                pointAccountIsUsed,
+                page,
+                size
         );
     }
 
@@ -107,10 +113,23 @@ public class ClientController {
                                                     @RequestParam(required = false) MultipartFile enterpriseRegistrationCopy,
                                                     @RequestParam(required = false) MultipartFile bankAccountCopy,
                                                     @RequestParam(required = false) MultipartFile ceoIdCardCopy) throws Exception {
-        return clientService.updateBusinessClientFiles(id,
-            enterpriseRegistrationCopy,
-            bankAccountCopy,
-            ceoIdCardCopy);
+        return clientService.updateBusinessClientFiles(
+                id,
+                enterpriseRegistrationCopy,
+                bankAccountCopy,
+                ceoIdCardCopy);
+    }
+
+    // 본사(business owner)에 속한 상점 목록
+    @GetMapping("/{clientId}/stores")
+    public StoreListByBusinessClientId getStoreListByBusinessClientId(@PathVariable Integer clientId) throws ApiException {
+        return clientService.getStoreListByBusinessClientId(clientId);
+    }
+
+    // 본사 가상계좌 조회
+    @GetMapping("/{clientId}/virtual_bank_accounts")
+    public BusinessClientVirtualBankAccount getBusinessClientVirtualBankAccount(@PathVariable Integer clientId) throws ApiException {
+        return clientService.getBusinessClientVirtualBankAccount(clientId);
     }
 
 }
