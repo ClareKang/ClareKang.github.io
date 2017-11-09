@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class SubscriptionController {
 
     // 상점별 가맹비 목록 조회
     @GetMapping(value = "/subscriptions/by_store")
-    public ResponseEntity getSubscriptionListByStore(
+    public ResponseEntity<SubscriptionList> getSubscriptionListByStore(
             String term,
             String all,
             String storeName,
@@ -37,6 +38,7 @@ public class SubscriptionController {
             Integer storeManagementDepartmentId,
             String managerName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws Exception {
@@ -54,6 +56,7 @@ public class SubscriptionController {
                 storeManagementDepartmentId,
                 managerName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -61,7 +64,7 @@ public class SubscriptionController {
 
     // 상점의 월별 가맹비 목록
     @GetMapping(value = "/subscriptions/by_month")
-    public ResponseEntity getSubscriptionListByMonth(
+    public ResponseEntity<SubscriptionList> getSubscriptionListByMonth(
             String from,
             String to,
             String all,
@@ -71,6 +74,7 @@ public class SubscriptionController {
             String storePhone,
             String ceoName,
             String fulfilled,
+            String pointAccountIsUsed,
             Integer page,
             Integer size
     ) throws ApiException {
@@ -84,6 +88,7 @@ public class SubscriptionController {
                 storePhone,
                 ceoName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
@@ -104,11 +109,12 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer storeManagementDepartmentId,
             @RequestParam(required = false) String managerName,
             @RequestParam(required = false) String fulfilled,
+            @RequestParam(required = false) String pointAccountIsUsed,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        ResponseEntity list = subscriptionService.getSubscriptionListByStore(
+        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByStore(
                 term,
                 all,
                 storeName,
@@ -122,14 +128,19 @@ public class SubscriptionController {
                 storeManagementDepartmentId,
                 managerName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
 
-        SubscriptionList subscriptionList = (SubscriptionList) list.getBody();
+        SubscriptionList subcriptionList = new SubscriptionList();
+
+        for( Subscription subscription : list.getBody().getData() ) {
+            subcriptionList.addDataItem(subscription);
+        }
 
         List<String> headers = subscriptionService.excelSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelSubscriptionBodies(subscriptionList);
+        List<List<String>> body = subscriptionService.excelSubscriptionBodies(subcriptionList);
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, body);
@@ -149,11 +160,12 @@ public class SubscriptionController {
             @RequestParam(required = false) String storePhone,
             @RequestParam(required = false) String ceoName,
             @RequestParam(required = false) String fulfilled,
+            @RequestParam(required = false) String pointAccountIsUsed,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        ResponseEntity list = subscriptionService.getSubscriptionListByMonth(
+        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByMonth(
                 from,
                 to,
                 all,
@@ -163,14 +175,19 @@ public class SubscriptionController {
                 storePhone,
                 ceoName,
                 fulfilled,
+                pointAccountIsUsed,
                 page,
                 size
         );
 
-        SubscriptionList subscriptionList = (SubscriptionList) list.getBody();
+        SubscriptionList subcriptionList = new SubscriptionList();
+
+        for( Subscription subscription : list.getBody().getData() ) {
+            subcriptionList.addDataItem(subscription);
+        }
 
         List<String> headers = subscriptionService.excelStoreSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(subscriptionList);
+        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(subcriptionList);
 
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelStoreSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);

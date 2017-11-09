@@ -55,7 +55,10 @@ public class StoreService {
         List<String> result = new ArrayList<>();
         result.add("상점 id(#)");
         result.add("상점명");
-        result.add("본사명");
+        result.add("본사(정산대상) id(#)");
+        result.add("본사(정산대상)");
+        result.add("본사(프랜차이즈) id(#)");
+        result.add("본사(프랜차이즈)");
         result.add("기업/개별상점");
         result.add("운영상태");
         result.add("상점전화번호");
@@ -104,6 +107,7 @@ public class StoreService {
 
         HashMap<String, String> pricingTypeMap = new HashMap<>();
         HashMap<Integer, String> partnerMap = new HashMap<>();
+
         for( VroongServicePricingType pricingType : pricingTypes ) {
             pricingTypeMap.put(pricingType.getDeliveryClass(), pricingType.getName());
         }
@@ -119,17 +123,20 @@ public class StoreService {
         });
         GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
         req.setStoreIds(storeIds);
-        List<VirtualBankAccount> virtualBankAccounts = listVirtualBankAccounts(req);
+        List<StoreVirtualBankAccount> virtualBankAccounts = listVirtualBankAccountByStoreIds(req);
 
-        HashMap<Integer, VirtualBankAccount> virtualBankAccountMap = new HashMap<>();
-        for( VirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
-            virtualBankAccountMap.put(virtualBankAccount.getMeshAccountNumber(), virtualBankAccount);
+        HashMap<Integer, StoreVirtualBankAccount> virtualBankMap = new HashMap<>();
+        for( StoreVirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
+            virtualBankMap.put(virtualBankAccount.getStoreId(), virtualBankAccount);
         }
 
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getId().toString());
             row.add(item.getStoreName());
+            row.add(item.getBusinessOwnerId().toString());
+            row.add(item.getBusinessOwner().getClientName());
+            row.add(item.getFranchiseId().toString());
             row.add(item.getFranchise().getClientName());
             row.add(item.getStoreType());
             row.add(getOperationStatus(item));
@@ -153,7 +160,7 @@ public class StoreService {
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode());
+            row.add(item.getDuzonCode().toString());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -176,9 +183,9 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
-            VirtualBankAccount virtualBankAccount = virtualBankAccountMap.get(item.getMeshAccountNumber());
+            StoreVirtualBankAccount virtualBankAccount = virtualBankMap.get(item.getId());
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
-            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName(): "");
+            row.add(virtualBankAccount != null ? virtualBankAccount.getBankName() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
 
             result.add(row);
@@ -216,8 +223,6 @@ public class StoreService {
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
                 break;
-            default:
-                break;
         }
         return returnStatus;
     }
@@ -242,8 +247,8 @@ public class StoreService {
         return intraStoresApi.listVroongServicePricingTypes(intraTokenService.getAuthToken());
     }
 
-    public List<VirtualBankAccount> listVirtualBankAccounts(GetStoreVirtualBankAccountsRequest req) throws Exception {
-        return intraVirtualBankAccount.getStoreVirtualBankAccounts(intraTokenService.getAuthToken(), req);
+    public List<StoreVirtualBankAccount> listVirtualBankAccountByStoreIds(GetStoreVirtualBankAccountsRequest req) throws Exception {
+        return intraVirtualBankAccount.getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
@@ -273,7 +278,7 @@ public class StoreService {
     public ResponseEntity updateStore(String id, StoreRequest store) throws Exception {
         try {
             CancelPricingPolicy cancelPricingPolicy = store.getCancelPricingPolicy();
-            if(cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
+            if (cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
                 cancelPricingPolicy.setNullSerialize(true);
             }
             return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
@@ -320,7 +325,7 @@ public class StoreService {
         return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
-    public VirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
+    public StoreVirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
         return intraStoresApi.getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
     }
 
