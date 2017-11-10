@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "claim_code")
-public class ClaimCode {
+public class Claim2Code {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "claim_code_no")

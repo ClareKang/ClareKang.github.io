@@ -1,10 +1,10 @@
 package net.meshkorea.mcp.api.service.claim2;
 
-import net.meshkorea.mcp.api.domain.entity.claim2.ClaimCode;
-import net.meshkorea.mcp.api.domain.model.claim2.ClaimCodeRequest;
-import net.meshkorea.mcp.api.domain.model.claim2.ClaimType;
+import net.meshkorea.mcp.api.domain.entity.claim2.Claim2Code;
+import net.meshkorea.mcp.api.domain.model.claim2.Claim2CodeRequest;
+import net.meshkorea.mcp.api.domain.model.claim2.Claim2Type;
 import net.meshkorea.mcp.api.domain.model.database.Yn;
-import net.meshkorea.mcp.api.domain.repository.ClaimCodeRepository;
+import net.meshkorea.mcp.api.domain.repository.Claim2CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ClaimCodeService {
+public class Claim2CodeService {
 
     @Autowired
-    private ClaimCodeRepository claimCodeRepository;
+    private Claim2CodeRepository claimCodeRepository;
 
-    public ClaimCode addClaimCode(ClaimCodeRequest.AddClaimCode req) {
-        ClaimCode claimCode = new ClaimCode();
+    public Claim2Code addClaimCode(Claim2CodeRequest.AddClaimCode req) {
+        Claim2Code claimCode = new Claim2Code();
 
         claimCode.setIssueDt(new Date());
         claimCode.setIssuer(req.getEmail());
@@ -37,8 +37,8 @@ public class ClaimCodeService {
         return claimCodeRepository.save(claimCode);
     }
 
-    public ClaimCode modifyClaimCode(ClaimCodeRequest.ModifyClaimCode req) {
-        ClaimCode claimCode = claimCodeRepository.findOne(req.getClaimCodeNo());
+    public Claim2Code modifyClaimCode(Claim2CodeRequest.ModifyClaimCode req) {
+        Claim2Code claimCode = claimCodeRepository.findOne(req.getClaimCodeNo());
 
         claimCode.setIssueDt(new Date());
         claimCode.setIssuer(req.getEmail());
@@ -55,7 +55,7 @@ public class ClaimCodeService {
         return claimCodeRepository.save(claimCode);
     }
 
-    public List<ClaimCode> getClaimCodeList(ClaimType claimType, Yn useYn, Sort sort) {
+    public List<Claim2Code> getClaimCodeList(Claim2Type claimType, Yn useYn, Sort sort) {
 
         switch (claimType) {
             case ORDER_CANCEL:
@@ -77,7 +77,7 @@ public class ClaimCodeService {
         return claimCodeRepository.findAll(sort);
     }
 
-    public List<ClaimCode> getClaimCodeList(Sort sort) {
+    public List<Claim2Code> getClaimCodeList(Sort sort) {
         return claimCodeRepository.findAll(sort);
     }
 }

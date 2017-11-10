@@ -6,7 +6,7 @@ import net.meshkorea.mcp.api.domain.model.database.Yn;
 
 import javax.validation.constraints.NotNull;
 
-public class ClaimCodeRequest {
+public class Claim2CodeRequest {
 
     @Data
     public static class AddClaimCode {

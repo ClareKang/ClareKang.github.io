@@ -12,7 +12,7 @@ package net.meshkorea.mcp.api.domain.model.claim2;
  * </pre>
  *
  */
-public enum ClaimType {
+public enum Claim2Type {
     ORDER_CANCEL,   // 오더취소
     OVERLOAD,       // 과적
     RETURN,         // 반납
