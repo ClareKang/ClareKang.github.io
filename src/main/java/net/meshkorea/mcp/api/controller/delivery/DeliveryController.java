@@ -1,13 +1,15 @@
 package net.meshkorea.mcp.api.controller.delivery;
 
 import com.meshprime.api.client.ApiException;
-import com.meshprime.api.client.model.*;
+import com.meshprime.api.client.model.ChangeDestAddressRequest;
+import com.meshprime.api.client.model.DeliveryList;
+import com.meshprime.api.client.model.EstimatedShippingInfoRequest;
 import net.meshkorea.mcp.api.service.delivery.DeliveryService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,8 @@ public class DeliveryController {
         return deliveryService.findDeliveies(search_param, search_query, order_by, preset, start_date, end_date, statuses, size, page);
     }
 
-    @RequestMapping(value = "/v1/intra/delivery_quotes", method = RequestMethod.POST)
-    public EstimatedShippingInfoResponse getEstimatedShippingInfo(@RequestBody EstimatedShippingInfoRequest req) throws ApiException {
+    @RequestMapping(value = "/v1/intra/delivery_quotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getEstimatedShippingInfo(@RequestBody EstimatedShippingInfoRequest req) throws ApiException {
         // "DEST_ADDRESS" | "ORIGIN_ADDRESS"
         if (StringUtils.equals(req.getAddressContext(), "DEST_ADDRESS")
                 && req.getDestAddress() == null) {
@@ -50,25 +52,26 @@ public class DeliveryController {
             throw new ApiException("origin_address is required.");
         }
 
-        return deliveryService.getEstimatedShippingInfo(req);
+        try {
+            return ResponseEntity.ok(deliveryService.getEstimatedShippingInfo(req));
+        } catch (ApiException primeApiException) {
+            return ResponseEntity.badRequest().body(primeApiException.getResponseBody());
+        }
     }
 
-    @RequestMapping(value = "/v1/intra/deliveries/origin_address", method = RequestMethod.PUT)
-    public ResponseEntity changeOriginAddress(@RequestBody ChangeOriginAddressRequest req) throws ApiException {
-        deliveryService.changeOriginAddress(req);
-
-        HashMap result = new HashMap();
-        result.put("success", true);
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/v1/intra/deliveries/dest_address", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v1/intra/deliveries/dest_address", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity changeDestAddress(@RequestBody ChangeDestAddressRequest req) throws ApiException {
-        deliveryService.changeDestAddress(req);
 
-        HashMap result = new HashMap();
-        result.put("success", true);
-        return new ResponseEntity(result, HttpStatus.OK);
+        try {
+            deliveryService.changeDestAddress(req);
+
+            HashMap result = new HashMap();
+            result.put("success", true);
+            return ResponseEntity.ok(result);
+
+        } catch (ApiException primeApiException) {
+            return ResponseEntity.badRequest().body(primeApiException.getResponseBody());
+        }
     }
 
 }

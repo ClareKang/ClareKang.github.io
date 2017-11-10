@@ -27,10 +27,6 @@ public class DeliveryService {
         return intraDeliveriesApi.getEstimatedShippingInfo(intraTokenService.getAuthToken(), body);
     }
 
-    public void changeOriginAddress(ChangeOriginAddressRequest body) throws ApiException {
-        intraDeliveriesApi.changeOriginAddress(intraTokenService.getAuthToken(), body);
-    }
-
     public void changeDestAddress(ChangeDestAddressRequest body) throws ApiException {
         intraDeliveriesApi.changeDestAddress(intraTokenService.getAuthToken(), body);
     }
