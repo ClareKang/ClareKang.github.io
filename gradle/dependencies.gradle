@@ -20,9 +20,9 @@ ext {
     poiVersion = '3.16'
     lombokVersion = '1.16.18'
 
-    vroongApiClientVersion = '1.0.0-SNAPSHOT'
+    vroongApiClientVersion = '1.0.1-SNAPSHOT'
     vroongAdminApiClientVersion = '1.0.0-SNAPSHOT'
-    primeApiClientVersion = '1.1.4-SNAPSHOT'
+    primeApiClientVersion = '1.1.5-SNAPSHOT'
 
     repoUser = project.hasProperty('repoUser') ? project.getProperty('repoUser') : ''
     repoPass = project.hasProperty('repoPass') ? project.getProperty('repoPass') : ''

@@ -7,7 +7,7 @@ spring:
 vroong:
   lastmile:
     api:
-      baseUrl: https://qa.api-v2.vroong.com
+      baseUrl: https://demo.api-v2.vroong.com
       authUrl: /oauth/token
       userId: mesh.platform
       password: pA9GfROKVfRth39a

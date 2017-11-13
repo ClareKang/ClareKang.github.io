@@ -180,6 +180,26 @@ CREATE TABLE `share_memo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+--
+-- Table structure for table `claim_code`
+--
+CREATE TABLE `claim_code` (
+  `claim_code_no` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '클레임 코드 관리 번호',
+  `claim_code_name` varchar(45) NOT NULL COMMENT '클레임 코드 이름',
+  `order_cancel_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '오더취소 유형 사용유무',
+  `overload_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '과적 유형 사용유무',
+  `return_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '반납 유형 사용유무',
+  `retry_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '재이동 유형 사용유무',
+  `address_change_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '주소변경 유형 사용유무',
+  `phone_payment_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '전화결제 유형 사용유무',
+  `damege_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '손해배상 유형 사용유무',
+  `use_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '클레임 코드 사용유무',
+  `issuer` varchar(50) NOT NULL COMMENT '발행인(이메일)',
+  `issue_dt` datetime NOT NULL COMMENT '변경일',
+  PRIMARY KEY (`claim_code_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
