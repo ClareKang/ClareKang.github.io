@@ -20,7 +20,7 @@ ext {
     poiVersion = '3.16'
     lombokVersion = '1.16.18'
 
-    vroongApiClientVersion = '1.0.1-SNAPSHOT'
+    vroongApiClientVersion = '1.0.2-SNAPSHOT'
     vroongAdminApiClientVersion = '1.0.0-SNAPSHOT'
     primeApiClientVersion = '1.1.5-SNAPSHOT'
 
