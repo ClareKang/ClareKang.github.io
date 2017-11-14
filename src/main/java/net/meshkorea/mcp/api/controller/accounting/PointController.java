@@ -3,16 +3,14 @@ package net.meshkorea.mcp.api.controller.accounting;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
-import net.meshkorea.mcp.api.domain.model.store.CheckStoreName;
 import net.meshkorea.mcp.api.service.accounting.PointService;
 import net.meshkorea.mcp.api.service.business.VirtualBankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -76,7 +74,7 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
+        PointHistoryList list = pointService.getPointHistoryForExcel(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
         List<String> headers = pointService.excelPointHistoryHeader();
         List<List<String>> body = pointService.excelPointHistoryBodies(list);
 
@@ -131,7 +129,7 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAccountList list = pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+        PointAccountList list = pointService.getPointAccountForExcel(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
         setExternalInformationInPointAccount(list.getData());
         List<String> headers = pointService.excelPointAccountHeader();
         List<List<String>> body = pointService.excelPointAccountBodies(list);
@@ -178,7 +176,7 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAdjustmentList list = pointService.getPointAdjustment(from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+        PointAdjustmentList list = pointService.getPointAdjustmentForExcel(from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
         List<String> headers = pointService.excelPointAdjustmentHeader();
         List<List<String>> body = pointService.excelPointAdjustmentBodies(list);
 

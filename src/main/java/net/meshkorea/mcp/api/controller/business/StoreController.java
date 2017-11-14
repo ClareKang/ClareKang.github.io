@@ -2,6 +2,7 @@ package net.meshkorea.mcp.api.controller.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import lombok.RequiredArgsConstructor;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.domain.model.store.CheckStoreName;
 import net.meshkorea.mcp.api.service.business.StoreService;
@@ -17,10 +18,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/v1/intra")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired)) // 필수 fields 를 포함하는 생성자를 만들면서 @__ 안에 들어있는 Annotation 을 붙임
 public class StoreController {
 
-    @Autowired
-    StoreService storeService;
+    private final StoreService storeService;
 
     @RequestMapping(value = "/store_management_departments/list", method = RequestMethod.GET)
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
@@ -32,9 +33,10 @@ public class StoreController {
                                    String storeName, String clientName, String storePhone, String storeAddress,
                                    String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
                                    Integer size, Integer page) throws Exception {
+
         return storeService.listStores(storeType, storeCertificationStatus,
-                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
-                storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
+            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
+            storeManagementDepartmentId, vroongMonitoringPartnerId, size, page);
     }
 
     @GetMapping(path = "/store/excel")
@@ -51,9 +53,11 @@ public class StoreController {
                                                  @RequestParam(required = false) Integer size,
                                                  @RequestParam(required = false) Integer page,
                                                  ModelAndView mav) throws Exception {
-        List<Store> list = storeService.listStores(storeType, storeCertificationStatus,
-                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
-                storeManagementDepartmentId, vroongMonitoringPartnerId, size, page).getData();
+
+        List<Store> list = storeService.getStoresForExcel(storeType, storeCertificationStatus,
+            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag,
+            storeManagementDepartmentId, vroongMonitoringPartnerId, size, page).getData();
+
         List<String> headers = storeService.excelHeader();
         List<List<String>> body = storeService.excelBodies(list);
 
@@ -67,8 +71,7 @@ public class StoreController {
 
     @RequestMapping(value = "/stores/list", method = RequestMethod.GET)
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
-                                        String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId
-    ) throws ApiException {
+                                        String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException {
         return storeService.getStoreList(storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 
@@ -100,13 +103,11 @@ public class StoreController {
     @RequestMapping(value = "/stores/franchise_individual", method = RequestMethod.POST)
     public StoreResponse createFranchiseIndividualStore(@RequestBody CreateFranchiseIndividualStoreRequest req) throws Exception {
         return storeService.createFranchiseIndividualStore(req);
-        //return new CreateFranchiseIndividualStoreRequest();
     }
 
     @RequestMapping(value = "/stores/franchise_corporate", method = RequestMethod.POST)
     public StoreResponse createFranchiseCorporateStore(@RequestBody CreateFranchiseCorporateStoreRequest req) throws Exception {
         return storeService.createFranchiseCorporateStore(req);
-        //return new CreateFranchiseCorporateStoreRequest();
     }
 
     @RequestMapping(value = "/stores/store_users/check", method = RequestMethod.POST)

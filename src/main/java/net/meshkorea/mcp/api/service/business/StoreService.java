@@ -2,8 +2,10 @@ package net.meshkorea.mcp.api.service.business;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import com.meshprime.common.constant.IntraApiTypeEnum;
 import com.meshprime.intra.api.*;
 import com.meshprime.intra.service.auth.IntraTokenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,37 +20,43 @@ import java.util.List;
  * Created by chaelee on 2017. 3. 23..
  */
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StoreService {
 
-    @Autowired
-    IntraTokenService intraTokenService;
+    private final IntraTokenService intraTokenService;
 
-    @Autowired
-    IntraStoresApi intraStoresApi;
+    private final IntraStoresApiFactory intraStoresApiFactory;
 
-    @Autowired
-    IntraBusinessClientsApi intraBusinessClientsApi;
+    private final IntraBusinessClientsApi intraBusinessClientsApi;
 
-    @Autowired
-    IntraRegionsApi intraRegionsApi;
+    private final IntraRegionsApi intraRegionsApi;
 
-    @Autowired
-    IntraDeliveriesApi intraDeliveriesApi;
+    private final IntraDeliveriesApi intraDeliveriesApi;
 
-    @Autowired
-    IntraVirtualBankAccount intraVirtualBankAccount;
+    private final IntraVirtualBankAccount intraVirtualBankAccount;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
-        return intraStoresApi.getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
     }
 
     public StoresResult listStores(String storeType, String storeCertificationStatus, String storeOperatingStatus,
                                    String storeName, String clientName, String storePhone, String storeAddress,
                                    String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
                                    Integer size, Integer page) throws Exception {
-        return intraStoresApi.listStores(intraTokenService.getAuthToken(), storeType, storeCertificationStatus,
-                storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
-                vroongMonitoringPartnerId, size, page);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).listStores(
+            intraTokenService.getAuthToken(), storeType, storeCertificationStatus,
+            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
+            vroongMonitoringPartnerId, size, page);
+    }
+
+    public StoresResult getStoresForExcel(String storeType, String storeCertificationStatus, String storeOperatingStatus,
+                                          String storeName, String clientName, String storePhone, String storeAddress,
+                                          String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId,
+                                          Integer size, Integer page) throws Exception {
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).listStores(
+            intraTokenService.getAuthToken(), storeType, storeCertificationStatus,
+            storeOperatingStatus, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId,
+            vroongMonitoringPartnerId, size, page);
     }
 
     public List<String> excelHeader() {
@@ -108,11 +116,11 @@ public class StoreService {
         HashMap<String, String> pricingTypeMap = new HashMap<>();
         HashMap<Integer, String> partnerMap = new HashMap<>();
 
-        for( VroongServicePricingType pricingType : pricingTypes ) {
+        for (VroongServicePricingType pricingType : pricingTypes) {
             pricingTypeMap.put(pricingType.getDeliveryClass(), pricingType.getName());
         }
 
-        for( VroongPartner partner : partners ) {
+        for (VroongPartner partner : partners) {
             partnerMap.put(partner.getId(), partner.getName());
         }
 
@@ -126,7 +134,7 @@ public class StoreService {
         List<StoreVirtualBankAccount> virtualBankAccounts = listVirtualBankAccountByStoreIds(req);
 
         HashMap<Integer, StoreVirtualBankAccount> virtualBankMap = new HashMap<>();
-        for( StoreVirtualBankAccount virtualBankAccount : virtualBankAccounts ) {
+        for (StoreVirtualBankAccount virtualBankAccount : virtualBankAccounts) {
             virtualBankMap.put(virtualBankAccount.getStoreId(), virtualBankAccount);
         }
 
@@ -236,7 +244,7 @@ public class StoreService {
     }
 
     public List<MonitoringPartner> listPartners() throws Exception {
-        return intraStoresApi.listMonitoringPartners(intraTokenService.getAuthToken());
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).listMonitoringPartners(intraTokenService.getAuthToken());
     }
 
     public List<BusinessClientShort> getBusinessClientList(String clientType) throws Exception {
@@ -244,7 +252,7 @@ public class StoreService {
     }
 
     public List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
-        return intraStoresApi.listVroongServicePricingTypes(intraTokenService.getAuthToken());
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).listVroongServicePricingTypes(intraTokenService.getAuthToken());
     }
 
     public List<StoreVirtualBankAccount> listVirtualBankAccountByStoreIds(GetStoreVirtualBankAccountsRequest req) throws Exception {
@@ -252,27 +260,27 @@ public class StoreService {
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
-        return intraStoresApi.salesDepartments(intraTokenService.getAuthToken());
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).salesDepartments(intraTokenService.getAuthToken());
     }
 
     public StoreResponse createIndividualStore(CreateIndividualStoreRequest req) throws Exception {
-        return intraStoresApi.createIndividualStore(intraTokenService.getAuthToken(), req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).createIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
     public StoreResponse createFranchiseIndividualStore(CreateFranchiseIndividualStoreRequest req) throws Exception {
-        return intraStoresApi.createFranchiseIndividualStore(intraTokenService.getAuthToken(), req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).createFranchiseIndividualStore(intraTokenService.getAuthToken(), req);
     }
 
     public StoreResponse createFranchiseCorporateStore(CreateFranchiseCorporateStoreRequest req) throws Exception {
-        return intraStoresApi.createFranchiseCorporateStore(intraTokenService.getAuthToken(), req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).createFranchiseCorporateStore(intraTokenService.getAuthToken(), req);
     }
 
     public Boolean checkStoreUserExists(CheckStoreUsersRequest req) throws Exception {
-        return intraStoresApi.checkStoreUserExists(intraTokenService.getAuthToken(), req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).checkStoreUserExists(intraTokenService.getAuthToken(), req);
     }
 
     public Store getStore(String id) throws Exception {
-        return intraStoresApi.getStore(intraTokenService.getAuthToken(), id);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStore(intraTokenService.getAuthToken(), id);
     }
 
     public ResponseEntity updateStore(String id, StoreRequest store) throws Exception {
@@ -281,7 +289,7 @@ public class StoreService {
             if (cancelPricingPolicy.getAssigned() == null && cancelPricingPolicy.getPickedUp() == null && cancelPricingPolicy.getSubmitted() == null) {
                 cancelPricingPolicy.setNullSerialize(true);
             }
-            return ResponseEntity.ok(intraStoresApi.updateStore(intraTokenService.getAuthToken(), id, store));
+            return ResponseEntity.ok(this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStore(intraTokenService.getAuthToken(), id, store));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
@@ -289,12 +297,11 @@ public class StoreService {
 
     public List<StoreList> getStoreList(String storeType, String storeName, String clientName, String storePhone, String storeAddress,
                                         String tag, Integer storeManagementDepartmentId, Integer vroongMonitoringPartnerId) throws ApiException {
-        return intraStoresApi.getStoreList(intraTokenService.getAuthToken(), storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreList(intraTokenService.getAuthToken(), storeType, storeName, clientName, storePhone, storeAddress, tag, storeManagementDepartmentId, vroongMonitoringPartnerId);
     }
 
     public UpdatePricingPolicyResponse updateStorePricingPolicy(Integer id, PricingPolicy pricingPolicy) throws ApiException {
-        return intraStoresApi.updateStorePricingPolicy(intraTokenService.getAuthToken(), id.toString(), pricingPolicy);
-        // return new PricingPolicy();
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStorePricingPolicy(intraTokenService.getAuthToken(), id.toString(), pricingPolicy);
     }
 
     public List<Regions> getDetailRegions(String detail) throws ApiException {
@@ -302,58 +309,55 @@ public class StoreService {
     }
 
     public List<Regions> updateStoreRegions(Integer id, UpdateStoreRegionsRequest req) throws ApiException {
-        return intraStoresApi.updateStoreRegions(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStoreRegions(intraTokenService.getAuthToken(), id, req);
     }
 
     public SubscriptionPlan updateSubscriptionPlan(String id, SubscriptionPlan req) throws ApiException {
-        return intraStoresApi.updateSubscriptionsPlan(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateSubscriptionsPlan(intraTokenService.getAuthToken(), id, req);
     }
 
     public Store updateAdminMemo(String id, AdminMemoRequest req) throws ApiException {
-        return intraStoresApi.addStoreAdminMemo(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).addStoreAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 
     public BranchCodesResponse createBranchCode(String id, CreateApiBranchCodeRequest req) throws ApiException {
-        return intraStoresApi.createStoreBranchCode(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).createStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
     public BranchCodesResponse getBranchCode(String id) throws ApiException {
-        return intraStoresApi.getStoreBranchCode(intraTokenService.getAuthToken(), id);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreBranchCode(intraTokenService.getAuthToken(), id);
     }
 
     public BranchCodesResponse updateBranchCode(String id, UpdateApiBranchCodeRequest req) throws ApiException {
-        return intraStoresApi.updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStoreBranchCode(intraTokenService.getAuthToken(), id, req);
     }
 
     public StoreVirtualBankAccount getStoreVirtualBankAccount(String id) throws ApiException {
-        return intraStoresApi.getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreVirtualBankAccount(intraTokenService.getAuthToken(), id);
     }
 
     public ResponseEntity updateStoreCertificationStatus(String id, ChangeStoreCertificationStatusRequest req) throws ApiException {
         try {
-            return ResponseEntity.ok(intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req));
-            // return intraStoresApi.changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req);
+            return ResponseEntity.ok(this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).changeStoreCertificationStatus(intraTokenService.getAuthToken(), id, req));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
-
     }
 
     public ResponseEntity updateStoreOperatingStatus(String id, ChangeStoreOperatingStatusRequest req) throws ApiException {
         try {
-            return ResponseEntity.ok(intraStoresApi.changeStoreOperatingStatus(intraTokenService.getAuthToken(), id, req));
+            return ResponseEntity.ok(this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).changeStoreOperatingStatus(intraTokenService.getAuthToken(), id, req));
         } catch (ApiException e) {
             return ResponseEntity.badRequest().body(e.getResponseBody());
         }
-
     }
 
     public Store addSubscriptionAdminMemo(String id, SubscriptionAdminMemo req) throws ApiException {
-        return intraStoresApi.addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).addSubscriptionAdminMemo(intraTokenService.getAuthToken(), id, req);
     }
 
     // 상점 첫 달 가맹비 미리보기
     public StoreSubscriptionPlanPreview getStoreSubscriptionPlanPreview(String id, String startAt, Integer baseFee) throws ApiException {
-        return intraStoresApi.getStoreSubscriptionPlanPreview(intraTokenService.getAuthToken(), id, startAt, baseFee);
+        return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreSubscriptionPlanPreview(intraTokenService.getAuthToken(), id, startAt, baseFee);
     }
 }

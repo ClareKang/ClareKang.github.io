@@ -2,10 +2,11 @@ package net.meshkorea.mcp.api.service.accounting;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
-import com.meshprime.intra.api.IntraStoresApi;
-import com.meshprime.intra.service.auth.IntraTokenService;
-import com.meshprime.intra.api.IntraSubscriptionApi;
+import com.meshprime.common.constant.IntraApiTypeEnum;
 import com.meshprime.intra.api.IntraDeliveriesApi;
+import com.meshprime.intra.api.IntraSubscriptionApiFactory;
+import com.meshprime.intra.service.auth.IntraTokenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,14 @@ import java.util.List;
  * Created by clarekang on 2017. 8. 21..
  */
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SubscriptionService {
 
-    @Autowired
-    IntraTokenService intraTokenService;
+    private final IntraTokenService intraTokenService;
 
-    @Autowired
-    IntraSubscriptionApi intraSubscriptionApi;
+    private final IntraSubscriptionApiFactory intraSubscriptionApiFactory;
 
-    @Autowired
-    IntraDeliveriesApi intraDeliveriesApi;
+    private final IntraDeliveriesApi intraDeliveriesApi;
 
     public List<VroongPartner> listVroongPartners() throws ApiException {
         return intraDeliveriesApi.getVroongPartners(intraTokenService.getAuthToken());
@@ -54,7 +53,7 @@ public class SubscriptionService {
             Integer size
     ) throws ApiException {
         try {
-            return ResponseEntity.ok(intraSubscriptionApi.getSubscriptionListByStore(
+            return ResponseEntity.ok(intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getSubscriptionListByStore(
                     intraTokenService.getAuthToken(),
                     term,
                     all,
@@ -96,7 +95,7 @@ public class SubscriptionService {
             Integer page,
             Integer size
     ) throws ApiException {
-        return intraSubscriptionApi.getSubscriptionListByStore(
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getSubscriptionListByStore(
                 intraTokenService.getAuthToken(),
                 term,
                 all,
@@ -132,7 +131,7 @@ public class SubscriptionService {
             Integer size
     ) throws ApiException {
         try {
-            return ResponseEntity.ok(intraSubscriptionApi.getSubscriptionListByMonth(
+            return ResponseEntity.ok(intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getSubscriptionListByMonth(
                     intraTokenService.getAuthToken(),
                     from,
                     to,
@@ -166,7 +165,7 @@ public class SubscriptionService {
             Integer page,
             Integer size
     ) throws ApiException {
-        return intraSubscriptionApi.getSubscriptionListByMonth(
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getSubscriptionListByMonth(
                 intraTokenService.getAuthToken(),
                 from,
                 to,
@@ -189,7 +188,7 @@ public class SubscriptionService {
             Integer subscriptionId,
             UpdateStoreSubscriptionRequest req
     ) throws ApiException {
-        return intraSubscriptionApi.updateStoreSubscription(intraTokenService.getAuthToken(), storeId, subscriptionId, req);
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStoreSubscription(intraTokenService.getAuthToken(), storeId, subscriptionId, req);
     }
 
     // 상점 월가맹비 입금 취소 처리
@@ -197,7 +196,7 @@ public class SubscriptionService {
             Integer storeId,
             Integer subscriptionId
     ) throws ApiException {
-        return intraSubscriptionApi.deleteStoreSubscription(intraTokenService.getAuthToken(), storeId, subscriptionId);
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).deleteStoreSubscription(intraTokenService.getAuthToken(), storeId, subscriptionId);
     }
 
     // 상점 가맹비 잔액 내역 조회
@@ -206,7 +205,7 @@ public class SubscriptionService {
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraSubscriptionApi.getStoreDepositList(intraTokenService.getAuthToken(), id, size, page);
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreDepositList(intraTokenService.getAuthToken(), id, size, page);
     }
 
     // 상점 가맹비 잔액 변경
@@ -214,7 +213,7 @@ public class SubscriptionService {
             Integer id,
             UpdateStoreDepositRequest req
     ) throws ApiException {
-        return intraSubscriptionApi.updateStoreDeposit(intraTokenService.getAuthToken(), id, req);
+        return intraSubscriptionApiFactory.getApiClient(IntraApiTypeEnum.MAIN).updateStoreDeposit(intraTokenService.getAuthToken(), id, req);
     }
 
     // 가맹비 정보 엑셀 다운로드
