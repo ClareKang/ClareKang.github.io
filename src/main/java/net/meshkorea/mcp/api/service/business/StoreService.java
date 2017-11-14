@@ -71,7 +71,7 @@ public class StoreService {
         result.add("상점 API 점포코드");
         result.add("관제파트너");
         result.add("영업구분값");
-        result.add("관리조직");
+        result.add("관리구분");
         result.add("부릉 원가 요금제");
         result.add("고객전화번호 필수입력 여부");
         result.add("기사매입");
