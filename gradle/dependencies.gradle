@@ -31,7 +31,7 @@ ext {
 
     vroongApiClientVersion = '1.0.2-SNAPSHOT'
     vroongAdminApiClientVersion = '1.0.0-SNAPSHOT'
-    primeApiClientVersion = '1.1.6-SNAPSHOT'
+    primeApiClientVersion = '1.1.7-SNAPSHOT'
 
     repoUser = project.hasProperty('repoUser') ? project.getProperty('repoUser') : ''
     repoPass = project.hasProperty('repoPass') ? project.getProperty('repoPass') : ''
