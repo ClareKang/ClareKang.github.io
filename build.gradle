@@ -110,6 +110,8 @@ dependencies {
     compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 
     compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "commons-io:commons-io:${commonsIoVersion}"
 
     compile "com.auth0:java-jwt:${javaJwtVersion}"
 

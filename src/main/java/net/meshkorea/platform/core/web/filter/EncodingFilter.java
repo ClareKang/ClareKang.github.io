@@ -1,4 +1,4 @@
-package net.meshkorea.platform.core.web.config.filter;
+package net.meshkorea.platform.core.web.filter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

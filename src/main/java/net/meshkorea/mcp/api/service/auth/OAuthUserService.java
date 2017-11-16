@@ -8,15 +8,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by yjhan on 2017. 7. 9..
- */
 @Service
 public class OAuthUserService {
 
     public OAuthUser getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+        if (authentication == null) {
+            return new OAuthUser();
+        }
+        Object object = authentication.getDetails();
+        if (object == null) {
+            return new OAuthUser();
+        }
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) object;
 
         return getOAuthUserByToken(details.getTokenValue());
     }

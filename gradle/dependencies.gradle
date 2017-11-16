@@ -15,8 +15,10 @@ ext {
     javaJwtVersion = '3.3.0'
     aptPluginVersion = '0.13'
     poiVersion = '3.17'
-    commonsLang3Version = '3.7'
     mapstructVersion = '1.2.0.Final'
+
+    commonsLang3Version = '3.7'
+    commonsIoVersion = '2.6'
 
     lombokVersion = '1.16.18'
     lombokPluginVersion = '1.11'
