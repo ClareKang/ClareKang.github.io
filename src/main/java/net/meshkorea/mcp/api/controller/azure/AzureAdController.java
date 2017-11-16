@@ -14,7 +14,7 @@ import java.util.List;
  * Created by yjhan on 2017. 6. 24..
  */
 @RestController
-@RequestMapping(value = "/v1/auth/azureAd")
+@RequestMapping(value = "/v1/auth/azure-ad")
 public class AzureAdController {
 
     @Autowired

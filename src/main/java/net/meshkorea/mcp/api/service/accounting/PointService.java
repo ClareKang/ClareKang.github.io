@@ -2,11 +2,11 @@ package net.meshkorea.mcp.api.service.accounting;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
-import com.meshprime.intra.api.*;
+import com.meshprime.common.constant.IntraApiTypeEnum;
+import com.meshprime.intra.api.IntraPointApiFactory;
 import com.meshprime.intra.service.auth.IntraTokenService;
-import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,26 +18,26 @@ import java.util.List;
  * Created by clare on 9/13/17.
  */
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PointService {
-    @Autowired
-    IntraTokenService intraTokenService;
 
-    @Autowired
-    IntraPointApi intraPointApi;
+    private final IntraTokenService intraTokenService;
+
+    private final IntraPointApiFactory intraPointApiFactory;
 
     // 예치금 대분류 목록
     public List<PointCategory> getPointCategory() throws ApiException {
-        return intraPointApi.getPointCategory(intraTokenService.getAuthToken());
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointCategory(intraTokenService.getAuthToken());
     }
 
     // 예치금 소분류 목록
     public List<PointSubcategory> getPointSubcategory() throws ApiException {
-        return intraPointApi.getPointSubcategory(intraTokenService.getAuthToken());
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointSubcategory(intraTokenService.getAuthToken());
     }
 
     // 예치금 상태 목록
     public List<PointBalanceStatus> getPointBalanceStatus() throws ApiException {
-        return intraPointApi.getPointBalanceStatus(intraTokenService.getAuthToken());
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointBalanceStatus(intraTokenService.getAuthToken());
     }
 
     // 예치금 내역 목록 조회
@@ -51,7 +51,21 @@ public class PointService {
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, size, page);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, size, page);
+    }
+
+    // 예치금 내역 목록 엑셀
+    public PointHistoryList getPointHistoryForExcel(
+        String from,
+        String to,
+        String subcategory,
+        String searchKey,
+        String searchValue,
+        String isDebit,
+        Integer size,
+        Integer page
+    ) throws ApiException {
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, size, page);
     }
 
     // 예치금 내역 엑셀다운로드 ------------------------------------------
@@ -99,14 +113,14 @@ public class PointService {
 
     // 예치금 내역 조회
     public List<PointTransactionAmount> getPointTransactionAmounts(GetPointTransactionAmountsRequest req) throws ApiException {
-        return intraPointApi.getPointTransactionAmounts(intraTokenService.getAuthToken(), req);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointTransactionAmounts(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 충전 내역 조회
     public PointDeposit getPointDeposit(
             Integer pointTransactionId
     ) throws ApiException {
-        return intraPointApi.getPointDeposit(intraTokenService.getAuthToken(), pointTransactionId);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointDeposit(intraTokenService.getAuthToken(), pointTransactionId);
     }
 
     // 예치금 계좌 조회
@@ -120,7 +134,21 @@ public class PointService {
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+    }
+
+    // 예치금 계좌 조회 엑셀 다운로드
+    public PointAccountList getPointAccountForExcel(
+        String clientSearchKey,
+        String clientSearchValue,
+        String sortDirection,
+        String sortColumn,
+        Boolean pointAccountIsUsed,
+        String balanceStatusIds,
+        Integer size,
+        Integer page
+    ) throws ApiException {
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
     }
 
     // 예치금 계좌 엑셀다운로드 ------------------------------------------
@@ -164,7 +192,7 @@ public class PointService {
 
     // 예치금 잔액 조회
     public List<PointBalance> getPointBalance(GetPointBalanceRequest req) throws ApiException {
-        return intraPointApi.getPointBalance(intraTokenService.getAuthToken(), req);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointBalance(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 조정 내역 목록
@@ -178,7 +206,21 @@ public class PointService {
             Integer size,
             Integer page
     ) throws ApiException {
-        return intraPointApi.getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
+    }
+
+    // 예치금 조정 내역 엑셀
+    public PointAdjustmentList getPointAdjustmentForExcel(
+        String from,
+        String to,
+        String subcategory,
+        String adjustmentSearchKey,
+        String adjustmentSearchValue,
+        String isDebit,
+        Integer size,
+        Integer page
+    ) throws ApiException {
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
 
     // 예치금 조정 내역 엑셀다운로드 ------------------------------------------
@@ -226,22 +268,22 @@ public class PointService {
 
     // 예치금 조정 내역 생성
     public void createPointAdjustment(CreatePointAdjustmentRequest req) throws ApiException {
-        intraPointApi.createPointAdjustment(intraTokenService.getAuthToken(), req);
+        intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).createPointAdjustment(intraTokenService.getAuthToken(), req);
     }
 
     // 예치금 조정 내역 상세
     public PointAdjustmentDetail getPointAdjustmentDetail(Integer adjustmentId) throws ApiException {
-        return intraPointApi.getPointAdjustmentDetail(intraTokenService.getAuthToken(), adjustmentId);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustmentDetail(intraTokenService.getAuthToken(), adjustmentId);
     }
 
     // 예치금 조정 오더번호 Look Up
     public PointAdjustmentDeliveryLookUp getPointAdjustmentDeliveryLookUp(String vroongOrderNumber) throws ApiException {
-        return intraPointApi.getPointAdjustmentDeliveryLookUp(intraTokenService.getAuthToken(), vroongOrderNumber);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustmentDeliveryLookUp(intraTokenService.getAuthToken(), vroongOrderNumber);
     }
 
     // 예치금 조정 가맹비 Look Up
     public PointAdjustmentSubscriptionLookUp getPointAdjustmentSubscriptionLookUp(String storeId) throws ApiException {
-        return intraPointApi.getPointAdjustmentSubscriptionLookUp(intraTokenService.getAuthToken(), storeId);
+        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustmentSubscriptionLookUp(intraTokenService.getAuthToken(), storeId);
     }
 
 }

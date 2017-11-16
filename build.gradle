@@ -11,8 +11,9 @@ buildscript { scriptHandler ->
     repositories.addAll(extRepo)
 
     dependencies {
-        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslGradlePluginVersion}"
+        classpath "io.franzbecker:gradle-lombok:${lombokPluginVersion}"
         classpath "net.ltgt.gradle:gradle-apt-plugin:${aptPluginVersion}"
     }
 }
@@ -20,10 +21,10 @@ buildscript { scriptHandler ->
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-def generatedOutput = file("${projectDir}/src/main/generated")
+def generatedOutputDirectory = "${projectDir}/src/main/generated"
+def generatedOutput = file(generatedOutputDirectory)
 
 sourceSets {
-    generated
     main {
         java {
             srcDirs += generatedOutput
@@ -60,13 +61,34 @@ bootRun {
 }
 
 dependencies {
-    compile "net.meshkorea:platform-core-web:${coreWebVersion}"
 
     compile "com.vroong:vroong-api-client:${vroongApiClientVersion}"
     compile "com.vroong:vroong-admin-api-client:${vroongAdminApiClientVersion}"
     compile "com.meshprime:prime-api-client:${primeApiClientVersion}"
 
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-data-rest"
+    compile "org.springframework.boot:spring-boot-starter-jta-atomikos"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-starter-validation"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
+    compile "org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}"
+
+    // QueryDSL
+    compile "com.querydsl:querydsl-apt:${querydslVersion}"
+    compile "com.querydsl:querydsl-jpa:${querydslVersion}"
+    compile "com.querydsl:querydsl-sql:${querydslVersion}"
+    compile "com.querydsl:querydsl-collections:${querydslVersion}"
+
+    // MyBatis JSR310 Support
+    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:${myBatisSpringBootVersion}"
+    compile "org.mybatis:mybatis-typehandlers-jsr310:${mybatisTypehandlersVersion}"
+
+    compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 
     compile "org.apache.httpcomponents:fluent-hc:${apacheHttpcomponentsVersion}"
 
@@ -74,23 +96,24 @@ dependencies {
     compile "io.springfox:springfox-swagger2:${springfoxVersion}"
     compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
 
-    // querydsl
-    compile "com.querydsl:querydsl-core:${querydslVersion}"
-    compile "com.querydsl:querydsl-apt:${querydslVersion}"
-    compile "com.querydsl:querydsl-jpa:${querydslVersion}"
+    // jackson
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    // Jackson JSR310 Support
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
 
-    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
-    compile "org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}"
-
-    compile "com.auth0:java-jwt:${javaJwtVersion}"
-
-    compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
-
+    // poi
     compile "org.apache.poi:poi:${poiVersion}"
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
 
     compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
+
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
+    compile "com.auth0:java-jwt:${javaJwtVersion}"
+
+    compile files("${projectDir}/libs/ICERTSecu_JDK18.jar")
 
     apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     apt "org.projectlombok:lombok:${lombokVersion}"
@@ -102,10 +125,29 @@ dependencies {
 }
 
 compileJava {
+    options.compilerArgs << "-s"
+    options.compilerArgs << generatedOutputDirectory
+
     options.compilerArgs = [
         '-Amapstruct.suppressGeneratorTimestamp=true',
-        '-Amapstruct.suppressGeneratorVersionInfoComment=true'
+        '-Amapstruct.suppressGeneratorVersionInfoComment=true',
+        '-Amapstruct.unmappedTargetPolicy=IGNORE'
     ]
+    doFirst {
+        generatedOutput.mkdirs()
+    }
+}
+
+project.afterEvaluate {
+    project.tasks.compileQuerydsl.options.compilerArgs = [
+        "-proc:only",
+        "-processor", project.querydsl.processors()
+            + ',lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+    ]
+}
+
+clean.doLast {
+    generatedOutput.deleteDir()
 }
 
 task wrapper(type: Wrapper) {
