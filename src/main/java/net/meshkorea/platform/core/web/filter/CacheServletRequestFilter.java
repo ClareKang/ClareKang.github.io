@@ -1,11 +1,9 @@
 package net.meshkorea.platform.core.web.filter;
 
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.ContentCachingResponseWrapper;
+import net.meshkorea.platform.core.web.servlet.MultiReadHttpServletRequest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CacheServletRequestFilter implements Filter {
@@ -23,11 +21,14 @@ public class CacheServletRequestFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper((HttpServletRequest) request);
-        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper((HttpServletResponse) response);
+        // Wrap the request in order to read the InputStream multiple times
+        MultiReadHttpServletRequest multiReadRequest = new MultiReadHttpServletRequest((HttpServletRequest) request);
 
-        chain.doFilter(requestWrapper, responseWrapper);
-
+        /*
+         * When I pass the wrapped request through the filter chain, the rest of the filters
+         * and request handlers may read the cached InputStream
+         */
+        chain.doFilter(multiReadRequest, response);
     }
 
 }

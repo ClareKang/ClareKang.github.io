@@ -1,3 +1,3 @@
 spring:
   profiles:
-    include: core-prod,core-web-prod,mcp-api-prod
+    include: mcp-api-prod

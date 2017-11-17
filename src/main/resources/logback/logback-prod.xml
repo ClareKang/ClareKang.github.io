@@ -1,8 +1,8 @@
 <included>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/application.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/application.%d{yyyy-MM-dd}</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <maxFileSize>100MB</maxFileSize>
         </rollingPolicy>
@@ -21,8 +21,7 @@
         <appender-ref ref="FILE"/>
     </appender>
 
-    <logger name="org.springframework" level="ERROR"/>
-    <logger name="com.vroong.point.external.api" level="ERROR"/>
+    <logger name="net.meshkorea.mcp.api" level="INFO"/>
 
     <root level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
