@@ -2,6 +2,7 @@ package net.meshkorea.mcp.api.controller.accounting;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import lombok.RequiredArgsConstructor;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.service.accounting.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,10 +17,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/v1/intra")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SubscriptionController {
 
-    @Autowired
-    SubscriptionService subscriptionService;
+    private final SubscriptionService subscriptionService;
 
     // 상점별 가맹비 목록 조회
     @GetMapping(value = "/subscriptions/by_store")
@@ -114,7 +114,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByStore(
+        SubscriptionList list = subscriptionService.getSubscriptionListByStoreForExcel(
                 term,
                 all,
                 storeName,
@@ -133,14 +133,9 @@ public class SubscriptionController {
                 size
         );
 
-        SubscriptionList subcriptionList = new SubscriptionList();
-
-        for( Subscription subscription : list.getBody().getData() ) {
-            subcriptionList.addDataItem(subscription);
-        }
-
         List<String> headers = subscriptionService.excelSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelSubscriptionBodies(subcriptionList);
+        List<List<String>> body = subscriptionService.excelSubscriptionBodies(list);
+
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);
         mav.addObject(ExcelConfig.BODY, body);
@@ -165,7 +160,7 @@ public class SubscriptionController {
             @RequestParam(required = false) Integer size,
             ModelAndView mav
     ) throws Exception {
-        ResponseEntity<SubscriptionList> list = subscriptionService.getSubscriptionListByMonth(
+        SubscriptionList list = subscriptionService.getSubscriptionListByMonthForExcel(
                 from,
                 to,
                 all,
@@ -180,14 +175,8 @@ public class SubscriptionController {
                 size
         );
 
-        SubscriptionList subcriptionList = new SubscriptionList();
-
-        for( Subscription subscription : list.getBody().getData() ) {
-            subcriptionList.addDataItem(subscription);
-        }
-
         List<String> headers = subscriptionService.excelStoreSubscriptionHeader();
-        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(subcriptionList);
+        List<List<String>> body = subscriptionService.excelStoreSubscriptionBodies(list);
 
         mav.addObject(ExcelConfig.FILE_NAME, subscriptionService.excelStoreSubscriptionFileName());
         mav.addObject(ExcelConfig.HEAD, headers);

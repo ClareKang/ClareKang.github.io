@@ -3,6 +3,66 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  jpa:
+    database: mysql
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        ddl-auto: none
+        default_batch_fetch_size: 10
+        use-new-id-generator-mappings: true
+  jta:
+    enabled: true
+    atomikos:
+      properties:
+        serial-jta-transactions: false
+        enable-logging: false
+        max-timeout: 43200000
+        default-jta-timeout: 43200000
+
+server:
+  connection-timeout: 600000
+
+datasource:
+  master:
+    unique-resource-name: masterDatasource
+    max-pool-size: 10
+    min-pool-size: 1
+    max-idle-time: 60
+    maintenance-interval: 60
+    borrow-connection-timeout: 60
+    driver-class-name: com.mysql.jdbc.Driver
+    user: mcp
+    password: MCvmffotvha2017!@
+    url: jdbc:mysql://10.5.5.30:3306/mcp?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    test-query: SELECT 1
+
+  auth:
+    unique-resource-name: authDatasource
+    max-pool-size: 10
+    min-pool-size: 1
+    max-idle-time: 60
+    maintenance-interval: 60
+    borrow-connection-timeout: 60
+    driver-class-name: com.mysql.jdbc.Driver
+    user: auth
+    password: Mrnjsgks2017!@
+    url: jdbc:mysql://10.5.5.30:3306/auth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    test-query: SELECT 1
+
+  mms:
+    unique-resource-name: mmsDatasource
+    max-pool-size: 10
+    min-pool-size: 1
+    max-idle-time: 60
+    maintenance-interval: 60
+    borrow-connection-timeout: 60
+    driver-class-name: com.mysql.jdbc.Driver
+    user: mms
+    password: MMSvmffotvha2017!@
+    url: jdbc:mysql://10.5.5.30:3306/mms?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    test-query: SELECT 1
 
 vroong:
   lastmile:
@@ -30,6 +90,11 @@ prime:
       password: platform1234!
       request:
         userAgent: MeshControlPlatformApi/java
+  accounting:
+    api:
+      baseUrl: http://intra-api-dev.meshprime.com
+      request:
+        userAgent: MeshControlPlatformApi/java
 
 azureAd:
   redirectUri: http://localhost:8080/
@@ -44,3 +109,12 @@ kmc:
   cert:
     companyId: MSKM1001
     urlCode: '007001'
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: fatal
+        type:
+          descriptor:
+            sql: fatal

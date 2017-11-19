@@ -1,7 +1,5 @@
 package net.meshkorea.mcp.api;
 
-import net.meshkorea.platform.core.CoreApplication;
-import net.meshkorea.platform.core.web.CoreWebApplication;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,13 +19,12 @@ import org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfigurati
     JtaAutoConfiguration.class,
     SecurityAutoConfiguration.class
 }, scanBasePackageClasses = {
-    CoreApplication.class,
-    CoreWebApplication.class,
     McpApiApplication.class
 }, scanBasePackages = {
     "com.vroong",
     "com.meshprime",
-    "com.sk"
+    "com.sk",
+    "net.meshkorea"
 })
 public class McpApiApplication {
 

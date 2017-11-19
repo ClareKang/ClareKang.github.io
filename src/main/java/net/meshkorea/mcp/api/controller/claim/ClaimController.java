@@ -16,7 +16,6 @@ public class ClaimController {
     @Autowired
     ClaimService claimService;
 
-
     //detail Api 완료
     @GetMapping(value = "/{claimNo}")
     public ClaimDetailResponse getClaimDetail(@PathVariable Long claimNo) throws ApiException {
@@ -29,13 +28,10 @@ public class ClaimController {
         return claimService.findClaims(claimSearchDto);
     }
 
-
-
     //create claim
     @PostMapping("/createClaim")
     public CreateClaimResponse createClaim(@RequestBody CreateClaimRequest request) throws ApiException {
         return claimService.createClaim(request);
-        // return new CreateClaimResponse();
     }
 
     @PutMapping("/updateClaim")
@@ -47,8 +43,6 @@ public class ClaimController {
     public ClaimHistoryResponse getClaimHistory(Long claimNo) {
         return claimService.getClaimHistory(claimNo);
     }
-
-
 
     @GetMapping("getClaimAdjustmentHistory")
     public ClaimAdjustmentHistoryResponse getClaimAdjustmentHistory(Long orderId) {
@@ -64,11 +58,13 @@ public class ClaimController {
     public UpdateClaimAdjustmentResponse updateClaimAdjustment(@RequestBody UpdateClaimAdjustmentRequest request) {
         return claimService.updateClaimAdjustment(request);
     }
+
     //insert description
     @PutMapping("/description")
     public UpdateClaimDescriptionResponse updateDescription(@RequestBody UpdateClaimDescriptionRequest request) {
         return claimService.updateDescription(request);
     }
+
     @GetMapping("/descriptionCount")
     public ClaimDescriptionCountResponse getDescriptionCount(Long orderId) {
         return claimService.getDescriptionCount(orderId);

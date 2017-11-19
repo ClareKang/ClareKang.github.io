@@ -7,16 +7,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import springfox.documentation.builders.*;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.*;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @EnableSwagger2
@@ -41,14 +42,14 @@ public class SwaggerConfig {
 
     private List<ApiKey> apiKeys() {
         return Lists.newArrayList(
-                new ApiKey("Bearer", "Authorization", "header"));
+            new ApiKey("Bearer", "Authorization", "header"));
     }
 
     private List<SecurityContext> securityContexts() {
         return Lists.newArrayList(SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(internalPaths())
-                .build());
+            .securityReferences(defaultAuth())
+            .forPaths(internalPaths())
+            .build());
     }
 
     /**
@@ -73,19 +74,19 @@ public class SwaggerConfig {
 
     private Predicate<String> internalPaths() {
         return Predicates.not(Predicates.or(
-                PathSelectors.ant("/v1/common/**"),
-                PathSelectors.ant("/v1/cert/mobile/**"),
-                PathSelectors.ant("/v2/api-docs"),
-                PathSelectors.ant("/swagger-ui.html"),
-                PathSelectors.ant("/webjars/springfox-swagger-ui/**"),
-                PathSelectors.ant("/swagger-resources/**")
+            PathSelectors.ant("/v1/common/**"),
+            PathSelectors.ant("/v1/cert/mobile/**"),
+            PathSelectors.ant("/v2/api-docs"),
+            PathSelectors.ant("/swagger-ui.html"),
+            PathSelectors.ant("/webjars/springfox-swagger-ui/**"),
+            PathSelectors.ant("/swagger-resources/**")
         ));
     }
 
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[0];
         return Lists.newArrayList(
-                new SecurityReference("Bearer", authorizationScopes));
+            new SecurityReference("Bearer", authorizationScopes));
 
     }
 
