@@ -6,6 +6,7 @@ import com.meshprime.common.constant.IntraApiTypeEnum;
 import com.meshprime.intra.api.IntraPointApiFactory;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import lombok.RequiredArgsConstructor;
+import net.meshkorea.mcp.api.service.business.VirtualBankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by clare on 9/13/17.
@@ -24,6 +27,8 @@ public class PointService {
     private final IntraTokenService intraTokenService;
 
     private final IntraPointApiFactory intraPointApiFactory;
+
+    private final VirtualBankAccountService virtualBankAccountService;
 
     // 예치금 대분류 목록
     public List<PointCategory> getPointCategory() throws ApiException {
@@ -42,14 +47,14 @@ public class PointService {
 
     // 예치금 내역 목록 조회
     public PointHistoryList getPointHistory(
-            String from,
-            String to,
-            String subcategory,
-            String searchKey,
-            String searchValue,
-            String isDebit,
-            Integer size,
-            Integer page
+        String from,
+        String to,
+        String subcategory,
+        String searchKey,
+        String searchValue,
+        String isDebit,
+        Integer size,
+        Integer page
     ) throws ApiException {
         return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointHistory(intraTokenService.getAuthToken(), from, to, subcategory, searchKey, searchValue, isDebit, size, page);
     }
@@ -118,27 +123,13 @@ public class PointService {
 
     // 예치금 충전 내역 조회
     public PointDeposit getPointDeposit(
-            Integer pointTransactionId
+        Integer pointTransactionId
     ) throws ApiException {
         return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointDeposit(intraTokenService.getAuthToken(), pointTransactionId);
     }
 
     // 예치금 계좌 조회
     public PointAccountList getPointAccount(
-            String clientSearchKey,
-            String clientSearchValue,
-            String sortDirection,
-            String sortColumn,
-            Boolean pointAccountIsUsed,
-            String balanceStatusIds,
-            Integer size,
-            Integer page
-    ) throws ApiException {
-        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
-    }
-
-    // 예치금 계좌 조회 엑셀 다운로드
-    public PointAccountList getPointAccountForExcel(
         String clientSearchKey,
         String clientSearchValue,
         String sortDirection,
@@ -148,7 +139,27 @@ public class PointService {
         Integer size,
         Integer page
     ) throws ApiException {
-        return intraPointApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getPointAccount(intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
+        PointAccountList pointAccountList = intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAccount(
+            intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page
+        );
+        return pointAccountList.data(mergeExternalInformationInPointAccount(pointAccountList.getData(), getVirtualBankAccountsByPointAccounts(pointAccountList.getData())));
+    }
+
+    // 예치금 계좌 조회 엑셀 다운로드
+    public List<PointAccount> getPointAccountForExcel(
+        String clientSearchKey,
+        String clientSearchValue,
+        String sortDirection,
+        String sortColumn,
+        Boolean pointAccountIsUsed,
+        String balanceStatusIds,
+        Integer size,
+        Integer page
+    ) throws ApiException {
+        PointAccountList pointAccountList = intraPointApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getPointAccount(
+            intraTokenService.getAuthToken(), clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page
+        );
+        return mergeExternalInformationInPointAccount(pointAccountList.getData(), getVirtualBankAccountsByPointAccounts(pointAccountList.getData()));
     }
 
     // 예치금 계좌 엑셀다운로드 ------------------------------------------
@@ -167,9 +178,9 @@ public class PointService {
         return result;
     }
 
-    public List<List<String>> excelPointAccountBodies(PointAccountList pointAccountList) throws Exception {
+    public List<List<String>> excelPointAccountBodies(List<PointAccount> pointAccountList) throws Exception {
         List<List<String>> result = new ArrayList<>();
-        pointAccountList.getData().forEach(item -> {
+        pointAccountList.forEach(item -> {
             List<String> row = new ArrayList<>();
             row.add(item.getClientName());
             row.add(item.getBusinessOwnerId() != null ? item.getBusinessOwnerId().toString() : "");
@@ -197,14 +208,14 @@ public class PointService {
 
     // 예치금 조정 내역 목록
     public PointAdjustmentList getPointAdjustment(
-            String from,
-            String to,
-            String subcategory,
-            String adjustmentSearchKey,
-            String adjustmentSearchValue,
-            String isDebit,
-            Integer size,
-            Integer page
+        String from,
+        String to,
+        String subcategory,
+        String adjustmentSearchKey,
+        String adjustmentSearchValue,
+        String isDebit,
+        Integer size,
+        Integer page
     ) throws ApiException {
         return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustment(intraTokenService.getAuthToken(), from, to, subcategory, adjustmentSearchKey, adjustmentSearchValue, isDebit, size, page);
     }
@@ -284,6 +295,33 @@ public class PointService {
     // 예치금 조정 가맹비 Look Up
     public PointAdjustmentSubscriptionLookUp getPointAdjustmentSubscriptionLookUp(String storeId) throws ApiException {
         return intraPointApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getPointAdjustmentSubscriptionLookUp(intraTokenService.getAuthToken(), storeId);
+    }
+
+    private List<BusinessClientVirtualBankAccount> getVirtualBankAccountsByPointAccounts(List<PointAccount> pointAccounts) throws ApiException {
+        List<BusinessClientVirtualBankAccount> virtualBankAccountList = new ArrayList<>();
+        if (!pointAccounts.isEmpty()) {
+            List<Integer> businessOwnerIds = pointAccounts.stream().map(d -> d.getBusinessOwnerId()).collect(Collectors.toList());
+            // get VirtualBankAccount list
+            return virtualBankAccountService.getVirtualBankAccountsByBusinessClientIdsForExcel(businessOwnerIds);
+        }
+        return virtualBankAccountList;
+    }
+
+    private List<PointAccount> mergeExternalInformationInPointAccount(List<PointAccount> pointAccounts, List<BusinessClientVirtualBankAccount> businessClientVirtualBankAccounts) {
+        if (!pointAccounts.isEmpty()) {
+            Map<Integer, BusinessClientVirtualBankAccount> virtualBankMap = virtualBankAccountService.convertToMap(businessClientVirtualBankAccounts);
+
+            // combine list in PointAccount list
+            for (PointAccount account : pointAccounts) {
+                BusinessClientVirtualBankAccount virtualBankAccount = virtualBankMap.get(account.getBusinessOwnerId());
+
+                if (virtualBankAccount != null) {
+                    account.setVirtualBankAccountNumber(virtualBankAccount.getVirtualBankAccountNumber());
+                    account.setBankName(virtualBankAccount.getBankName());
+                }
+            }
+        }
+        return pointAccounts;
     }
 
 }
