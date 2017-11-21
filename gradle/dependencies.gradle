@@ -29,7 +29,7 @@ ext {
     myBatisSpringBootVersion = '1.3.1'
     mybatisTypehandlersVersion = '1.0.2'
 
-    vroongApiClientVersion = '1.0.3-SNAPSHOT'
+    vroongApiClientVersion = '1.0.4-SNAPSHOT'
     vroongAdminApiClientVersion = '1.0.0-SNAPSHOT'
     primeApiClientVersion = '1.1.9-SNAPSHOT'
 
