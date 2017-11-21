@@ -3,7 +3,6 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.intra.api.IntraBusinessClientsApi;
-import com.meshprime.intra.api.IntraVirtualBankAccount;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import net.meshkorea.mcp.api.util.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,6 @@ public class ClientService {
 
     @Autowired
     private StorageService storageService;
-
-    @Autowired
-    IntraVirtualBankAccount intraVirtualBankAccount;
 
     public ListBusinessClientResponse listBusinessClients(
             String clientType,

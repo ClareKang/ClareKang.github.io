@@ -33,7 +33,7 @@ public class StoreService {
 
     private final IntraDeliveriesApi intraDeliveriesApi;
 
-    private final IntraVirtualBankAccount intraVirtualBankAccount;
+    private final IntraVirtualBankAccountApiFactory intraVirtualBankAccountApiFactory;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -256,7 +256,7 @@ public class StoreService {
     }
 
     public List<StoreVirtualBankAccount> listVirtualBankAccountByStoreIds(GetStoreVirtualBankAccountsRequest req) throws Exception {
-        return intraVirtualBankAccount.getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
+        return intraVirtualBankAccountApiFactory.getApiClient(IntraApiTypeEnum.ACCOUNTING).getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {
