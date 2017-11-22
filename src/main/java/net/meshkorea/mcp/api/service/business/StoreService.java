@@ -9,6 +9,7 @@ import com.meshprime.intra.api.IntraRegionsApi;
 import com.meshprime.intra.api.IntraStoresApiFactory;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -130,9 +131,7 @@ public class StoreService {
 
         // get virtual bank accounts
         List<Integer> businessOwnerIds = new ArrayList<>();
-        storeList.forEach(item -> {
-            businessOwnerIds.add(item.getBusinessOwnerId());
-        });
+        storeList.forEach(item -> businessOwnerIds.add(item.getBusinessOwnerId()));
         List<BusinessClientVirtualBankAccount> virtualBankAccounts = virtualBankAccountService.getVirtualBankAccountsByBusinessClientIdsForExcel(businessOwnerIds);
         Map<Integer, BusinessClientVirtualBankAccount> virtualBankMap = virtualBankAccountService.convertToMap(virtualBankAccounts);
 
@@ -147,7 +146,7 @@ public class StoreService {
             row.add(item.getStoreType());
             row.add(getOperationStatus(item));
             row.add(item.getStorePhone());
-            row.add(item.getStoreUser().getName());
+            row.add(item.getStoreUser() == null ? StringUtils.EMPTY : item.getStoreUser().getName());
             row.add(item.getStoreAddress().getBeonjiAddress().getSiDo());
             row.add(item.getStoreAddress().getBeonjiAddress().getSiGunGu());
             row.add(item.getStoreAddress().getBeonjiAddress().getEupMyeonDongRi());
@@ -166,7 +165,7 @@ public class StoreService {
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode().toString());
+            row.add(item.getDuzonCode());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -199,7 +198,7 @@ public class StoreService {
         return result;
     }
 
-    public String getOperationStatus(Store item) {
+    private String getOperationStatus(Store item) {
         String returnStatus = "";
         switch (item.getStoreOperatingStatus()) {
             case "INACTIVE":
@@ -228,6 +227,9 @@ public class StoreService {
                 break;
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
+                break;
+            default:
+                returnStatus = "-";
                 break;
         }
         return returnStatus;
