@@ -3,9 +3,13 @@ package net.meshkorea.mcp.api.service.business;
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
 import com.meshprime.common.constant.IntraApiTypeEnum;
-import com.meshprime.intra.api.*;
+import com.meshprime.intra.api.IntraBusinessClientsApi;
+import com.meshprime.intra.api.IntraDeliveriesApi;
+import com.meshprime.intra.api.IntraRegionsApi;
+import com.meshprime.intra.api.IntraStoresApiFactory;
 import com.meshprime.intra.service.auth.IntraTokenService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chaelee on 2017. 3. 23..
@@ -33,7 +38,7 @@ public class StoreService {
 
     private final IntraDeliveriesApi intraDeliveriesApi;
 
-    private final IntraVirtualBankAccount intraVirtualBankAccount;
+    private final VirtualBankAccountService virtualBankAccountService;
 
     public List<StoreManagementDepartment> getStoreManagementDepartmentList() throws Exception {
         return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).getStoreManagementDepartmentsList(intraTokenService.getAuthToken());
@@ -125,18 +130,10 @@ public class StoreService {
         }
 
         // get virtual bank accounts
-        List<Integer> storeIds = new ArrayList<>();
-        storeList.forEach(item -> {
-            storeIds.add(item.getId());
-        });
-        GetStoreVirtualBankAccountsRequest req = new GetStoreVirtualBankAccountsRequest();
-        req.setStoreIds(storeIds);
-        List<StoreVirtualBankAccount> virtualBankAccounts = listVirtualBankAccountByStoreIds(req);
-
-        HashMap<Integer, StoreVirtualBankAccount> virtualBankMap = new HashMap<>();
-        for (StoreVirtualBankAccount virtualBankAccount : virtualBankAccounts) {
-            virtualBankMap.put(virtualBankAccount.getStoreId(), virtualBankAccount);
-        }
+        List<Integer> businessOwnerIds = new ArrayList<>();
+        storeList.forEach(item -> businessOwnerIds.add(item.getBusinessOwnerId()));
+        List<BusinessClientVirtualBankAccount> virtualBankAccounts = virtualBankAccountService.getVirtualBankAccountsByBusinessClientIdsForExcel(businessOwnerIds);
+        Map<Integer, BusinessClientVirtualBankAccount> virtualBankMap = virtualBankAccountService.convertToMap(virtualBankAccounts);
 
         storeList.forEach(item -> {
             List<String> row = new ArrayList<>();
@@ -149,7 +146,7 @@ public class StoreService {
             row.add(item.getStoreType());
             row.add(getOperationStatus(item));
             row.add(item.getStorePhone());
-            row.add(item.getStoreUser().getName());
+            row.add(item.getStoreUser() == null ? StringUtils.EMPTY : item.getStoreUser().getName());
             row.add(item.getStoreAddress().getBeonjiAddress().getSiDo());
             row.add(item.getStoreAddress().getBeonjiAddress().getSiGunGu());
             row.add(item.getStoreAddress().getBeonjiAddress().getEupMyeonDongRi());
@@ -168,7 +165,7 @@ public class StoreService {
             row.add(item.getAgentBuyingPossible() ? "허용" : "불허용");
             row.add(item.getVroongPickUpDelayPossible() != 0 ? "허용" : "불허용");
             row.add(item.getCardFeeRate().toString());
-            row.add(item.getDuzonCode().toString());
+            row.add(item.getDuzonCode());
             row.add(item.getStoreContactName());
             row.add(item.getStoreContactPhone());
             row.add(item.getStoreContactEmail());
@@ -191,7 +188,7 @@ public class StoreService {
             row.add(item.getFranchise().getBankAccount().getBankName());
             row.add(item.getFranchise().getBankAccount().getAccountNumber());
 
-            StoreVirtualBankAccount virtualBankAccount = virtualBankMap.get(item.getId());
+            BusinessClientVirtualBankAccount virtualBankAccount = virtualBankMap.get(item.getBusinessOwnerId());
             row.add(virtualBankAccount != null ? virtualBankAccount.getAccountOwner() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getBankName() : "");
             row.add(virtualBankAccount != null ? virtualBankAccount.getVirtualBankAccountNumber() : "");
@@ -201,7 +198,7 @@ public class StoreService {
         return result;
     }
 
-    public String getOperationStatus(Store item) {
+    private String getOperationStatus(Store item) {
         String returnStatus = "";
         switch (item.getStoreOperatingStatus()) {
             case "INACTIVE":
@@ -231,6 +228,9 @@ public class StoreService {
             case "NOT_OPERATING_OTHER":
                 returnStatus = "기타 사유로 인한 일시 중지 (POS 안내문구 직접 작성)";
                 break;
+            default:
+                returnStatus = "-";
+                break;
         }
         return returnStatus;
     }
@@ -253,10 +253,6 @@ public class StoreService {
 
     public List<VroongServicePricingType> listVroongServicePricingTypes() throws Exception {
         return this.intraStoresApiFactory.getApiClient(IntraApiTypeEnum.MAIN).listVroongServicePricingTypes(intraTokenService.getAuthToken());
-    }
-
-    public List<StoreVirtualBankAccount> listVirtualBankAccountByStoreIds(GetStoreVirtualBankAccountsRequest req) throws Exception {
-        return intraVirtualBankAccount.getVirtualBankAccountsByStoreIds(intraTokenService.getAuthToken(), req);
     }
 
     public List<StoreSalesDepartment> getSalesDepartments() throws Exception {

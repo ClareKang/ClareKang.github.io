@@ -2,29 +2,24 @@ package net.meshkorea.mcp.api.controller.accounting;
 
 import com.meshprime.api.client.ApiException;
 import com.meshprime.api.client.model.*;
+import lombok.RequiredArgsConstructor;
 import net.meshkorea.mcp.api.config.excel.ExcelConfig;
 import net.meshkorea.mcp.api.service.accounting.PointService;
-import net.meshkorea.mcp.api.service.business.VirtualBankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by clare on 9/13/17.
  */
 @RestController
 @RequestMapping(value = "/v1/intra")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PointController {
 
-    @Autowired
-    PointService pointService;
-
-    @Autowired
-    VirtualBankAccountService virtualBankAccountService;
+    private final PointService pointService;
 
     // 예치금 대분류 목록
     @GetMapping(path = "/points/categories")
@@ -56,9 +51,7 @@ public class PointController {
             Integer size,
             Integer page
     ) throws ApiException {
-        PointHistoryList list = pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
-
-        return list;
+        return pointService.getPointHistory(from, to, subcategory, searchKey, searchValue, isDebit, size, page);
     }
 
     // 예치금 내역 엑셀 다운로드
@@ -110,10 +103,7 @@ public class PointController {
             Integer size,
             Integer page
     ) throws ApiException {
-        PointAccountList list = pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
-        setExternalInformationInPointAccount(list.getData());
-
-        return list;
+        return pointService.getPointAccount(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
     }
 
     // 예치금 계좌 조회 엑셀 다운로드
@@ -129,8 +119,7 @@ public class PointController {
             @RequestParam(required = false) Integer page,
             ModelAndView mav
     ) throws Exception {
-        PointAccountList list = pointService.getPointAccountForExcel(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
-        setExternalInformationInPointAccount(list.getData());
+        List<PointAccount> list = pointService.getPointAccountForExcel(clientSearchKey, clientSearchValue, sortDirection, sortColumn, pointAccountIsUsed, balanceStatusIds, size, page);
         List<String> headers = pointService.excelPointAccountHeader();
         List<List<String>> body = pointService.excelPointAccountBodies(list);
 
@@ -212,29 +201,4 @@ public class PointController {
         return pointService.getPointAdjustmentSubscriptionLookUp(storeId);
     }
 
-    private void setExternalInformationInPointAccount(List<PointAccount> list) throws ApiException {
-        if(!list.isEmpty()) {
-            List<Integer> businessOwnerIds = list.stream().map(d -> d.getBusinessOwnerId()).collect(Collectors.toList());
-
-            // get VirtualBankAccount list
-            List<BusinessClientVirtualBankAccount> virtualBankAccountList = new ArrayList();
-            int sliceSize = 20;
-            for(int i = 0 ; i < businessOwnerIds.size() ; i += sliceSize) {
-                List<Integer> sublist = businessOwnerIds.subList(i, i + sliceSize > businessOwnerIds.size() ? businessOwnerIds.size() : i + sliceSize);
-                virtualBankAccountList.addAll(virtualBankAccountService.getVirtualBankAccountsByBusinessClientIds(
-                        new GetBusinessClientVirtualBankAccountsRequest().businessOwnerIds(sublist)));
-            }
-
-            // combine list in PointAccount list
-            for(PointAccount account : list) {
-                BusinessClientVirtualBankAccount virtualBankAccount = virtualBankAccountList.stream()
-                        .filter(v -> v.getBusinessOwnerId().equals(account.getBusinessOwnerId())).findFirst().orElse(null);
-
-                if(virtualBankAccount != null) {
-                    account.setVirtualBankAccountNumber(virtualBankAccount.getVirtualBankAccountNumber());
-                    account.setBankName(virtualBankAccount.getBankName());
-                }
-            }
-        }
-    }
 }
