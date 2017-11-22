@@ -25,13 +25,18 @@ public class AuditLogInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (request.getMethod().equals("POST")) {
-            log.info("Method: [{}]", request.getMethod());
-            log.info("RequestURI: [{}]", request.getRequestURI());
-            log.info("RequestURL: [{}]", request.getRequestURL());
-            log.info("RemoteAddr: [{}]", request.getRemoteAddr());
-            log.info("RequestBody: [{}]", IOUtils.toString(request.getReader()));
-            log.info("RequestUser: [{}]", oAuthUserService.getCurrentUser().getId());
+        String space = " ";
+
+        if ("POST".equals(request.getMethod())
+            || "PUT".equals(request.getMethod())
+            || "DELETE".equals(request.getMethod())
+            || "PATCH".equals(request.getMethod())) {
+            String logString = String.format("[%s]", oAuthUserService.getCurrentUser().getEmail())
+                + space + String.format("[%s]", request.getMethod())
+                + space + String.format("[%s]", request.getRemoteAddr())
+                + space + String.format("[%s]", request.getRequestURL())
+                + space + String.format("[%s]", IOUtils.toString(request.getReader()));
+            log.info(logString);
         }
 
         return true;

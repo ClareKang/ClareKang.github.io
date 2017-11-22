@@ -11,6 +11,18 @@
         </encoder>
     </appender>
 
+    <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/application-audit.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/application-audit.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date - %m%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%date - %-5p %t %-25logger{5} %F:%L %m%n</pattern>
@@ -20,10 +32,16 @@
     <appender name="ASYNC-FILE" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE"/>
     </appender>
+    <appender name="ASYNC-AUDIT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="AUDIT"/>
+    </appender>
 
     <logger name="net.meshkorea.mcp.api" level="DEBUG"/>
     <logger name="org.hibernate.SQL" level="DEBUG"/>
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <logger name="net.meshkorea.mcp.api.config.interceptor" level="INFO">
+        <appender-ref ref="ASYNC-AUDIT"/>
+    </logger>
 
     <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
