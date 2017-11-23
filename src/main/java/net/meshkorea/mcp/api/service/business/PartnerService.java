@@ -67,4 +67,12 @@ public class PartnerService {
         return lastmileManagerPartnerApi.addCustomerUsingPOST(lastmileTokenService.getAuthToken(), req);
     }
 
+    public ManagerGetWeatherExtraChargePolicyRes getWeatherExtraChargePolicy(Long partnerId) throws ApiException {
+        return lastmileManagerPartnerApi.getWeatherExtraChargePolicyUsingGET(lastmileTokenService.getAuthToken(), partnerId);
+    }
+
+    public ManagerSetWeatherExtraChargePolicyRes setWeatherExtraChargePolicy(ManagerSetWeatherExtraChargePolicyReq req) throws ApiException {
+        return lastmileManagerPartnerApi.setWeatherExtraChargePolicyUsingPOST(lastmileTokenService.getAuthToken(), req);
+    }
+
 }

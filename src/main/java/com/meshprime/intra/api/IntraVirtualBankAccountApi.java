@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @DependsOn({
         "intraApiClient"
 })
-public class IntraVirtualBankAccount extends VirtualBankAccountsApi {
+public class IntraVirtualBankAccountApi extends VirtualBankAccountsApi {
     @Autowired
     public void setIntraApiClient(ApiClient intraApiClient) {
         setApiClient(intraApiClient);

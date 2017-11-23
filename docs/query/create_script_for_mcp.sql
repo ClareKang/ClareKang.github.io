@@ -147,57 +147,41 @@ CREATE TABLE `claim_adjustment_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='클레임 정산금 분배 관련 변경 이력';
 
 
---
--- Table structure for table `bookmark`
---
-CREATE TABLE `bookmark` (
-  `bmk_no` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '즐겨찾기 관리 번호',
-  `email` varchar(50) NOT NULL COMMENT '사용자 식별자(email)',
-  `bmk_type` varchar(20) NOT NULL COMMENT '즐겨찾기 종류',
-  `bmk_id` varchar(20) NOT NULL COMMENT '즐겨찾기 식별자 (bmk_type에 종속)',
-  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '제목',
-  `memo` varchar(1000) NOT NULL DEFAULT '' COMMENT '메모',
-  `create_dt` datetime NOT NULL COMMENT '생성일',
-  `issue_dt` datetime NOT NULL COMMENT '변경일',
-  `del_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '삭제여부',
-  `share_memo_no` int(11) unsigned DEFAULT NULL,
+-- -----------------------------------------------------
+-- Table `mcp`.`bookmark`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mcp`.`bookmark` (
+  `bmk_no` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '즐겨찾기 관리 번호',
+  `email` VARCHAR(50) NOT NULL COMMENT '사용자 식별자(email)',
+  `bmk_type` VARCHAR(20) NOT NULL COMMENT '즐겨찾기 종류',
+  `bmk_id` VARCHAR(20) NOT NULL COMMENT '즐겨찾기 식별자 (bmk_type에 종속)',
+  `title` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '제목',
+  `memo` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '메모',
+  `create_dt` DATETIME NOT NULL COMMENT '생성일',
+  `issue_dt` DATETIME NOT NULL COMMENT '변경일',
+  `del_yn` ENUM('Y','N') NOT NULL DEFAULT 'N' COMMENT '삭제여부',
+  `share_memo_no` INT(11) UNSIGNED NULL DEFAULT NULL,
   PRIMARY KEY (`bmk_no`),
-  UNIQUE KEY `bookmark_bmk_no_email_pk` (`bmk_no`,`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE INDEX `bookmark_bmk_no_email_pk` (`bmk_no` ASC, `email` ASC))
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COMMENT = '북마크';
 
 
---
--- Table structure for table `share_memo`
---
-CREATE TABLE `share_memo` (
-  `share_memo_no` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '공유 메모 관리 번호',
-  `share_memo_type` varchar(20) NOT NULL COMMENT '공유 메모 유형(북마크 유형과 값 동일)',
-  `share_memo_id` varchar(20) NOT NULL COMMENT '공유 메모 식별자(북마크 식별자와 값 동일)',
-  `share_memo` varchar(1000) NOT NULL COMMENT '공유 메모',
-  `issuor` varchar(50) NOT NULL COMMENT '변경자(이메일)',
-  `issue_dt` datetime NOT NULL COMMENT '변경일',
-  PRIMARY KEY (`share_memo_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
---
--- Table structure for table `claim_code`
---
-CREATE TABLE `claim_code` (
-  `claim_code_no` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '클레임 코드 관리 번호',
-  `claim_code_name` varchar(45) NOT NULL COMMENT '클레임 코드 이름',
-  `order_cancel_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '오더취소 유형 사용유무',
-  `overload_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '과적 유형 사용유무',
-  `return_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '반납 유형 사용유무',
-  `retry_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '재이동 유형 사용유무',
-  `address_change_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '주소변경 유형 사용유무',
-  `phone_payment_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '전화결제 유형 사용유무',
-  `damege_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '손해배상 유형 사용유무',
-  `use_yn` enum('Y','N') NOT NULL DEFAULT 'N' COMMENT '클레임 코드 사용유무',
-  `issuer` varchar(50) NOT NULL COMMENT '발행인(이메일)',
-  `issue_dt` datetime NOT NULL COMMENT '변경일',
-  PRIMARY KEY (`claim_code_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `mcp`.`share_memo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mcp`.`share_memo` (
+  `share_memo_no` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '공유 메모 관리 번호',
+  `share_memo_type` VARCHAR(20) NOT NULL COMMENT '공유 메모 유형(북마크 유형과 값 동일)',
+  `share_memo_id` VARCHAR(20) NOT NULL COMMENT '공유 메모 식별자(북마크 식별자와 값 동일)',
+  `share_memo` VARCHAR(1000) NOT NULL COMMENT '공유 메모',
+  `issuor` VARCHAR(50) NOT NULL COMMENT '변경자(이메일)',
+  `issue_dt` DATETIME NOT NULL COMMENT '변경일',
+  PRIMARY KEY (`share_memo_no`))
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COMMENT = '공유 메모';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

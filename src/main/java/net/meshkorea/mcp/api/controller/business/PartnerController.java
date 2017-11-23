@@ -77,4 +77,13 @@ public class PartnerController {
         return partnerService.addCustomer(req);
     }
 
+    @GetMapping("/getWeatherExtraChargePolicy")
+    public ManagerGetWeatherExtraChargePolicyRes getWeatherExtraChargePolicy(Long partnerId) throws ApiException {
+        return partnerService.getWeatherExtraChargePolicy(partnerId);
+    }
+
+    @PostMapping("/setWeatherExtraChargePolicy")
+    public ManagerSetWeatherExtraChargePolicyRes setWeatherExtraChargePolicy(@RequestBody ManagerSetWeatherExtraChargePolicyReq req) throws ApiException {
+        return partnerService.setWeatherExtraChargePolicy(req);
+    }
 }
