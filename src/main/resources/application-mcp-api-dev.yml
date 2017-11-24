@@ -28,7 +28,7 @@ datasource:
   master:
     unique-resource-name: masterDatasource
     max-pool-size: 10
-    min-pool-size: 1
+    min-pool-size: 2
     max-idle-time: 60
     maintenance-interval: 60
     borrow-connection-timeout: 60
@@ -37,11 +37,10 @@ datasource:
     password: MCvmffotvha2017!@
     url: jdbc:mysql://10.5.5.30:3306/mcp?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     test-query: SELECT 1
-
   auth:
     unique-resource-name: authDatasource
     max-pool-size: 10
-    min-pool-size: 1
+    min-pool-size: 2
     max-idle-time: 60
     maintenance-interval: 60
     borrow-connection-timeout: 60
@@ -50,11 +49,10 @@ datasource:
     password: Mrnjsgks2017!@
     url: jdbc:mysql://10.5.5.30:3306/auth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     test-query: SELECT 1
-
   mms:
     unique-resource-name: mmsDatasource
     max-pool-size: 10
-    min-pool-size: 1
+    min-pool-size: 2
     max-idle-time: 60
     maintenance-interval: 60
     borrow-connection-timeout: 60

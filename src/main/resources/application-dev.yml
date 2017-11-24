@@ -1,3 +1,3 @@
 spring:
   profiles:
-    include: core-dev,core-web-dev,mcp-api-dev
+    include: mcp-api-dev

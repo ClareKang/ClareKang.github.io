@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Created by yjhan on 2017. 7. 9..
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,9 +20,11 @@ public class OAuthUser {
 
     public void setEmail(String email) {
         this.email = email;
-        String[] values = StringUtils.split(this.email, "@");
-        if (values != null && StringUtils.isNotEmpty(values[0])) {
-            this.id = values[0];
+        if (StringUtils.contains(email, "@")) {
+            String[] values = StringUtils.split(email, "@");
+            setId(values[0]);
+        } else {
+            setId(email);
         }
     }
 
