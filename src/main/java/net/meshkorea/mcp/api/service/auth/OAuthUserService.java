@@ -3,6 +3,7 @@ package net.meshkorea.mcp.api.service.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import net.meshkorea.mcp.api.domain.model.auth.OAuthUser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -17,7 +18,7 @@ public class OAuthUserService {
             return new OAuthUser();
         }
         Object object = authentication.getDetails();
-        if (object == null) {
+        if (object == null || !(object instanceof OAuth2AuthenticationDetails)) {
             return new OAuthUser();
         }
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) object;
@@ -26,8 +27,11 @@ public class OAuthUserService {
     }
 
     private OAuthUser getOAuthUserByToken(String jwtToken) {
-        DecodedJWT jwt = JWT.decode(jwtToken);
         OAuthUser user = new OAuthUser();
+        if (StringUtils.isEmpty(jwtToken)) {
+            return user;
+        }
+        DecodedJWT jwt = JWT.decode(jwtToken);
         user.setEmail(jwt.getClaim("email").asString());
         user.setName(jwt.getClaim("name").asString());
         return user;
