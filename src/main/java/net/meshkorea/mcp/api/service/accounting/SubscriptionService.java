@@ -223,7 +223,7 @@ public class SubscriptionService {
         result.add("사업자등록번호");
         result.add("대표자명");
         result.add("영업구분");
-        result.add("관제파트너");
+        result.add("관제위탁사");
         result.add("기본가맹비");
         result.add("배송건수");
         result.add("추가금액");
