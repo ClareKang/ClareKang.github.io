@@ -27,7 +27,7 @@ server:
 datasource:
   master:
     unique-resource-name: masterDatasource
-    max-pool-size: 10
+    max-pool-size: 5
     min-pool-size: 1
     max-idle-time: 60
     maintenance-interval: 60
@@ -37,10 +37,9 @@ datasource:
     password: MCvmffotvha2017!@
     url: jdbc:mysql://10.5.5.30:3306/mcp?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     test-query: SELECT 1
-
   auth:
     unique-resource-name: authDatasource
-    max-pool-size: 10
+    max-pool-size: 5
     min-pool-size: 1
     max-idle-time: 60
     maintenance-interval: 60
@@ -50,10 +49,9 @@ datasource:
     password: Mrnjsgks2017!@
     url: jdbc:mysql://10.5.5.30:3306/auth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     test-query: SELECT 1
-
   mms:
     unique-resource-name: mmsDatasource
-    max-pool-size: 10
+    max-pool-size: 5
     min-pool-size: 1
     max-idle-time: 60
     maintenance-interval: 60
@@ -109,6 +107,12 @@ kmc:
   cert:
     companyId: MSKM1001
     urlCode: '007001'
+
+interceptor:
+  audit:
+    include-patterns: '/**'
+    exclude-patterns: '/v1/cert/mobile/identification*/**,/v1/bookmark*/**'
+    exclude-methods: OPTIONS
 
 logging:
   level:

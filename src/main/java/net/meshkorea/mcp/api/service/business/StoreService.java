@@ -82,7 +82,7 @@ public class StoreService {
         result.add("상점주소_번지주소");
         result.add("상점주소_상세주소");
         result.add("상점 API 점포코드");
-        result.add("관제파트너");
+        result.add("관제위탁사");
         result.add("영업구분값");
         result.add("관리구분");
         result.add("부릉 원가 요금제");
