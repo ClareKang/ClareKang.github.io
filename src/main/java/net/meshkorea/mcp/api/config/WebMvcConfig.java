@@ -1,6 +1,8 @@
 package net.meshkorea.mcp.api.config;
 
+import lombok.RequiredArgsConstructor;
 import net.meshkorea.mcp.api.config.interceptor.AuditLogInterceptor;
+import net.meshkorea.mcp.api.config.interceptor.AuditLogProperties;
 import net.meshkorea.platform.core.web.filter.CacheServletRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,10 +27,12 @@ import java.util.List;
 @DependsOn({
     "auditLogInterceptor"
 })
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Autowired
-    private AuditLogInterceptor auditLogInterceptor;
+    private final AuditLogInterceptor auditLogInterceptor;
+
+    private final AuditLogProperties auditLogProperties;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -47,8 +51,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FilterRegistrationBean cacheServletRequestFilterRegistrationBean() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CacheServletRequestFilter());
+    public FilterRegistrationBean cacheServletRequestFilter() {
+        CacheServletRequestFilter cacheServletRequestFilter = new CacheServletRequestFilter();
+        cacheServletRequestFilter.setExcludeMethods(auditLogProperties.getExcludeMethodArray());
+        cacheServletRequestFilter.setExcludePatterns(auditLogProperties.getExcludePatternArray());
+
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(cacheServletRequestFilter);
         registrationBean.addUrlPatterns("/*");
         registrationBean.setOrder(Integer.MAX_VALUE);
         return registrationBean;
@@ -65,8 +73,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(auditLogInterceptor)
-            .addPathPatterns("/**")
-            .excludePathPatterns("/public/**");
+            .addPathPatterns(auditLogProperties.getIncludePatternArray())
+            .excludePathPatterns(auditLogProperties.getExcludePatternArray());
     }
 
 }

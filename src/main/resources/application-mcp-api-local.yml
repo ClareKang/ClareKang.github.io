@@ -108,6 +108,12 @@ kmc:
     companyId: MSKM1001
     urlCode: '007001'
 
+interceptor:
+  audit:
+    include-patterns: '/**'
+    exclude-patterns: '/v1/cert/mobile/identification*/**,/v1/bookmark*/**'
+    exclude-methods: OPTIONS
+
 logging:
   level:
     org:
